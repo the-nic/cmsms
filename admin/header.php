@@ -16,119 +16,132 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 // Language shizzle
-header("Content-Encoding: " . get_encoding());
-header("Content-Language: " . $current_language);
-header("Content-Type: text/html; charset=" . get_encoding());
+//header("Content-Encoding: " . get_encoding());
+//header("Content-Language: " . $current_language);
+if (!isset($charsetsent))
+{
+	header("Content-Type: text/html; charset=" . get_encoding());
+}
 
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html40/loose.dtd">
-<html>
-<head>
+<HTML>
+<HEAD>
 
-<title><?php echo lang('adminsystemtitle')?></title>
+<TITLE><?php echo lang('adminsystemtitle')?></TITLE>
 
-<link rel="stylesheet" type="text/css" href="style.css">
-<script type="text/javascript" language="javascript" src="helparea.js"></script>
+<LINK REL="stylesheet" TYPE="text/css" HREF="style.css">
+<LINK REL="stylesheet" TYPE="text/css" HREF="tab.css">
+<SCRIPT TYPE="text/javascript" LANGUAGE="javascript" SRC="helparea.js"></SCRIPT>
 
-<!--
-<script type="text/javascript" language="Javascript">
-	function silent_error(){
-		return true;
-	}
-	//turn off all javascript errors
-	//window.onerror=silent_error;
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+	//@param form - current form
+	//@param names - string containing a list of the names used for the textarea
+	//               each name should be seperated with a comma
+	function textarea_submit(form, names){
+		var name = names.split(",");
+		var appletName = document.getElementsByName("CMSSyntaxHighlight");
+		//fixes form not submitting because applet is hidden
+		if (eval(document.getElementById('advanced'))) {expandcontent('advanced');}
 
-	function saveCaret(elem){
-		if (document.selection.createRange){
-			elem.caretPos = document.selection.createRange();
-		}
-	}
-
-	function getCaretPos(elem)
-	{
-		if (elem.caretPos){
-			var bookmark = "~";
-			var orig = elem.value;
-			var caretPos = elem.caretPos;
-			caretPos.text = bookmark;
-			var i = elem.innerText.search( bookmark );
-			elem.value = orig;
-			return i;
-		}
-	}
-
-	function syntax_highlight_remove(called_by, element, plainName){
-		var syntax_highlight = element;
-		var plain;
-
-		for (var j=0; j < document.forms.length; j++) {
-			if (document.forms[j].elements[plainName]) {
-				plain = document.forms[j].elements[plainName];
+		for (var i=0; i < name.length; i++){
+			try{
+				if(appletName[i].getText()){
+					form.elements[name[i].toString()].value = appletName[i].getText();
+				}
+			}catch(error){
+				alert("There was an error with the syntax highlighting textarea.");
+				return;
 			}
 		}
 
-		if (called_by == 'onClick' && !(plain.createTextRange)) {
-			syntax_highlight.style.display='none'; 
-			plain.style.display='block';
-		}else if(called_by == 'onKeyDown' && plain.createTextRange){
-			saveCaret(syntax_highlight);
-			syntax_highlight.style.display='none'; 
-			plain.style.display='block';
-			plain.focus();
-			var pos = getCaretPos(syntax_highlight);
-			var r = plain.createTextRange();
-			r.moveStart('character', pos) ;
-			r.collapse();
-			r.select();
-		}
+		if (eval(document.getElementById('advanced'))) {expandcontent('advanced');}
 	}
-
-</script>
--->
-
+</SCRIPT>
 <?php if (isset($htmlarea_flag) && isset($htmlarea_replaceall)) {?>
-	<script type="text/javascript">
+	<SCRIPT TYPE="text/javascript">
 		_editor_url = "<?php echo $config["root_url"]?>/htmlarea/";
-		_editor_lang = "en";
-	</script>
+		<?php echo "_editor_lang = \"".$nls['htmlarea'][$current_language]."\";"  ?>
+	</SCRIPT>
 
-	<script type="text/javascript" src="<?php echo $config["root_url"]?>/htmlarea/htmlarea.js"></script>
-	<script type="text/javascript" defer>
+	<SCRIPT TYPE="text/javascript" SRC="<?php echo $config["root_url"]?>/htmlarea/htmlarea.js"></SCRIPT>
+	<SCRIPT TYPE="text/javascript" DEFER>
 		var editor = null;
 		function initHtmlArea() {
 			HTMLArea.replaceAll();
 		}
-	</script>
+	</SCRIPT>
 
 <?php } else if (isset($htmlarea_flag)) { ?>
 
-	<script type="text/javascript">
+	<SCRIPT TYPE="text/javascript">
 		_editor_url = "<?php echo $config["root_url"]?>/htmlarea/";
-		_editor_lang = "en";
-	</script>
+		<?php
+			if ($config["disable_htmlarea_translation"] != true)
+			{
+				echo "_editor_lang = \"{$nls['htmlarea'][$current_language]}\";";
+			}
+		?>
+	</SCRIPT>
 
-	<script type="text/javascript" src="<?php echo $config["root_url"]?>/htmlarea/htmlarea.js"></script>
+	<SCRIPT TYPE="text/javascript" SRC="<?php echo $config["root_url"]?>/htmlarea/htmlarea.js"></SCRIPT>
+	<SCRIPT TYPE="text/javascript">
 
-	<script type="text/javascript">
-
+		HTMLArea.loadPlugin("ImageManager");
+		HTMLArea.loadPlugin("InsertFile");
 		HTMLArea.loadPlugin("TableOperations");
 		HTMLArea.loadPlugin("ContextMenu");
 		HTMLArea.loadPlugin("CharacterMap");
+		HTMLArea.loadPlugin("FindReplace");
+		HTMLArea.loadPlugin("InvertBackground");
+		<?php if ($config["use_Indite"] == true) { ?>	
+			HTMLArea.loadPlugin("Indite");	
+		<?php } ?>
 		var editor = null;
 		function initHtmlArea() {
 			editor = new HTMLArea("content");
+			editor.registerPlugin(ImageManager);
+			<?php 
+				// Ugly Hack alert! making setting session var to send language setting to insertFile
+				if ($config["disable_htmlarea_translation"] != true)
+				{
+					$_SESSION['InsertFileLang'] = $nls['htmlarea'][$current_language];
+				}
+				else
+				{
+					if (isset($_SESSION['InsertFileLang']))
+					{
+						unset($_SESSION['InsertFileLang']);
+					}
+				}
+		 	?>
+			editor.registerPlugin(InsertFile);
 			editor.registerPlugin(TableOperations);
 			editor.registerPlugin(ContextMenu);
 			editor.registerPlugin(CharacterMap);
-			editor.config.pageStyle = '<?php echo str_replace("'", "\\'", get_stylesheet($template_id))?>';
+			editor.registerPlugin(FindReplace);
+			editor.registerPlugin(InvertBackground);
+
+			<?php if ($config["use_Indite"] == true)
+				echo "editor.registerPlugin(Indite);";
+				$template_id = -1;
+				if (isset($_POST["template_id"])) 
+					$template_id = $_POST["template_id"];
+				else if (isset($_GET['page_id'])){
+					$query = "SELECT template_id FROM ".cms_db_prefix()."pages WHERE ".$_GET['page_id']." = page_id";
+					$template_id = $db->GetOne($query);
+				}
+			?>	
+
+			editor.config.pageStyle = editor.config.pageStyle+'<?php echo str_replace("'", "\\'", get_stylesheet($template_id))?>';
 			editor.generate();
 		}
-	</script>
+	</SCRIPT>
 <?php }
 $userid = get_userid();
 ?>
 
-<script type="text/javascript" language="Javascript">;
+<SCRIPT TYPE="text/javascript" LANGUAGE="Javascript">;
 	function page_load(){
 		<?php if (get_preference($userid, 'use_wysiwyg') == "1" && isset($htmlarea_flag)){ ?>
 			initHtmlArea();
@@ -142,17 +155,17 @@ $userid = get_userid();
 			}
 		}
 	}
-</script>
+</SCRIPT>
 
-</head>
-<body onLoad="page_load()">
-
-<div id="header" class="header">
-<img src="../images/cms/cmsadminbanner.png" border="0" id="logo" alt="CMS Made Simple">
-</div>
+</HEAD>
+<BODY onLoad="page_load()">
+<DIV ID="header" CLASS="header">
+<IMG SRC="../images/cms/cmsadminbanner.gif" BORDER="0" ID="logo" ALT="CMS Made Simple">
+</DIV>
+<DIV ID="sloganWrapper"><DIV ID="slogan"><?php echo lang('slogan'); ?></DIV></DIV>
 
 <?php
 include_once("menu.php");
 ?>
 
-<div class="content">
+<DIV CLASS="content">

@@ -97,14 +97,40 @@ if ($access) {
 				$thisuser->email = $email;
 				$thisuser->adminaccess = $adminaccess;
 				$thisuser->active = $active;
-				if ($password != "") {
+				if ($password != "")
+				{
 					$thisuser->SetPassword($password);
 				}
+				
+				#Perform the edituser_pre callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['edituser_pre_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['edituser_pre_function'], array(&$gCms, &$thisuser));
+					}
+				}
+
 				$result = $thisuser->save();
 			}
 
-			if ($result) {
+			if ($result)
+			{
 				audit($user_id, $thisuser->username, 'Edited User');
+
+				#Perform the edituser_post callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['edituser_post_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['edituser_post_function'], array(&$gCms, &$thisuser));
+					}
+				}
+
 				redirect("listusers.php");
 			}
 			else {
@@ -171,12 +197,14 @@ else {
 	</tr>
 	<tr>
 		<td><?php echo lang('email')?>:</td>
-		<td><input type="text" name="email" maxlength="25" value="<?php echo $email?>" class="standard"></td>
+		<td><input type="text" name="email" maxlength="255" value="<?php echo $email?>" class="standard"></td>
 	</tr>
+	<!--
 	<tr>
 		<td><?php echo lang('adminaccess')?>:</td>
 		<td><input type="checkbox" name="adminaccess" <?php echo ($adminaccess == 1?"checked":"")?>></td>
 	</tr>
+	-->
 	<tr>
 		<td><?php echo lang('active')?>:</td>
 		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked":"")?>></td>

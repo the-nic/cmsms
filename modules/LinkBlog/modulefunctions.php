@@ -416,6 +416,7 @@ function showLinks($cms, $id, $params) {
         $last_date = "";
         while ($row = $dbresult->FetchRow()) {
 
+			#echo "last_date: ($last_date) create_date: ".$row["create_date"].")<br/>";
             if ($last_date == substr($row["create_date"],0,10) || $last_date == "") {
                 echo "<div class=\"modulelinkblogentry\">\n";
                 echo "<div class=\"modulelinkblogentryheader\">\n";
@@ -430,12 +431,14 @@ function showLinks($cms, $id, $params) {
                 echo cms_mapi_create_user_link("LinkBlog", $id, $cms->variables["page"], array('action'=>'viewcomments', 'linkblog_id'=>$row["linkblog_id"]), "Comments (".$row["total"].")");
                 echo "\n</div>\n";
                 echo "</div>\n";
-            }
+            } else {
+				break;
+			}
             $last_date = substr($row["create_date"],0,10);
         }
 
         // show a list of the last 5 days with links
-        $query = "SELECT create_date from ".cms_db_prefix()."module_linkblog ORDER BY create_date DESC LIMIT 5";
+        $query = "SELECT create_date from ".cms_db_prefix()."module_linkblog GROUP BY DATE_FORMAT(create_date, '%d %m %Y') ORDER BY create_date DESC LIMIT 5";
         $dbresult = $db->Execute($query);
 
         if ($dbresult && $dbresult->RowCount()) {

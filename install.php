@@ -17,7 +17,7 @@
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 $config = "config.php";
-if (!file_exists($config) || filesize($config) == 0) {
+if (!file_exists($config)) {
     $file = @fopen($config, "w");
     if ($file != 0) {
 		#Follow fix suggested by sig in the forums
@@ -30,6 +30,19 @@ if (!file_exists($config) || filesize($config) == 0) {
         exit;
     } ## if
 } ## if
+else if (filesize($config) == 0) {
+    $file = @fopen($config, "w");
+    if ($file != 0) {
+		#Follow fix suggested by sig in the forums
+        #$cwd = getcwd();
+		$cwd = str_replace("\\","/",dirname(__FILE__));
+        fwrite($file,"<?php\n".'$this->root_path = "'.$cwd.'";'."\n?>\n");
+        fclose($file);
+    } else {
+        echo "Cannot modify $config, please change permissions to allow this\n";
+        exit;
+    } ## if
+}
 
 $pages = 4;
 if (isset($_POST["page"])) {
@@ -45,34 +58,33 @@ if ($currentpage > 1) { require_once("include.php"); }
 
 ?>
 
-<html>
-<head>
-        <title>CMS Made Simple Install</title>
-        <link rel="stylesheet" type="text/css" href="install.css" />
-</head>
+<HTML>
+<HEAD>
+        <TITLE>CMS Made Simple Install</TITLE>
+        <LINK REL="stylesheet" TYPE="text/css" HREF="install.css" />
+</HEAD>
 
-<body>
+<BODY>
 
-<div class="body">
+<DIV CLASS="body">
 
-<img src="images/cms/cmsbanner.png" width="400" height="96" alt="CMS Banner Logo" />
+<IMG SRC="images/cms/cmsbanner.gif" WIDTH="449" HEIGHT="114" ALT="CMS Banner Logo" />
 
-<div class="headerish">
+<DIV CLASS="headerish">
 
-<h1>Install System</h1>
+<H1>Install System</H1>
 
-</div>
+</DIV>
 
-<div class="main">
-
+<DIV CLASS="main">
 <?php
 
 echo "<h3>Thanks for installing CMS: CMS Made Simple.</h3>\n";
 echo "<table class=\"countdown\" cellspacing=\"2\" cellpadding=\"2\"><tr>";
-echo "<td class=\"".($currentpage>=1?"complete":"todo")."\">1</td>";
-echo "<td class=\"".($currentpage>=2?"complete":"todo")."\">2</td>";
-echo "<td class=\"".($currentpage>=3?"complete":"todo")."\">3</td>";
-echo "<td class=\"".($currentpage>=4?"complete":"todo")."\">4</td>";
+echo "<td><IMG SRC=\"images/cms/install/".($currentpage>=1?"1":"1off").".gif\" ALT=\"Step 1\"></td>";
+echo "<td><IMG SRC=\"images/cms/install/".($currentpage>=2?"2":"2off").".gif\" ALT=\"Step 2\"></td>";
+echo "<td><IMG SRC=\"images/cms/install/".($currentpage>=3?"3":"3off").".gif\" ALT=\"Step 3\"></td>";
+echo "<td><IMG SRC=\"images/cms/install/".($currentpage>=4?"4":"4off").".gif\" ALT=\"Step 4\"></td>";
 echo "</tr></table>\n";
 echo "<p><hr width=80%></p>\n";
 
@@ -109,17 +121,29 @@ function showPageOne() {
     ## check file perms
 	$continueon = true;
     echo "<h3>Checking file permissions:</h3>\n";
-    $files = array('smarty/cms/cache', 'smarty/cms/templates_c', 'uploads');
+    $files = array('smarty/cms/cache', 'smarty/cms/templates_c', 'uploads', 'config.php');
 
     echo "<table class=\"regtable\" border=\"1\">\n";
     echo "<thead class=\"tbhead\"><tr><th>Test</th><th>Result</th></tr></thead><tbody>\n";
 
-    echo "<tr class=\"row1\"><td>Checking for PHP version 4.0+</td><td>";
-	echo (@phpversion() >= "4"?"Success!":"Failure!");
-	(@phpversion() >= "4"?null:$continueon=false);
+    echo "<tr class=\"row1\"><td>Checking for PHP version 4.1+</td><td>";
+	echo (@version_compare(phpversion(),"4.1.0") > -1?"Success!":"Failure!");
+	(@version_compare(phpversion(),"4.1.0") > -1?null:$continueon=false);
 	echo "</td></tr>\n";
 
-	$currow = "row2";
+	echo "<tr class=\"row2\"><td>Checking for Session Functions</td><td>";
+	if (function_exists("session_start"))
+	{
+		echo "Success!";
+	}
+	else
+	{
+		echo "Failed!";
+		$continueon = false;
+	}
+	echo "</td></tr>\n";
+
+	$currow = "row1";
 
     foreach ($files as $f) {
         #echo "<tr><td>\n";
@@ -155,60 +179,61 @@ function showPageOne() {
 
 function showPageTwo() {
 ?>
-<p>Make sure you have created your database and granted full privileges to a user to use that database.</p>
-<p>For MySQL, use the following:</p>
-<p>Log in to mysql from a console and run the following commands:</p>
-<ol>
-<li>create database cms; (use whatever name you want here but make sure to remember it, you'll need to enter it on this page)</li>
-<li>grant all privileges on cms.* to cms_user@localhost identified by 'cms_pass';</li>
-</ol>
-<p />
+<P>Make sure you have created your database and granted full privileges to a user to use that database.</P>
+<P>For MySQL, use the following:</P>
+<P>Log in to mysql from a console and run the following commands:</P>
+<OL>
+<LI>create database cms; (use whatever name you want here but make sure to remember it, you'll need to enter it on this page)</LI>
+<LI>grant all privileges on cms.* to cms_user@localhost identified by 'cms_pass';</LI>
+</OL>
+<P />
 
 Please complete the following fields:
-<form action="install.php" method="post" name="page2form" id="page2form">
+<FORM ACTION="install.php" METHOD="post" NAME="page2form" ID="page2form">
 
-<table cellpadding="2" border="1" class="regtable">
-<tr class="row2">
-	<td>Database Type:</td>
-	<td>
-		<select name="dbms">
-			<option value="mysql">MySQL</option>
-			<option value="postgres7">PostgreSQL 7</option>
-		</select>
-	</td>
-</tr>
-<tr class="row1">
-<td>Database host address</td>
-<td><input type="text" name="host" value="localhost" length="20" maxlength="50" /></td>
-</tr>
-<tr class="row2">
-<td>Database host port</td>
-<td><input type="text" name="port" value="3306" length="20" maxlength="50" /></td>
-</tr>
-<tr class="row1">
-<td>Database name</td>
-<td><input type="text" name="database" value="cms" length="20" maxlength="50" /></td>
-</tr>
-<tr class="row2">
-<td>Username</td>
-<td><input type="text" name="username" value="cms_user" length="20" maxlength="50" /></td>
-</tr>
-<tr class="row1">
-<td>Password</td>
-<td><input type="password" name="password" value="cms_pass" length="20" maxlength="50" /></td>
-</tr>
-<tr class="row2">
-<td>Table prefix</td>
-<td><input type="text" name="prefix" value="cms_" length="20" maxlength="50" /><input type="hidden" name="page" value="3" /></td>
-</tr>
-<tr class="row1">
-<td>Create Tables (Warning: Deletes existing data)</td>
-<td><input type="checkbox" name="createtables" checked="true" /></td>
-</tr>
-</table>
-<p align="center" class="continue"><a onclick="document.page2form.submit()">Continue</a></p>
+<TABLE CELLPADDING="2" BORDER="1" CLASS="regtable">
+<TR CLASS="row2">
+	<TD>Database Type:</TD>
+	<TD>
+		<SELECT NAME="dbms">
+			<OPTION VALUE="mysql">MySQL (3 and 4.0)</OPTION>
+			<OPTION VALUE="mysqli">MySQL (4.1+)</OPTION>
+			<OPTION VALUE="postgres7">PostgreSQL 7</OPTION>
+		</SELECT>
+	</TD>
+</TR>
+<TR CLASS="row1">
+<TD>Database host address</TD>
+<TD><INPUT TYPE="text" NAME="host" VALUE="localhost" LENGTH="20" MAXLENGTH="50" /></TD>
+</TR>
+<TR CLASS="row2">
+<TD>Database host port</TD>
+<TD><INPUT TYPE="text" NAME="port" VALUE="3306" LENGTH="20" MAXLENGTH="50" /></TD>
+</TR>
+<TR CLASS="row1">
+<TD>Database name</TD>
+<TD><INPUT TYPE="text" NAME="database" VALUE="cms" LENGTH="20" MAXLENGTH="50" /></TD>
+</TR>
+<TR CLASS="row2">
+<TD>Username</TD>
+<TD><INPUT TYPE="text" NAME="username" VALUE="cms_user" LENGTH="20" MAXLENGTH="50" /></TD>
+</TR>
+<TR CLASS="row1">
+<TD>Password</TD>
+<TD><INPUT TYPE="password" NAME="password" VALUE="cms_pass" LENGTH="20" MAXLENGTH="50" /></TD>
+</TR>
+<TR CLASS="row2">
+<TD>Table prefix</TD>
+<TD><INPUT TYPE="text" NAME="prefix" VALUE="cms_" LENGTH="20" MAXLENGTH="50" /><INPUT TYPE="hidden" NAME="page" VALUE="3" /></TD>
+</TR>
+<TR CLASS="row1">
+<TD>Create Tables (Warning: Deletes existing data)</TD>
+<TD><INPUT TYPE="checkbox" NAME="createtables" CHECKED="true" /></TD>
+</TR>
+</TABLE>
+<P ALIGN="center" CLASS="continue"><A onClick="document.page2form.submit()" href="#">Continue</A></P>
 <!--<p><input type="submit" value="Continue" /></p>-->
-</form>
+</FORM>
 <?php
 
 } ## showPageTwo
@@ -244,7 +269,7 @@ function showPageThree($sqlloaded = 0) {
 					$s = trim(str_replace("{DB_PREFIX}", $db_prefix, $s));
 					$result = $db->Execute($s);
 					if (!$result) {
-						die('Invalid query: ' . mysql_error());
+						die('Invalid query');
 					} ## if
 				}
 			}
@@ -266,38 +291,43 @@ function showPageThree($sqlloaded = 0) {
 
 	?>
 
-    <p>Now let's continue to setup your configuration file, we already have most of the stuff we need.</p>
-    <p>Chances are you can leave all these values alone unless you have BBCode installed, so when you are ready, click Continue.</p>
-    <form action="install.php" method="post" name="page3form" id="page3form">
-	<table cellpadding="2" border="1" class="regtable">
-		<tr class="row1">
-			<td>CMS Document root (as seen from the webserver)</td>
-			<td><input type="text" name="docroot" value="<?php echo $docroot?>" length="50" maxlength="100"></td>
-		</tr>
-		<tr class="row2">
-			<td>Path to the Document root</td>
-			<td><input type="text" name="docpath" value="<?php echo $docpath?>" length="50" maxlength="100"></td>
-		</tr>
-		<tr class="row1">
-			<td>Query string (leave this alone unless you have trouble, then edit config.php by hand)</td>
-			<td><input type="text" name="querystr" value="page" length="20" maxlength="20"></td>
-		</tr>
-		<tr class="row2">
-			<td>Use BBCode (must have this installed, see <a href="INSTALL" target="_new">INSTALL</a></td>
-			<td>
-				<input type="text" name="bbcode" value="false" length="5" maxlength="5">
-				<input type="hidden" name="page" value="4"><input type="hidden" name="host" value="<?php echo $_POST['host']?>">
-			    <input type="hidden" name="dbms" value="<?php echo $_POST['dbms']?>">
-			    <input type="hidden" name="database" value="<?php echo $_POST['database']?>">
-				<input type="hidden" name="port" value="<?php echo $_POST['port']?>">
-			    <input type="hidden" name="username" value="<?php echo $_POST['username']?>">
-				<input type="hidden" name="password" value="<?php echo $_POST['password']?>">
-			    <input type="hidden" name="prefix" value="<?php echo $_POST['prefix']?>">
-			</td>
-		</tr>
-    </table>
-    <p align="center" class="continue"><a onclick="document.page3form.submit()">Continue</a></p>
-	</form>
+    <P>Now let's continue to setup your configuration file, we already have most of the stuff we need.</P>
+    <P>Chances are you can leave all these values alone unless you have BBCode installed, so when you are ready, click Continue.</P>
+    <FORM ACTION="install.php" METHOD="post" NAME="page3form" ID="page3form">
+	<TABLE CELLPADDING="2" BORDER="1" CLASS="regtable">
+		<TR CLASS="row1">
+			<TD>CMS Document root (as seen from the webserver)</TD>
+			<TD><INPUT TYPE="text" NAME="docroot" VALUE="<?php echo $docroot?>" LENGTH="50" MAXLENGTH="100"></TD>
+		</TR>
+		<TR CLASS="row2">
+			<TD>Path to the Document root</TD>
+			<TD><INPUT TYPE="text" NAME="docpath" VALUE="<?php echo $docpath?>" LENGTH="50" MAXLENGTH="100"></TD>
+		</TR>
+		<TR CLASS="row1">
+			<TD>Query string (leave this alone unless you have trouble, then edit config.php by hand)</TD>
+			<TD>
+				<INPUT TYPE="text" NAME="querystr" VALUE="page" LENGTH="20" MAXLENGTH="20">
+				<INPUT TYPE="hidden" NAME="page" VALUE="4"><INPUT TYPE="hidden" NAME="host" VALUE="<?php echo $_POST['host']?>">
+			    <INPUT TYPE="hidden" NAME="dbms" VALUE="<?php echo $_POST['dbms']?>">
+			    <INPUT TYPE="hidden" NAME="database" VALUE="<?php echo $_POST['database']?>">
+				<INPUT TYPE="hidden" NAME="port" VALUE="<?php echo $_POST['port']?>">
+			    <INPUT TYPE="hidden" NAME="username" VALUE="<?php echo $_POST['username']?>">
+				<INPUT TYPE="hidden" NAME="password" VALUE="<?php echo $_POST['password']?>">
+			    <INPUT TYPE="hidden" NAME="prefix" VALUE="<?php echo $_POST['prefix']?>">
+				<INPUT TYPE="hidden" NAME="bbcode" VALUE="false" LENGTH="5" MAXLENGTH="5">
+			</TD>
+		</TR>
+		<!--
+		<TR CLASS="row2">
+			<TD>Use BBCode (must have this installed, see <A HREF="INSTALL" TARGET="_new">INSTALL</A></TD>
+			<TD>
+				<INPUT TYPE="text" NAME="bbcode" VALUE="false" LENGTH="5" MAXLENGTH="5">
+			</TD>
+		</TR>
+		-->
+    </TABLE>
+    <P ALIGN="center" CLASS="continue"><A onClick="document.page3form.submit()" href="#">Continue</A></P>
+	</FORM>
 
 	<?php
     
@@ -305,11 +335,13 @@ function showPageThree($sqlloaded = 0) {
 
 function showPageFour() {
 
+	/*
     if ($_POST['bbcode'] != 'false' and $_POST['bbcode'] != 'true') {
         echo "<p>BB Code needs to be either 'true' or 'false'</p>\n";
         showPageThree(1);
         exit;
     } ## if
+	*/
 
 	require_once("lib/config.functions.php");
 
@@ -324,15 +356,24 @@ function showPageFour() {
 	$newconfig['root_url'] = $_POST['docroot'];
 	$newconfig['root_path'] = addslashes($_POST['docpath']);
 	$newconfig['query_var'] = $_POST['querystr'];
-	$newconfig['use_bb_code'] = ($_POST['bbcode'] == "true"?true:false);
+	$newconfig['use_bb_code'] = false;
 	$newconfig['use_smarty_php_tags'] = false;
 	$newconfig['previews_path'] = $newconfig['root_path'] . "/smarty/cms/cache";
 	$newconfig["uploads_path"] = $newconfig['root_path'] . "/uploads";
-	$newconfig["uploads_url"] = $newconfig['root_url'] ."/uploads";
+	$newconfig["uploads_url"] = $newconfig['root_url'] ."/uploads";	
+	$newconfig["image_uploads_path"] = $newconfig['root_path'] . "/uploads/images";
+	$newconfig["image_uploads_url"] = $newconfig['root_url'] ."/uploads/images";
 	$newconfig["max_upload_size"] = 1000000;
 	$newconfig["debug"] = false;
 	$newconfig["assume_mod_rewrite"] = false;
 	$newconfig["auto_alias_content"] = true;
+	$newconfig["image_manipulation_prog"] = "GD";
+	$newconfig["image_transform_lib_path"] = "/usr/bin/ImageMagick/";
+	$newconfig["use_Indite"] = false;
+	$newconfig["image_uploads_path"] = $newconfig['root_path'] . "/uploads/images";
+	$newconfig["image_uploads_url"] = $newconfig['root_url'] ."/uploads/images";
+	$newconfig["default_encoding"] = "";
+	$newconfig["disable_htmlarea_translation"] = false;
 
     $configfile = dirname(__FILE__)."/config.php";
     ## build the content for config file
@@ -357,21 +398,21 @@ function showPageFour() {
     if ((file_exists($configfile) && is_writable($configfile)) || !file_exists($configfile)) {
 		cms_config_save($newconfig);
     } else {
-        echo "Error: Cannot write to $config.<br />\n";
+        echo "Error: Cannot write to $config.<BR />\n";
         exit;
     } ## if
  
 	$link = str_replace(" ", "%20", $_POST['docroot']);
-    echo "<h4>Congratulations, you are all setup.</h4><h4>Here is your <a href=\"".$link."\">CMS site</a></h4>\n";
+    echo "<H4>Congratulations, you are all setup.</H4><H4>Here is your <A HREF=\"".$link."\">CMS site</A></H4>\n";
 
 } ## showPageFour
 ?>
 
-</div>
-</div>
+</DIV>
+</DIV>
 
-</body>
-</html>
+</BODY>
+</HTML>
 <?php
 
 # vim:ts=4 sw=4 noet

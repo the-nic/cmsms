@@ -58,7 +58,7 @@ function load_modules() {
  *
  * @since 0.4
  */
-function cms_mapi_register_module($name, $author, $version) {
+function cms_mapi_register_module($name, $author, $version, $minimum_version='') {
 	global $gCms;
 	$cmsmodules = &$gCms->modules;
 	if (!isset($cmsmodules[$name])) {
@@ -113,6 +113,8 @@ function cms_mapi_register_plugin_module($name) {
  * basics of what the module if for and how to use it.  This
  * will be displayed on the module list in the admin.
  *
+ * Passes $gCms as a parameter to the function.
+ *
  * @since 0.5
  */
 function cms_mapi_register_help_function($name, $function) {
@@ -147,6 +149,8 @@ function cms_mapi_register_about_function($name, $function) {
  * The registered function should setup any necessary tables,
  * sequences, etc.
  *
+ * Passes $gCms as a parameter.
+ *
  * @since 0.4
  */
 function cms_mapi_register_install_function($name, $function) {
@@ -160,15 +164,21 @@ function cms_mapi_register_install_function($name, $function) {
 /**
  * Registers the module's upgrade function
  *
- * The registered should do any necessary upgrade procedures.
+ * The registered function should do any necessary upgrade procedures.
+ *
+ * Passes $gCms, the old version and the new version as parameters.
  *
  * @since 0.5
  */
-function cms_mapi_register_upgrade_function($name, $function) {
+function cms_mapi_register_upgrade_function($name, $function, $autoupgrade = false) {
 	global $gCms;
 	$cmsmodules = &$gCms->modules;
 	if (isset($cmsmodules[$name])) {
 		$cmsmodules[$name]['upgrade_function'] = $function;
+		if ($autoupgrade == true)
+		{
+			$cmsmodules[$name]['auto_upgrade_function'] = $function;
+		}
 	}
 }
 
@@ -177,6 +187,8 @@ function cms_mapi_register_upgrade_function($name, $function) {
  *
  * The registered function should clean up anything that was setup
  * in the install function.  This includes any tables, sequences, etc.
+ *
+ * Passes $gCms as a parameter.
  *
  * @since 0.4
  */
@@ -195,6 +207,9 @@ function cms_mapi_register_uninstall_function($name, $function) {
  * it is included as a content module or if has been used as a
  * plugin.
  *
+ * Passes $gCms, the masking id and the extra passed parameters
+ * to the function.
+ *
  * @since 0.4
  */
 function cms_mapi_register_execute_function($name, $function) {
@@ -212,6 +227,9 @@ function cms_mapi_register_execute_function($name, $function) {
  * needs a page that is not really a content page.  i.e. a full
  * page form for input.
  *
+ * Passes $gCms, the masking id, the calling page id and the extra
+ * passed parameters to the function.
+ *
  * @since 0.4
  */
 function cms_mapi_register_executeuser_function($name, $function) {
@@ -226,6 +244,8 @@ function cms_mapi_register_executeuser_function($name, $function) {
  * Register's the modules' executeadmin function
  *
  * This is the function that is called from the admin section.
+ *
+ * Passes $gCms and the masking id as parameters to the function.
  *
  * @since 0.4
  */
@@ -250,6 +270,337 @@ function cms_mapi_unregister_module($name) {
 	}
 }
 
+/**********************************************************
+*Login/Logout Callbacks
+**********************************************************/
+
+/**
+ * Registers a function to be called after a successful login.
+ *
+ * Passes $gCms and a user object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_login_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['login_post_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful logout.
+ *
+ * Passes $gCms to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_logout_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['logout_post_function'] = $function;
+	}
+}
+
+/**********************************************************
+*Add/Edit User Callbacks
+**********************************************************/
+
+/**
+ * Registers a function to be called before a successful user addition.
+ *
+ * Passes $gCms and a user object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_adduser_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['adduser_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful user addition.
+ *
+ * Passes $gCms and a user object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_adduser_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['adduser_post_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called before a successful user edit.
+ *
+ * Passes $gCms and a user object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_edituser_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['edituser_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful user edit.
+ *
+ * Passes $gCms and a user object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_edituser_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['edituser_post_function'] = $function;
+	}
+}
+
+/**********************************************************
+*Add/Edit Group Callbacks
+**********************************************************/
+
+/**
+ * Registers a function to be called before a successful group addition.
+ *
+ * Passes $gCms and a group object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_addgroup_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['addgroup_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful group addition.
+ *
+ * Passes $gCms and a group object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_addgroup_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['addgroup_post_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called before a successful group edit.
+ *
+ * Passes $gCms and a group object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_editgroup_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['editgroup_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful group edit.
+ *
+ * Passes $gCms and a group object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_editgroup_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['editgroup_post_function'] = $function;
+	}
+}
+
+/**********************************************************
+*Add/Edit HTML Blob Callbacks
+**********************************************************/
+
+/**
+ * Registers a function to be called before a successful htmlblob addition.
+ *
+ * Passes $gCms and a htmlblob object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_addhtmlblob_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['addhtmlblob_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful htmlblob addition.
+ *
+ * Passes $gCms and a htmlblob object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_addhtmlblob_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['addhtmlblob_post_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called before a successful htmlblob edit.
+ *
+ * Passes $gCms and a htmlblob object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_edithtmlblob_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['edithtmlblob_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful htmlblob edit.
+ *
+ * Passes $gCms and a htmlblob object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_edithtmlblob_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['edithtmlblob_post_function'] = $function;
+	}
+}
+
+/**********************************************************
+*Add/Edit Template Callbacks
+**********************************************************/
+
+/**
+ * Registers a function to be called before a successful template addition.
+ *
+ * Passes $gCms and a template object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_addtemplate_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['addtemplate_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful template addition.
+ *
+ * Passes $gCms and a template object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_addtemplate_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['addtemplate_post_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called before a successful template edit.
+ *
+ * Passes $gCms and a template object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_edittemplate_pre_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['edittemplate_pre_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called after a successful template edit.
+ *
+ * Passes $gCms and a template object to the function.
+ *
+ * @since 0.7.3
+ */
+function cms_mapi_register_edittemplate_post_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['edittemplate_post_function'] = $function;
+	}
+}
+
+/**
+ * Enables the WYSIWYG for this module on all textareas
+ *
+ * @since 0.5
+ */
 function cms_mapi_enable_wysiwyg($name)
 {
 	global $gCms;
@@ -473,11 +824,27 @@ class Smarty_ModuleInterface extends Smarty {
 		while (($file = $ls->read()) != "") {
 			if (is_file("$dir/$file") && (strpos($file, ".") === false || strpos($file, ".") != 0)) {
 				if (preg_match("/^(.*?)\.(.*?)\.php/", $file, $matches)) {
-					#$filename = dirname(dirname(__FILE__)) . "/" . $this->_get_plugin_filepath($matches[1], $matches[2]);
 					$filename = $this->_get_plugin_filepath($matches[1], $matches[2]);
-					#echo $filename . "<br />";
-					require_once $filename;
-					$this->register_function($matches[2], "smarty_cms_function_" . $matches[2], $this->cache_plugins);
+					if (strpos($filename, 'function') !== false)
+					{
+						require_once $filename;
+						$this->register_function($matches[2], "smarty_cms_function_" . $matches[2], $this->cache_plugins);
+					}
+					else if (strpos($filename, 'compiler') !== false)
+					{
+						require_once $filename;
+						$this->register_compiler_function($matches[2], "smarty_cms_compiler_" . $matches[2], $this->cache_plugins);
+					}
+					else if (strpos($filename, 'prefilter') !== false)
+					{
+						require_once $filename;
+						$this->register_prefilter($matches[2], "smarty_cms_prefilter_" . $matches[2]);
+					}
+					else if (strpos($filename, 'modifier') !== false)
+					{
+						require_once $filename;
+						$this->register_modifier($matches[2], "smarty_cms_modifier_" . $matches[2]);
+					}
 				}
 			}
 		}
@@ -500,41 +867,45 @@ class Smarty_ModuleInterface extends Smarty {
 		$result = $db->Execute($query);
 
 		if ($result && $result->RowCount()) {
-			$line = $result->FetchRow();
 
-			$stylesheet = "";
-			if (isset($line[stylesheet])) {
-				$stylesheet .= "<style type=\"text/css\">\n";
-				$stylesheet .= "{literal}".$line["stylesheet"]."{/literal}";
-				$stylesheet .= "</style>\n";
-			}
-
-			# the new css stuff
-			$tempstylesheet = "";
-
-			$cssquery = "SELECT css_text FROM ".cms_db_prefix()."css, ".cms_db_prefix()."css_assoc
-				WHERE	css_id		= assoc_css_id
-				AND		assoc_type	= 'template'
-				AND		assoc_to_id = '".$line[template_id]."'";
-			$cssresult = $db->Execute($cssquery);
-
-			$stylesheet .= "<style type=\"text/css\">\n";
-			while ($cssline = $cssresult->FetchRow())
+			if ($smarty_obj->showtemplate == true)
 			{
-				$tempstylesheet .= "\n".$cssline[css_text]."\n";
-			}
-			$stylesheet .= "{literal}".$tempstylesheet."{/literal}";
-			$stylesheet .= "</style>\n";
+				$line = $result->FetchRow();
 
-			$tpl_source = $line[template_content];
-			$content = $line[page_content];
-			$title = $line[page_title];
-			$tpl_source = ereg_replace("\{stylesheet\}", $stylesheet, $tpl_source);
-			$tpl_source = ereg_replace("\{title\}", $title, $tpl_source);
+				$stylesheet = "";
+				if (isset($line[stylesheet])) {
+					$stylesheet .= "<style type=\"text/css\">\n";
+					$stylesheet .= "{literal}".$line["stylesheet"]."{/literal}";
+					$stylesheet .= "</style>\n";
+				}
 
-			#So no one can do anything nasty
-			if (!(isset($config["use_smarty_php_tags"]) && $config["use_smarty_php_tags"] == true)) {
-				$tpl_source = ereg_replace("\{\/?php\}", "", $tpl_source);
+				# the new css stuff
+				$tempstylesheet = "";
+
+				$cssquery = "SELECT css_text FROM ".cms_db_prefix()."css, ".cms_db_prefix()."css_assoc
+					WHERE	css_id		= assoc_css_id
+					AND		assoc_type	= 'template'
+					AND		assoc_to_id = '".$line[template_id]."'";
+				$cssresult = $db->Execute($cssquery);
+
+				$stylesheet .= "<style type=\"text/css\">\n";
+				while ($cssline = $cssresult->FetchRow())
+				{
+					$tempstylesheet .= "\n".$cssline['css_text']."\n";
+				}
+				$stylesheet .= "{literal}".$tempstylesheet."{/literal}";
+				$stylesheet .= "</style>\n";
+
+				$tpl_source = $line[template_content];
+				$content = $line[page_content];
+				$title = $line[page_title];
+				$tpl_source = ereg_replace("\{stylesheet\}", $stylesheet, $tpl_source);
+				$tpl_source = ereg_replace("\{title\}", $title, $tpl_source);
+
+				#So no one can do anything nasty
+				if (!(isset($config["use_smarty_php_tags"]) && $config["use_smarty_php_tags"] == true)) {
+					$tpl_source = ereg_replace("\{\/?php\}", "", $tpl_source);
+				}
 			}
 			
 			#Run the execute_user function and replace {content} with it's output 
@@ -547,7 +918,16 @@ class Smarty_ModuleInterface extends Smarty {
 				call_user_func_array($cmsmodules[$smarty_obj->module]['execute_user_function'], array($gCms,$smarty_obj->id,$tpl_name,$smarty_obj->params));
 				$modoutput = @ob_get_contents();
 				@ob_end_clean();
-				$tpl_source = ereg_replace("\{content\}", $modoutput, $tpl_source);
+				if ($smarty_obj->showtemplate == true)
+				{
+					$tpl_source = ereg_replace("\{content\}", $modoutput, $tpl_source);
+					#Do html_blobs
+					$tpl_source = preg_replace_callback("|\{html_blob name=[\'\"]?(.*?)[\'\"]?\}|", "html_blob_regex_callback", $tpl_source);
+				}
+				else
+				{
+					$tpl_source = $modoutput;
+				}
 			}
 			return true;
 		}

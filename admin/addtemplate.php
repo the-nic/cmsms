@@ -34,6 +34,9 @@ if (isset($_POST["content"])) $content = $_POST["content"];
 $stylesheet = "";
 if (isset($_POST["stylesheet"])) $stylesheet = $_POST["stylesheet"];
 
+$encoding = "";
+if (isset($_POST["encoding"])) $encoding = $_POST["encoding"];
+
 $preview = false;
 if (isset($_POST["preview"])) $preview = true;
 
@@ -48,6 +51,9 @@ if (isset($_POST["cancel"]))
 
 $userid = get_userid();
 $access = check_permission($userid, 'Add Template');
+
+$use_javasyntax = false;
+if (get_preference($userid, 'use_javasyntax') == "1")$use_javasyntax = true;
 
 if ($access)
 {
@@ -84,11 +90,35 @@ if ($access)
 			$newtemplate->name = $template;
 			$newtemplate->content = $content;
 			$newtemplate->stylesheet = $stylesheet;
+			$newtemplate->encoding = $encoding;
 			$newtemplate->active = $active;
+
+			#Perform the addtemplate_pre callback
+			foreach($gCms->modules as $key=>$value)
+			{
+				if (isset($gCms->modules[$key]['addtemplate_pre_function']) &&
+					$gCms->modules[$key]['Installed'] == true &&
+					$gCms->modules[$key]['Active'] == true)
+				{
+					call_user_func_array($gCms->modules[$key]['addtemplate_post_function'], array(&$gCms, &$newtemplate));
+				}
+			}
+
 			$result = $newtemplate->save();
 
 			if ($result)
 			{
+				#Perform the addtemplate_post callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['addtemplate_post_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['addtemplate_post_function'], array(&$gCms, &$newtemplate));
+					}
+				}
+
 				audit($newtemplate->id, $template, 'Added Template');
 				redirect("listtemplates.php");
 				return;
@@ -121,6 +151,7 @@ else
 		#$data["template_id"] = $template_id;
 		$data["stylesheet"] = $stylesheet;
 		$data["template"] = $content;
+		$data["encoding"] = $encoding;
 
 		$tmpfname = tempnam($config["previews_path"], "cmspreview");
 		$handle = fopen($tmpfname, "w");
@@ -136,10 +167,9 @@ else
 <?php
 
 	}
-
 ?>
 
-<form method="post" action="addtemplate.php">
+<form method="post" action="addtemplate.php" <?php if($use_javasyntax){echo 'onSubmit="textarea_submit(this, \'content,stylesheet\');"';} ?>>
 
 <div class="adminform">
 
@@ -153,11 +183,15 @@ else
 	</tr>
 	<tr>
 		<td>*<?php echo lang('content')?>:</td>
-		<td><textarea name="content" cols="90" rows="18" style="width: 100%;"><?php echo $content?></textarea></td>
+		<td><?php echo textarea_highlight($use_javasyntax, $content, "content", 'syntaxHighlight', 'HTML (Complex)', '', $encoding); ?></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('stylesheet')?>:</td>
-		<td><textarea name="stylesheet" cols="90" rows="18" style="width: 100%;"><?php echo $stylesheet?></textarea></td>
+		<td><?php echo textarea_highlight($use_javasyntax, $stylesheet, "stylesheet", "syntaxHighlight", "Java Properties", '', $encoding) ?></textarea></td>
+	</tr>
+	<tr>
+		<td><?php echo lang('encoding')?>:</td>
+		<td><input type="text" name="encoding" maxlength="25" value="<?php echo $encoding?>"></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('active')?>:</td>

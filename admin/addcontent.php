@@ -19,6 +19,7 @@
 $CMS_ADMIN_PAGE=1;
 
 require_once("../include.php");
+require_once("../lib/classes/class.template.inc.php");
 
 check_login();
 
@@ -30,16 +31,17 @@ if (isset($_POST["title"])) $title = $_POST["title"];
 $content = "";
 if (isset($_POST["content"])) $content = $_POST["content"];
 
+$menutext = "";
+if (isset($_POST["menutext"])) $menutext = $_POST["menutext"];
+
 $alias = "";
-if ($config["auto_alias_content"])
+if (isset($_POST["alias"])) $alias = $_POST["alias"];
+
+if ($config["auto_alias_content"] && $alias == "")
 {
-	$alias = $title;
-	$alias=trim($alias);
+	$alias = $menutext;
+	$alias = trim($alias);
 	$alias = preg_replace("/\W+/", "-", $alias);
-}
-else
-{
-	if (isset($_POST["alias"])) $alias = $_POST["alias"];
 }
 
 $content_type = "content";
@@ -56,9 +58,6 @@ if (isset($_POST["parent_id"])) $parent_id = $_POST["parent_id"];
 
 $template_id = -1;
 if (isset($_POST["template_id"])) $template_id = $_POST["template_id"];
-
-$menutext = "";
-if (isset($_POST["menutext"])) $menutext = $_POST["menutext"];
 
 $preview = false;
 if (isset($_POST["preview"])) $preview = true;
@@ -89,6 +88,11 @@ if (get_preference($userid, 'use_wysiwyg') == "1" && $content_type == "content")
 	$templatepostback = " onchange=\"document.addform.content.value=editor.getHTML();document.addform.submit()\"";
 }
 
+$use_javasyntax = false;
+if (get_preference($userid, 'use_javasyntax') == "1" && $content_type == "content"){
+	$use_javasyntax = true;
+}
+
 if ($access) {
 
 	if ($submit) {
@@ -117,7 +121,7 @@ if ($access) {
 				$validinfo = false;
 				$error .= "<li>".lang('aliasnotaninteger')."</li>";
 			}
-			else if (!preg_match('/^[\d\w\-]+$/', $alias))
+			else if (!preg_match('/^[\-\_\w]+$/', $alias))
 			{
 				$validinfo = false;
 				$error .= "<li>".lang('aliasmustbelettersandnumbers')."</li>";
@@ -153,6 +157,7 @@ if ($access) {
 						$db->Execute($query);
 					}
 				}
+				set_all_pages_hierarchy_position();
 				audit($new_page_id, $title, 'Added Content');
 				redirect("listcontent.php");
 				return;
@@ -192,27 +197,33 @@ if ($access) {
 
 	$dropdown .= "</select>";
 
-	$query = "SELECT template_id, template_name FROM ".cms_db_prefix()."templates ORDER BY template_id";
+	$query = "SELECT template_id, template_name, encoding FROM ".cms_db_prefix()."templates ORDER BY template_name";
 	$result = $db->Execute($query);
 
 	$dropdown2 = "<select name=\"template_id\"$templatepostback>";
 
+	$count = 0;
 	while($row = $result->FetchRow()) {
 		$dropdown2 .= "<option value=\"".$row["template_id"]."\"";
-		if ($row["template_id"] == $template_id) {
+		if ($row["template_id"] == $template_id || $count == 0 && $template_id == -1) {
 			$dropdown2 .= "selected";
+			//Get encoding of template
+			$onetemplate = TemplateOperations::LoadTemplateByID($template_id);
+			header("Content-Type: text/html; charset=" . (isset($row['encoding'])?$row['encoding']:get_encoding()));
+			$charsetsent = true;
 		}
 		if ($template_id == -1) {
 			$template_id = $row["template_id"];
 		}
 		$dropdown2 .= ">".$row["template_name"]."</option>";
+		$count++;
 	}
 
 	$dropdown2 .= "</select>";
 
 	$addt_users = "";
 
-	$query = "SELECT user_id, username FROM ".cms_db_prefix()."users WHERE user_id <> " . $userid;
+	$query = "SELECT user_id, username FROM ".cms_db_prefix()."users WHERE user_id <> " . $userid . " ORDER BY username";
 	$result = $db->Execute($query);
 
 	if ($result && $result->RowCount() > 0) {
@@ -274,7 +285,7 @@ else {
 		{
 			while ($cssline = $cssresult->FetchRow())
 			{
-				$data["stylesheet"] .= "\n".$cssline[css_text]."\n";
+				$data["stylesheet"] .= "\n".$cssline['css_text']."\n";
 			}
 		}
 		
@@ -295,7 +306,7 @@ else {
 
 ?>
 
-<form method="post" action="addcontent.php" name="addform" id="addform">
+<form method="post" action="addcontent.php" name="addform" id="addform" <?php if(isset($use_javasyntax) && $use_javasyntax){echo 'onSubmit="textarea_submit(this, \'content,head_tags\');"';} ?>>
 
 <?php if ($content_type == "content") { ?>
 <h3><?php echo lang('addcontent')?></h3>
@@ -309,7 +320,9 @@ else {
 						<?php echo lang('contenttype')?>:<?php echo $ctdropdown?>
 						<?php echo lang('title')?>:&nbsp;<input type="text" name="title" maxlength="80" value="<?php echo $title?>">
 						<span style="white-space: nowrap"><?php echo lang('menutext')?>:&nbsp;<input type="text" name="menutext" maxlength="25" value="<?php echo $menutext?>"></span>
-						<span style="white-space: nowrap"><?php echo lang('pagealias')?>:&nbsp;<input type="text" name="alias" maxlength="65" value="<?php echo $alias?>"></span>
+						<?php if ($config["auto_alias_content"] == false || ($alias != "")) { ?>
+							<span style="white-space: nowrap"><?php echo lang('pagealias')?>:&nbsp;<input type="text" name="alias" maxlength="65" value="<?php echo $alias?>"></span>
+						<?php } ?>
 						<span style="white-space: nowrap"><?php echo lang('template')?>:&nbsp;<?php echo $dropdown2?></span>
 					</td>
 				</tr>
@@ -317,15 +330,15 @@ else {
 		</td>
 	</tr>
 	<tr>
-		<td style="padding-top: 10px;"><strong><?php echo lang('content') ?></strong><br><textarea id="content" name="content" style="width:100%" cols="80" rows="24"><?php echo $content?></textarea></td>
-	</tr>
+		<td style="padding-top: 10px;"><strong><?php echo lang('content') ?></strong><br>
+        <?php echo textarea_highlight((isset($use_javasyntax)?$use_javasyntax:false), $content, "content", "syntaxHighlight", "HTML (Complex)", "content"); ?></td>	</tr>
 </table>
 
 <div class="collapseTitle"><a href="#advanced" onClick="expandcontent('advanced')" style="cursor:hand; cursor:pointer"><?php echo lang('advanced') ?></a></div>
 <div id="advanced" class="expand">
 	<a name="advanced">&nbsp;</a>
 	<div style="line-height: .8em; padding-top: 1em; font-weight: bold;"><?php echo lang('headtags') ?></div>
-	<textarea rows="4" cols="80" name="head_tags"><?php echo $head_tags ?></textarea>
+	<?php echo textarea_highlight($use_javasyntax, $head_tags, "head_tags"); ?>
 
 	<table border="0" cellpadding="0" cellspacing="0" summary="">
 		<tr valign="top">
@@ -376,6 +389,7 @@ else {
 	<tr>
 		<td><?php echo lang('contenttype')?>:</td>
 		<td><?php echo $ctdropdown?></td>
+	</tr>
 	<tr>
 		<td><?php echo lang('parent')?>:</td>
 		<td><?php echo $dropdown?></td>
@@ -401,11 +415,12 @@ else {
 			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
 	</tr>
 </table>
+<div id="advanced" class="expand">&nbsp;</div>
 </div>
 
 
 
-<?php }elseif ($content_type == "link") { ?>
+<?php } elseif ($content_type == "link" || $content_type == 'News') { ?>
 <h3><?php echo lang('addlink')?></h3>
 <div class="adminformSmall">
 <input type="hidden" name="template_id" value="1">
@@ -421,10 +436,18 @@ else {
 		<td>*<?php echo lang('menutext')?>:</td>
 		<td><input type="text" name="menutext" maxlength="25" value="<?php echo $menutext?>" class="standard"></td>
 	</tr>
+	<?php if ($content_type == 'link') { ?>
 	<tr>
 		<td>*<?php echo lang('url')?>:</td>
 		<td><input type="text" name="url" maxlength="65" value="<?php echo $url?>" class="standard"></td>
 	</tr>
+	<?php } ?>
+	<?php if ($content_type == 'News') { ?>
+	<tr>
+		<td><?php echo lang('template')?>:</td>
+		<td><?php echo $dropdown2?></td>
+	</tr>
+	<?php } ?>
 	<tr>
 		<td><?php echo lang('parent')?>:</td>
 		<td><?php echo $dropdown?></td>
@@ -450,6 +473,7 @@ else {
 			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
 	</tr>
 </table>
+<div id="advanced" class="expand">&nbsp;</div>
 </div>
 <?php }elseif ($content_type == "sectionheader") { ?>
 <h3><?php echo lang('addlink')?></h3>
@@ -485,15 +509,16 @@ else {
 			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
 	</tr>
 </table>
+<div id="advanced" class="expand">&nbsp;</div>
 </div>
 <?php } ?>
 
 </form>
 
-<div class="collapseTitle"><a href="#help" onClick="expandcontent('helparea')" style="cursor:hand; cursor:pointer"><?php echo lang('help') ?>?</a></div>
+<div class="collapseTitle"><a href="#help" onClick="expandcontent('helparea')" style="cursor:hand; cursor:pointer"><?php echo lang('help') ?></a></div>
 <div id="helparea" class="expand">
-<?php echo lang('helpaddcontent')?>
 <a name="help">&nbsp;</a>
+<?php echo lang('helpaddcontent')?>
 </div>
 
 

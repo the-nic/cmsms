@@ -37,6 +37,9 @@ if (isset($_POST["content"])) $content = $_POST["content"];
 $stylesheet = "";
 if (isset($_POST["stylesheet"])) $stylesheet = $_POST["stylesheet"];
 
+$encoding = "";
+if (isset($_POST["encoding"])) $encoding = $_POST["encoding"];
+
 $active = 1;
 if (!isset($_POST["active"]) && isset($_POST["edittemplate"])) $active = 0;
 
@@ -54,6 +57,9 @@ if (isset($_POST["cancel"])) {
 
 $userid = get_userid();
 $access = check_permission($userid, 'Modify Template');
+
+$use_javasyntax = false;
+if (get_preference($userid, 'use_javasyntax') == "1")$use_javasyntax = true;
 
 if ($access)
 {
@@ -88,11 +94,34 @@ if ($access)
 			$onetemplate->name = $template;
 			$onetemplate->content = $content;
 			$onetemplate->stylesheet = $stylesheet;
+			$onetemplate->encoding = $encoding;
 			$onetemplate->active = $active;
+
+			#Perform the edittemplate_pre callback
+			foreach($gCms->modules as $key=>$value)
+			{
+				if (isset($gCms->modules[$key]['edittemplate_pre_function']) &&
+					$gCms->modules[$key]['Installed'] == true &&
+					$gCms->modules[$key]['Active'] == true)
+				{
+					call_user_func_array($gCms->modules[$key]['edittemplate_pre_function'], array(&$gCms, &$onetemplate));
+				}
+			}
+
 			$result = $onetemplate->save();
 
 			if ($result)
 			{
+				#Perform the edittemplate_post callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['edittemplate_post_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['edittemplate_post_function'], array($gCms, $onetemplate));
+					}
+				}
 				audit($template_id, $onetemplate->name, 'Edited Template');
 				redirect("listtemplates.php");
 			}
@@ -109,6 +138,7 @@ if ($access)
 		$orig_template = $onetemplate->name;
 		$content = $onetemplate->content;
 		$stylesheet = $onetemplate->stylesheet;
+		$encoding = $onetemplate->encoding;
 		$active = $onetemplate->active;
 	}
 }
@@ -132,6 +162,7 @@ else
 		$data["content"] = "Test Content";
 		#$data["template_id"] = $template_id;
 		$data["stylesheet"] = $stylesheet;
+		$data["encoding"] = $encoding;
 		$data["template"] = $content;
 
 		# add linked CSS if any
@@ -144,7 +175,7 @@ else
 		{
 			while ($cssline = $cssresult->FetchRow())
 			{
-				$data["stylesheet"] .= "\n".$cssline[css_text]."\n";
+				$data["stylesheet"] .= "\n".$cssline['css_text']."\n";
 			}
 		}
 
@@ -162,10 +193,9 @@ else
 <?php
 
 	}
-
 ?>
 
-<form method="post" action="edittemplate.php">
+<form method="post" action="edittemplate.php" <?php if($use_javasyntax){echo 'onSubmit="textarea_submit(this, \'content,stylesheet\');"';} ?>>
 
 <div class="adminform">
 
@@ -178,16 +208,20 @@ else
 		<td><input type="text" name="template" maxlength="25" value="<?php echo $template?>"><input type="hidden" name="orig_template" value="<?php echo $orig_template?>"></td>
 	</tr>
 	<tr>
-		<td>*<?php echo lang('content')?>:</td>
-		<td><?php textarea_highlight($content, 'content', 'syntaxHighlight'); ?></td>
+		<td>*<?php echo lang('content'); ?>:</td>
+		<td><?php echo textarea_highlight($use_javasyntax, $content, "content", "syntaxHighlight", "HTML (Complex)", "", $encoding); ?></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('stylesheet')?>:</td>
-		<td><?php textarea_highlight($stylesheet, 'stylesheet', 'syntaxHighlight'); ?></td>
+		<td><?php echo textarea_highlight($use_javasyntax, $stylesheet, "stylesheet", "syntaxHighlight", "Java Properties", "", $encoding) ?></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('active')?>:</td>
-		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked":"")?>></td>
+		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked":"") ?>></td>
+	</tr>
+	<tr>
+		<td><?php echo lang('encoding')?>:</td>
+		<td><input type="text" name="encoding" maxlength="25" value="<?php echo $encoding?>"></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>

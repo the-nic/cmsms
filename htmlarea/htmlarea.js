@@ -60,6 +60,7 @@ function HTMLArea(textarea, config) {
 	for (var i = 1; i < scripts.length; ++i) {
 		var script = document.createElement("script");
 		script.src = scripts[i];
+		script.type="text/javascript";
 		head.appendChild(script);
 	}
 })();
@@ -87,7 +88,7 @@ HTMLArea.Config = function () {
 
 	// the next parameter specifies whether the toolbar should be included
 	// in the size or not.
-	this.sizeIncludesToolbar = true;
+	this.sizeIncludesToolbar = false;
 
 	// if true then HTMLArea will retrieve the full HTML, starting with the
 	// <HTML> tag.
@@ -97,7 +98,7 @@ HTMLArea.Config = function () {
 	this.pageStyle = "";
 
 	// set to true if you want Word code to be cleaned upon Paste
-	this.killWordOnPaste = false;
+	this.killWordOnPaste = true;
 
 	// BaseURL included in the iframe document
 	this.baseURL = document.baseURI || document.URL;
@@ -123,14 +124,14 @@ HTMLArea.Config = function () {
 		  "formatblock", "space",
 		  "bold", "italic", "underline", "strikethrough", "separator",
 		  "subscript", "superscript", "separator",
-		  "copy", "cut", "paste" ],
+		  "copy", "cut", "paste", "space", "undo", "redo" ],
 
 		[ "justifyleft", "justifycenter", "justifyright", "justifyfull", "separator",
 		  "lefttoright", "righttoleft", "separator",
 		  "insertorderedlist", "insertunorderedlist", "outdent", "indent", "separator",
 		  "forecolor", "hilitecolor", "separator",
-		  "inserthorizontalrule", "createlink", "insertimage", "inserttable", "htmlmode",
-		  "showhelp", "about" ]
+		  "inserthorizontalrule", "createlink", "insertimage", "inserttable", "htmlmode", "separator",
+		  "popupeditor", "separator", "showhelp", "about" ]
 	];
 
 	this.fontname = {
@@ -208,11 +209,11 @@ HTMLArea.Config = function () {
 		insertimage: [ "Insert/Modify Image", "ed_image.gif", false, function(e) {e.execCommand("insertimage");} ],
 		inserttable: [ "Insert Table", "insert_table.gif", false, function(e) {e.execCommand("inserttable");} ],
 		htmlmode: [ "Toggle HTML Source", "ed_html.gif", true, function(e) {e.execCommand("htmlmode");} ],
-		//popupeditor: [ "Enlarge Editor", "fullscreen_maximize.gif", true, function(e) {e.execCommand("popupeditor");} ],
+		popupeditor: [ "Enlarge Editor", "fullscreen_maximize.gif", true, function(e) {e.execCommand("popupeditor");} ],
 		about: [ "About this editor", "ed_about.gif", true, function(e) {e.execCommand("about");} ],
 		showhelp: [ "Help using editor", "ed_help.gif", true, function(e) {e.execCommand("showhelp");} ],
-		//undo: [ "Undoes your last action", "ed_undo.gif", false, function(e) {e.execCommand("undo");} ],
-		//redo: [ "Redoes your last action", "ed_redo.gif", false, function(e) {e.execCommand("redo");} ],
+		undo: [ "Undoes your last action", "ed_undo.gif", false, function(e) {e.execCommand("undo");} ],
+		redo: [ "Redoes your last action", "ed_redo.gif", false, function(e) {e.execCommand("redo");} ],
 		cut: [ "Cut selection", "ed_cut.gif", false, cut_copy_paste ],
 		copy: [ "Copy selection", "ed_copy.gif", false, cut_copy_paste ],
 		paste: [ "Paste from clipboard", "ed_paste.gif", false, cut_copy_paste ],
@@ -372,6 +373,10 @@ HTMLArea.prototype._createToolbar = function () {
 		table.appendChild(tb_body);
 		tb_row = document.createElement("tr");
 		tb_body.appendChild(tb_row);
+		var tb_cell = document.createElement("td");
+		tb_row.appendChild(tb_cell);
+			
+			
 	}; // END of function: newLine
 	// init first line
 	newLine();
@@ -505,7 +510,7 @@ HTMLArea.prototype._createToolbar = function () {
 		if (!el && btn) {
 			el = document.createElement("div");
 			el.title = btn[0];
-			el.className = "button";
+			el.className = "HAbutton";
 			// let's just pretend we have a button object, and
 			// assign all the needed information to it.
 			var obj = {
@@ -517,6 +522,7 @@ HTMLArea.prototype._createToolbar = function () {
 				cmd	: btn[3], // the command ID
 				state	: setButtonStatus, // for changing state
 				context : btn[4] || null // enabled in a certain context?
+				
 			};
 			tb_objects[txt] = obj;
 			// handlers to emulate nice flat toolbar buttons
@@ -552,7 +558,11 @@ HTMLArea.prototype._createToolbar = function () {
 			img.src = btn[1];
 			img.style.width = "18px";
 			img.style.height = "18px";
+			img.alt="";
+			
 			el.appendChild(img);
+			
+			
 		} else if (!el) {
 			el = createSelect(txt);
 		}
@@ -560,6 +570,8 @@ HTMLArea.prototype._createToolbar = function () {
 			var tb_cell = document.createElement("td");
 			tb_row.appendChild(tb_cell);
 			tb_cell.appendChild(el);
+			
+			
 		} else {
 			alert("FIXME: Unknown toolbar item: " + txt);
 		}
@@ -741,9 +753,10 @@ HTMLArea.prototype.generate = function () {
 			html += "<head>\n";
 			if (editor.config.baseURL)
 				html += '<base href="' + editor.config.baseURL + '" />';
-			html += "<style type=\"text/css\">" + editor.config.pageStyle + "\n</style>\n"; 
+			html += "<style> html,body { border: 0px; } " +
+				editor.config.pageStyle + "</style>\n";
 			html += "</head>\n";
-			html += "<body>\n";
+			html += "<body style=\"border: 0px; background: white; background-image: none; color: black;\">\n";
 			html += editor._textArea.value;
 			html += "</body>\n";
 			html += "</html>";
@@ -907,7 +920,12 @@ HTMLArea.loadPlugin = function(pluginName) {
 						return l1 + "-" + l2.toLowerCase() + l3;
 					}).toLowerCase() + ".js";
 	var plugin_file = dir + "/" + plugin;
-	var plugin_lang = dir + "/lang/" + HTMLArea.I18N.lang + ".js";
+	if (HTMLArea.I18N && HTMLArea.I18N.lang) {
+		var plugin_lang = dir + "/lang/" + HTMLArea.I18N.lang + ".js";
+	}
+	else {
+		var plugin_lang = dir + "/lang/en.js";
+	}
 	HTMLArea._scripts.push(plugin_file, plugin_lang);
 	document.write("<script type='text/javascript' src='" + plugin_file + "'></script>");
 	document.write("<script type='text/javascript' src='" + plugin_lang + "'></script>");
@@ -1947,7 +1965,7 @@ HTMLArea.htmlEncode = function(str) {
 	str = str.replace(/&/ig, "&amp;");
 	str = str.replace(/</ig, "&lt;");
 	str = str.replace(/>/ig, "&gt;");
-	//str = str.replace(/\x22/ig, "&quot;");
+	str = str.replace(/\x22/ig, "&quot;");
 	// \x22 means '"' -- we use hex reprezentation so that we don't disturb
 	// JS compressors (well, at least mine fails.. ;)
 	return str;
@@ -2172,3 +2190,4 @@ HTMLArea.getElementById = function(tag, id) {
 // c-basic-offset:8 //
 // indent-tabs-mode:t //
 // End: //
+

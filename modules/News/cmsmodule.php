@@ -23,7 +23,7 @@ $module_name = "News";
 require_once(dirname(__FILE__)."/modulefunctions.php");
 
 //Register Module
-cms_mapi_register_module($module_name, "Ted Kulp <tedkulp@users.sf.net>", "1.1");
+cms_mapi_register_module($module_name, "Robert Campbell <rob@techcom.dyndns.org", "1.5");
 
 //Register module to work as a content type
 cms_mapi_register_content_module($module_name);
@@ -33,9 +33,10 @@ cms_mapi_register_plugin_module($module_name);
 
 //Register callback functions
 cms_mapi_register_install_function($module_name, 'news_module_install');
-cms_mapi_register_upgrade_function($module_name, 'news_module_upgrade');
+cms_mapi_register_upgrade_function($module_name, 'news_module_upgrade', true);
 cms_mapi_register_uninstall_function($module_name, 'news_module_uninstall');
 cms_mapi_register_execute_function($module_name, 'news_module_execute');
+cms_mapi_register_executeuser_function($module_name, 'news_module_executeuser');
 cms_mapi_register_executeadmin_function($module_name, 'news_module_executeadmin');
 
 //Register help function

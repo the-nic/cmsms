@@ -22,6 +22,7 @@
  * @package CMS
  */
 require_once(dirname(dirname(__FILE__)).'/smarty/Smarty.class.php');
+require_once(dirname(dirname(__FILE__)) . "/lib/classes/class.htmlblob.inc.php");
 $sorted_sections = array();
 $sorted_content = array();
 
@@ -34,7 +35,7 @@ $sorted_content = array();
  * @since 0.1
  */
 class Smarty_CMS extends Smarty {
-
+	
 	function Smarty_CMS(&$config)
 	{
 		$this->Smarty();
@@ -45,8 +46,8 @@ class Smarty_CMS extends Smarty {
 		$this->cache_dir = $config["root_path"].'/smarty/cms/cache/';
 		$this->plugins_dir = $config["root_path"].'/plugins/';
 
-		$this->compile_check = true;
 		$this->caching = true;
+		$this->compile_check = true;
 		$this->assign('app_name','CMS');
 		$this->debugging = false;
 		$this->force_compile = false;
@@ -70,11 +71,14 @@ class Smarty_CMS extends Smarty {
 						       "db_get_timestamp",
 						       "db_get_secure",
 						       "db_get_trusted"));
+		$this->register_resource("print", array(&$this, "db_get_template",
+						       "db_get_timestamp",
+						       "db_get_secure",
+						       "db_get_trusted"));
 	}
 
 	function db_get_template ($tpl_name, &$tpl_source, &$smarty_obj)
 	{
-
 		global $gCms;
 
 		$cmsmodules = $gCms->modules;
@@ -85,7 +89,9 @@ class Smarty_CMS extends Smarty {
 		{
 			$tpl_source = get_site_preference('sitedownmessage');
 			return true;
-		} else {
+		}
+		else
+		{
 			if (is_numeric($tpl_name) && strpos($tpl_name,'.') === FALSE && strpos($tpl_name,',') === FALSE) //Fix for postgres
 			{ 
 				$query = "SELECT p.page_id, p.page_content, p.page_title, p.page_type, p.head_tags, t.template_id, t.stylesheet, t.template_content FROM ".cms_db_prefix()."pages p INNER JOIN ".cms_db_prefix()."templates t ON p.template_id = t.template_id WHERE (p.page_id = ".$tpl_name." OR p.page_alias=".$db->qstr($tpl_name).") AND p.active = 1";
@@ -96,7 +102,7 @@ class Smarty_CMS extends Smarty {
 			} 
 			$result = $db->Execute($query);
 
-			if (!$result || !$result->RowCount() < 1)
+			if (!$result || $result->RowCount() < 1)
 			{
 				if (get_site_preference('custom404template') > 0 && get_site_preference('enablecustom404') == "1")
 				{
@@ -113,6 +119,7 @@ class Smarty_CMS extends Smarty {
 
 				#This way the id is right, even if an alias is given
 				$gCms->variables['page'] = $line['page_id'];
+				$gCms->variables['page_name'] = $tpl_name;
 
 				if (isset($line['stylesheet']))
 				{
@@ -133,17 +140,23 @@ class Smarty_CMS extends Smarty {
 				$stylesheet .= "<style type=\"text/css\">\n";
 				while ($cssline = $cssresult->FetchRow())
 				{
-					$tempstylesheet .= "\n".$cssline[css_text]."\n";
+					$tempstylesheet .= "\n".$cssline['css_text']."\n";
 				}
 				$stylesheet .= "{literal}".$tempstylesheet."{/literal}";
 				$stylesheet .= "</style>\n";
 				
 				$tpl_source = $line['template_content'];
+				if (isset($_GET["print"])) #Instead, we'll just make a simple template to use
+				{
+					$tpl_source = '<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"><html><head>{stylesheet}{literal}<style type=\"text/css\" media=\"print\">#back{display: none;}</style>{/literal}</head><body style="background-color: white; color: black; background-image; none;"><form action="index.php?page='.$gCms->variables['page_name'].'" method="post"><input type="submit" value="Go Back"></form>{content}</body></html>';
+				}
 				$content = $line['page_content'];
 				$title = $line['page_title'];
 				$head_tags = $line['head_tags'];
+				$header_script = $line['page_header'];
 				$tpl_source = ereg_replace("\{stylesheet\}", $stylesheet, $tpl_source);
 				$tpl_source = ereg_replace("\{title\}", $title, $tpl_source);
+
 				if (isset($head_tags) && $head_tags != "")
 				{
 					$tpl_source = ereg_replace("<\/head>", $head_tags."</head>", $tpl_source);
@@ -159,6 +172,9 @@ class Smarty_CMS extends Smarty {
 				{
 					#If it's regular content, do this...
 					$tpl_source = ereg_replace("\{content\}", $content, $tpl_source);
+
+					#Do html_blobs
+					$tpl_source = preg_replace_callback("|\{html_blob name=[\'\"]?(.*?)[\'\"]?\}|", "html_blob_regex_callback", $tpl_source);
 					if ($config["use_bb_code"] == true && isset($gCms->bbcodeparser))
 					{
 						$tpl_source = $gCms->bbcodeparser->qparse($tpl_source);
@@ -182,9 +198,11 @@ class Smarty_CMS extends Smarty {
 						$tpl_source = ereg_replace("\{title\}", 'Page Not Found!', $tpl_source);
 						$tpl_source = ereg_replace("\{content\}", get_site_preference('custom404'), $tpl_source);
 					}
+					if ($header_script && $header_script != '')
+					{
+						$tpl_source = $header_script.$tpl_source;
+					}
 				}
-
-
 				return true;
 			}
 			else
@@ -204,7 +222,6 @@ class Smarty_CMS extends Smarty {
 
 	function db_get_timestamp($tpl_name, &$tpl_timestamp, &$smarty_obj)
 	{
-
 		global $gCms;
 		$db = $gCms->db;
 		$config = $gCms->config;
@@ -218,19 +235,22 @@ class Smarty_CMS extends Smarty {
 		{
 			if (is_numeric($tpl_name) && strpos($tpl_name,'.') === FALSE && strpos($tpl_name,',') === FALSE) //Fix for postgres
 			{ 
-				$query = "SELECT p.page_id, t.modified_date as template_date, p.modified_date as page_date, p.page_type FROM ".cms_db_prefix()."pages p INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = p.template_id WHERE (p.page_id = ".$tpl_name." OR p.page_alias=".$db->qstr($tpl_name).") AND p.active = 1";
+				$query = "SELECT p.page_id, t.modified_date as template_date, p.modified_date as page_date, p.page_type, p.hierarchy_position, t.encoding FROM ".cms_db_prefix()."pages p INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = p.template_id WHERE (p.page_id = ".$tpl_name." OR p.page_alias=".$db->qstr($tpl_name).") AND p.active = 1";
 			}
 			else
 			{
-				$query = "SELECT p.page_id, t.modified_date as template_date, p.modified_date as page_date, p.page_type FROM ".cms_db_prefix()."pages p INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = p.template_id WHERE p.page_alias=".$db->qstr($tpl_name)." AND p.active = 1";
+				$query = "SELECT p.page_id, t.modified_date as template_date, p.modified_date as page_date, p.page_type, p.hierarchy_position, t.encoding FROM ".cms_db_prefix()."pages p INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = p.template_id WHERE p.page_alias=".$db->qstr($tpl_name)." AND p.active = 1";
 			}
 			$result = $db->Execute($query);
 
-			if ($result && $result->RowCount()) {
+			if ($result && $result->RowCount())
+			{
 				$line = $result->FetchRow();
 
 				#This way the id is right, even if an alias is given
 				$gCms->variables['page'] = $line['page_id'];
+				$gCms->variables['page_name'] = $tpl_name;
+				$gCms->variables['position'] = $line['hierarchy_position'];
 
 				$page_date = $db->UnixTimeStamp($line["page_date"]);
 				$template_date = $db->UnixTimeStamp($line["template_date"]);
@@ -238,19 +258,20 @@ class Smarty_CMS extends Smarty {
 				$smarty_obj->assign('modified_date',($page_date<$template_date?$template_date:$page_date));
 
 				#We only want to cache "static" content
-				if ($line["page_type"] == "content") {
-
+				if ($line["page_type"] == "content")
+				{
+					header("Content-Type: text/html; charset=" . (isset($line['encoding']) && $line['encoding'] != ''?$line['encoding']:get_encoding()));
 					$tpl_timestamp = ($page_date<$template_date?$template_date:$page_date);
 					return true;
-
-				} else {
-
+				}
+				else
+				{
 					$tpl_timestamp = time();
 					return true;
-
 				}
 			}
-			else {
+			else
+			{
 				$smarty_obj->assign('modified_date',time());
 				$tpl_timestamp = time();
 				return true;
@@ -287,12 +308,31 @@ function load_plugins(&$smarty)
 	while (($file = $ls->read()) != "") {
 		if (is_file("$dir/$file") && (strpos($file, ".") === false || strpos($file, ".") != 0)) {
 			if (preg_match("/^(.*?)\.(.*?)\.php/", $file, $matches)) {
-				#$filename = dirname(dirname(__FILE__)) . "/" . $this->_get_plugin_filepath($matches[1], $matches[2]);
 				$filename = $smarty->_get_plugin_filepath($matches[1], $matches[2]);
-				#echo $filename . "<br />";
-				include_once $filename;
-				$smarty->register_function($matches[2], "smarty_cms_function_" . $matches[2], $smarty->cache_plugins);
-				array_push($plugins, $matches[2]);
+				if (strpos($filename, 'function') !== false)
+				{
+					require_once $filename;
+					$smarty->register_function($matches[2], "smarty_cms_function_" . $matches[2], $smarty->cache_plugins);
+					array_push($plugins, $matches[2]);
+				}
+				else if (strpos($filename, 'compiler') !== false)
+				{
+					require_once $filename;
+					$smarty->register_compiler_function($matches[2], "smarty_cms_compiler_" . $matches[2], $smarty->cache_plugins);
+					array_push($plugins, $matches[2]);
+				}
+				else if (strpos($filename, 'prefilter') !== false)
+				{
+					require_once $filename;
+					$smarty->register_prefilter($matches[2], "smarty_cms_prefilter_" . $matches[2]);
+					array_push($plugins, $matches[2]);
+				}
+				else if (strpos($filename, 'modifier') !== false)
+				{
+					require_once $filename;
+					$smarty->register_modifier($matches[2], "smarty_cms_modifier_" . $matches[2]);
+					array_push($plugins, $matches[2]);
+				}
 			}
 		}
 	}
@@ -417,48 +457,24 @@ function db_get_menu_items($params = array()) {
 			}
 			
 			# Fix URL where appropriate
-			if ($current_content->page_type == "sectionheader")
-			{
+			if ($current_content->page_type == "sectionheader") {
 				$current_content->page_title = $current_content->menu_text;
 				$current_content->url = "";
+			} else if ($current_content->page_type != "link") {
+				$current_content->page_url = "";	
+				$current_content->url = getURL($current_content);
+			} else {
+				$current_content->url = $current_content->page_url;
 			}
-			else if ($current_content->page_type != "link")
-			{
-				if (isset($current_content->page_alias) && $current_content->page_alias != "")
-				{
-					if ($config["assume_mod_rewrite"])
-					{
-						$current_content->url = $config["root_url"]."/".$current_content->page_alias.".shtml";
-					}
-					else
-					{
-						$current_content->url = $config["root_url"]."/index.php?".$config["query_var"]."=".$current_content->page_alias;
-					}
-				}
-					else
-					{
-						if ($config["assume_mod_rewrite"])
-						{
-							$current_content->url = $config["root_url"]."/".$current_content->page_id.".shtml";
-						}
-						else
-						{
-							$current_content->url = $config["root_url"]."/index.php?".$config["query_var"]."=".$current_content->page_id;
-						}
-					}
-					$current_content->page_url = "";	
-				} else {
-					$current_content->url = $current_content->page_url;
-				}
-				# Special display for separator
-				if ($current_content->page_type == "separator") {
-					$current_content->page_title = "--------";
-				}
+			# Special display for separator
+			if ($current_content->page_type == "separator") {
+				$current_content->page_title = "--------";
+			}
 
-				# Now that all treatment have been done to $current_content, we push it in the array
-				$content_array[$line["page_id"]] = $current_content;
-				$parents[$line["page_id"]] = $line["parent_id"];
-			} ## while
+			# Now that all treatment have been done to $current_content, we push it in the array
+			$content_array[$line["page_id"]] = $current_content;
+			$parents[$line["page_id"]] = $line["parent_id"];
+		} ## while
 		
 			construct_tree_from_list($content_array, $parents, $params);
 		
@@ -615,6 +631,83 @@ function get_page_types() {
 
 	return $result;
 
+}
+
+/**
+ * Updates the page's hierarchy position
+ *
+ * @since 0.7
+ */
+function set_page_hierarchy_position($pageid) {
+
+	global $gCms;
+	$db = $gCms->db;
+
+	$current_hierarchy_position = "";
+	$current_parent_id = $pageid;
+	$count = 0;
+
+	while ($current_parent_id > 0)
+	{
+		$query = "SELECT item_order, parent_id FROM ".cms_db_prefix()."pages WHERE page_id = ?";
+		$dbresult = $db->Execute($query, array($current_parent_id));
+		if ($dbresult && $dbresult->RowCount())
+		{
+			$row = $dbresult->FetchRow();
+			$current_hierarchy_position	= $row['item_order'] . "." . $current_hierarchy_position;
+			$current_parent_id = $row['parent_id'];
+			$count++;
+		}
+		else
+		{
+			$current_parent_id = 0;
+		}
+	}
+
+	if (strlen($current_hierarchy_position) > 0)
+	{
+		$current_hierarchy_position = substr($current_hierarchy_position, 0, strlen($current_hierarchy_position) - 1);
+	}
+
+	$query = "UPDATE ".cms_db_prefix()."pages SET hierarchy_position = ? WHERE page_id = ?";
+	$db->Execute($query, array($current_hierarchy_position, $pageid));
+}
+
+function set_all_pages_hierarchy_position()
+{
+	global $gCms;
+	$db = $gCms->db;
+
+	$query = "SELECT page_id FROM ".cms_db_prefix()."pages";
+	$dbresult = $db->Execute($query);
+
+	if ($dbresult && $dbresult->RowCount() > 0)
+	{
+		while ($row = $dbresult->FetchRow())
+		{
+			set_page_hierarchy_position($row['page_id']);
+		}
+	}
+}
+
+function html_blob_regex_callback($matches)
+{
+	if (isset($matches[1]))
+	{
+		$oneblob = HtmlBlobOperations::LoadHtmlBlobByName($matches[1]);
+		if ($oneblob)
+		{
+			return $oneblob->content;
+		}
+		else
+		{
+			return "<!-- Html blob '" . $matches[1] . "' does not exist  -->";
+		}
+	}
+	else
+	{
+		return "<!-- Html blob has no name parameter -->";
+	}
 }
 
 # vim:ts=4 sw=4 noet

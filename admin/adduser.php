@@ -49,32 +49,36 @@ if (!isset($_POST["active"]) && isset($_POST["adduser"])) $active = 0;
 $adminaccess = 1;
 if (!isset($_POST["adminaccess"]) && isset($_POST["adduser"])) $adminaccess = 0;
 
-if (isset($_POST["cancel"])) {
+if (isset($_POST["cancel"]))
+{
 	redirect("listusers.php");
 	return;
 }
 
-if (isset($_POST["adduser"])) {
-
+if (isset($_POST["adduser"]))
+{
 	$validinfo = true;
 
-	if ($user == "") {
+	if ($user == "")
+	{
 		$validinfo = false;
 		$error .= "<li>".lang('nofieldgiven', array(lang('username')))."</li>";
 	}
 
-	if ($password == "") {
+	if ($password == "")
+	{
 		$validinfo = false;
 		$error .= "<li>".lang('nofieldgiven', array(lang('password')))."</li>";
 	}
-	else if ($password != $passwordagain) {
+	else if ($password != $passwordagain)
+	{
 		#We don't want to see this if no password was given
 		$validinfo = false;
 		$error .= "<li>".lang('nopasswordmatch')."</li>";
 	}
 
-	if ($validinfo) {
-		
+	if ($validinfo)
+	{
 		#$new_user_id = $db->GenID(cms_db_prefix()."users_seq");
 		#$query = "INSERT INTO ".cms_db_prefix()."users (user_id, username, password, active, create_date, modified_date) VALUES ($new_user_id, ".$db->qstr($user).", ".$db->qstr(md5($password)).", $active, ".$db->DBTimeStamp(time()).", ".$db->DBTimeStamp(time()).")";
 		#$result = $db->Execute($query);
@@ -86,13 +90,40 @@ if (isset($_POST["adduser"])) {
 		$newuser->firstname = $firstname;
 		$newuser->lastname = $lastname;
 		$newuser->email = $email;
+		$newuser->adminaccess = $adminaccess;
+		$newuser->SetPassword($password);
+
+		#Perform the adduser_pre callback
+		foreach($gCms->modules as $key=>$value)
+		{
+			if (isset($gCms->modules[$key]['adduser_pre_function']) &&
+				$gCms->modules[$key]['Installed'] == true &&
+				$gCms->modules[$key]['Active'] == true)
+			{
+				call_user_func_array($gCms->modules[$key]['adduser_pre_function'], array(&$gCms, &$newuser));
+			}
+		}
+
 		$result = $newuser->save();
 
-		if ($result) {
+		if ($result)
+		{
+			#Perform the adduser_post callback
+			foreach($gCms->modules as $key=>$value)
+			{
+				if (isset($gCms->modules[$key]['adduser_post_function']) &&
+					$gCms->modules[$key]['Installed'] == true &&
+					$gCms->modules[$key]['Active'] == true)
+				{
+					call_user_func_array($gCms->modules[$key]['adduser_post_function'], array(&$gCms, &$newuser));
+				}
+			}
+
 			audit($newuser->id, $newuser->username, 'Added User');
 			redirect("listusers.php");
 		}
-		else {
+		else
+		{
 			$error .= "<li>".lang('errorinsertinguser')."</li>";
 		}
 	}
@@ -100,7 +131,8 @@ if (isset($_POST["adduser"])) {
 
 include_once("header.php");
 
-if ($error != "") {
+if ($error != "")
+{
 	echo "<ul class=\"error\">".$error."</ul>";
 }
 
@@ -136,12 +168,14 @@ if ($error != "") {
 	</tr>
 	<tr>
 		<td><?php echo lang('email')?>:</td>
-		<td><input type="text" name="email" maxlength="50" value="" class="standard"></td>
+		<td><input type="text" name="email" maxlength="255" value="" class="standard"></td>
 	</tr>
+	<!--
 	<tr>
 		<td><?php echo lang('adminaccess')?>:</td>
 		<td><input type="checkbox" name="adminaccess" <?php echo ($adminaccess == 1?"checked":"")?>></td>
 	</tr>
+	-->
 	<tr>
 		<td><?php echo lang('active')?>:</td>
 		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked":"")?>></td>

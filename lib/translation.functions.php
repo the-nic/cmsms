@@ -43,12 +43,21 @@ function lang($name, $params = array(), $realm='admin')
 	}
 }
 
-function get_encoding()
+function get_encoding($charset='')
 {
 	global $nls;
 	global $current_language;
+	global $config;
 
-	if (isset($nls['encoding'][$current_language]))
+	if ($charset != '')
+	{
+		return $charset;
+	}
+	else if (isset($config['default_encoding']) && $config['default_encoding'] != "")
+	{
+		return $config['default_encoding'];
+	}
+	else if (isset($nls['encoding'][$current_language]))
 	{
 		return $nls['encoding'][$current_language];
 	}

@@ -19,6 +19,43 @@
 $DONT_LOAD_DB=1;
 require_once(dirname(__FILE__)."/include.php");
 
+//Do module autoupgrades 
+function module_autoupgrade()
+{
+	global $gCms;
+	$db = $gCms->db;
+
+	foreach ($gCms->modules as $modulename=>$value)
+	{
+		if (isset($gCms->modules[$modulename]['auto_upgrade_function']))
+		{
+			//Check to see what version we currently have in the database (if it's installed)
+			$module_version = false;
+
+			$query = "SELECT version from ".cms_db_prefix()."modules WHERE module_name = ?";
+			$result = $db->Execute($query, array($modulename));
+			while ($row = $result->FetchRow()) {
+				$module_version = $row['version'];
+			}
+
+			//Check to see what version we have in the file system
+			$file_version = $gCms->modules[$modulename]['Version'];
+
+			if ($module_version)
+			{
+				if (version_compare($file_version, $module_version) == 1)
+				{
+					echo "<p>Upgrading $modulename module...";
+					call_user_func_array($gCms->modules[$modulename]['auto_upgrade_function'], array($gCms, $module_version, $file_version));
+					$query = "UPDATE ".cms_db_prefix()."modules SET version = ? WHERE module_name = ?";
+					$result = $db->Execute($query, array($file_version, $modulename));
+					echo "[Done]</p>";
+				}
+			}
+		}
+	}
+}
+
 ?>
 
 <html>
@@ -31,11 +68,11 @@ require_once(dirname(__FILE__)."/include.php");
 
 <div class="body">
 
-<img src="images/cms/cmsbanner.png" width="400" height="96" alt="CMS Banner Logo" />
+<img src="images/cms/cmsbanner.gif" width="449" height="114" alt="CMS Banner Logo" />
 
 <div class="headerish">
 
-<p>Upgrade System</p>
+<h1>Upgrade System</h1>
 
 </div>
 
@@ -44,7 +81,7 @@ require_once(dirname(__FILE__)."/include.php");
 <?php
 
 if (!isset($_GET["doupgrade"])) {
-	echo "<h4>Welcome to the CMS Upgrade System!</h4>";
+	echo "<h3>Welcome to the CMS Upgrade System!</h3>";
 
 	echo "<p>In order to upgrade properly, upgrade needs to have write access to your config.php file.  This is so any extra settings that have been introduced in this version can be set to their defaults.</p>";
 }
@@ -74,6 +111,28 @@ else
 
 	echo "[done]</p>";
 
+	echo "<p>Clearning cache dirs...";
+
+	//Clear cache dirs
+	$cpath = dirname(__FILE__)."/smarty/cms/cache/";
+	$handle=opendir($cpath);
+	while ($cfile = readdir($handle)) {
+		if ($cfile != "." && $cfile != ".." && is_file($cpath.$cfile)) {
+			#echo ($cpath.$cfile);
+			unlink($cpath.$cfile);
+		}
+	}
+	$cpath = dirname(__FILE__)."/smarty/cms/templates_c/";
+	$handle=opendir($cpath);
+	while ($cfile = readdir($handle)) {
+		if ($cfile != "." && $cfile != ".." && is_file($cpath.$cfile)) {
+			#echo ($cpath.$cfile);
+			unlink($cpath.$cfile);
+		}
+	}
+
+	echo "[done]</p>";
+
 	$db = &ADONewConnection($config["dbms"]);
 	$db->PConnect($config["db_hostname"],$config["db_username"],$config["db_password"],$config["db_name"]);
 	if (!$db) die("Connection failed");
@@ -97,10 +156,13 @@ else
 		}
 		else
 		{
+			module_autoupgrade();
+
 			echo "<p>Please review config.php,  modify any new settings as necessary and then reset it's permissions back to a locked state.</p>";
 			echo "<p>You should also check that all of your modules are up to date, by going to the Plugins page and looking for any listed as 'Needs Upgrade'.</p>";
 			echo "<p>The CMS database is up to date using schema version ".$current_version.".  Please remove this file when possible.  Click <a href=\"index.php\">here</a> to go to your CMS site.</p>";
 		}
+
 	}
 	else
 	{
@@ -110,8 +172,12 @@ else
 			include($filename);
 			$current_version++;
 		}
+
+		module_autoupgrade();
+
 		echo "<p>Please review config.php,  modify any new settings as necessary and then reset it's permissions back to a locked state.</p>";
 		echo "<p>CMS is up to date.  Please click <a href=\"index.php\">here</a> to go to your CMS site.</p>";
+
 	}
 
 }

@@ -20,11 +20,14 @@ require_once(dirname(__FILE__)."/include.php");
 require_once(dirname(__FILE__)."/lib/preview.functions.php");
 
 $smarty = new Smarty_Preview($config);
+$gCms->smarty = &$smarty;
 
 $page = "";
 
 if (isset($_GET["tmpfile"]) && $_GET["tmpfile"] != "") {
 	$page = $_GET["tmpfile"];
+	#header("Content-Language: " . $current_language);
+	#header("Content-Type: text/html; charset=" . get_encoding());
 	echo $smarty->fetch('preview:'.$page);
 }
 

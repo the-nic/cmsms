@@ -27,9 +27,9 @@
 set_magic_quotes_runtime(false);
 
 #Setup session with different id and start it
-session_name("CMSSESSID");
-if(!session_id()) {
-	session_start();
+@session_name("CMSSESSID");
+if(!@session_id()) {
+	@session_start();
 }
 
 #Make a new CMS object
@@ -66,7 +66,9 @@ if (isset($_SESSION["cms_admin_username"]))
 include_once(dirname(__FILE__)."/adodb/adodb.inc.php");
 
 $sql_execs = 0;
+
 $sql_queries = "";
+
 function count_sql_execs($db, $sql, $inputarray)
 {
 	global $gCms;
@@ -89,7 +91,7 @@ if (!isset($DONT_LOAD_DB)) {
 	$db->fnExecute = 'count_sql_execs';
 	if ($gCms->config['debug'] == true)
 	{
-		$db->debug = true;
+		#$db->debug = true;
 	}
 	$gCms->db = &$db;
 }
@@ -112,6 +114,12 @@ if(get_magic_quotes_gpc())
 	strip_slashes($_POST);
 	strip_slashes($_COOKIE);
 	strip_slashes($_SESSIONS);
+}
+
+#Fix for IIS (and others) to make sure REQUEST_URI is filled in
+if (!$_SERVER['REQUEST_URI'])
+{
+	$_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'].'?'.$_SERVER['QUERY_STRING'];
 }
 
 #Setup the object sent to modules
@@ -197,11 +205,11 @@ if (isset($CMS_ADMIN_PAGE)) {
 
 #Check for HTML_BBCodeParser
 if ($config["use_bb_code"] == true) {
-	if (include_once(dirname(__FILE__)."/lib/PEAR.php")) {
+	#if (include_once(dirname(__FILE__)."/lib/PEAR.php")) {
 		if (include_once("HTML/BBCodeParser.php")) {
 			$gCms->bbcodeparser = new HTML_BBCodeParser();
 		}
-	}
+	#}
 }
 
 # vim:ts=4 sw=4 noet

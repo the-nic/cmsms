@@ -23,6 +23,10 @@ require_once("../lib/classes/class.user.inc.php");
 
 $error = "";
 
+if (isset($_POST["logincancel"]))
+{
+	redirect($config["root_url"].'/index.php', true);
+}
 
 if (isset($_POST["username"]) && isset($_POST["password"])) {
 
@@ -34,77 +38,171 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
 
 	$oneuser = UserOperations::LoadUserByUsername($username, $password, true, true);
 
-	#$query = "SELECT * FROM ".cms_db_prefix()."users WHERE username = ".$db->qstr($username)." and password = ".$db->qstr(md5($password)) . " and active = 1";
-	#$result = $db->Execute($query);
-
-	#$line = $result->FetchRow();
-
-	#if ($username != "" && $password != "" && isset($line["user_id"])) {
-	if ($oneuser)
+	if ($username != "" && $password != "" && $oneuser && isset($_POST["loginsubmit"]))
 	{
 		generate_user_object($oneuser->id);
 		setcookie("cms_admin_user_id", $oneuser->id);
+		$default_cms_lang = get_preference($oneuser->id, 'default_cms_language');
+		if ($default_cms_lang != '')
+		{
+			setcookie('cms_language', $default_cms_lang);
+		}
 		audit(-1, '', 'User Login');
-		echo ('<html><head><title>Logging in... please wait</title><meta http-equiv="refresh" content="1; url=./index.php"></head><body>Logging in, one moment please...</body></html>');
+
+		#Perform the login_post callback
+		foreach($gCms->modules as $key=>$value)
+		{
+			if (isset($gCms->modules[$key]['login_post_function']) &&
+				$gCms->modules[$key]['Installed'] == true &&
+				$gCms->modules[$key]['Active'] == true)
+			{
+				call_user_func_array($gCms->modules[$key]['login_post_function'], array(&$gCms, &$oneuser));
+			}
+		}
+
+		if (isset($_SESSION["redirect_url"]))
+		{
+			if (isset($gCms->config) and $gCms->config['debug'] == true)
+			{
+				echo "Debug is on.  Redirecting disabled...  Please click this link to continue.<br />";
+				echo "<a href=\"".$_SESSION["redirect_url"]."\">".$_SESSION["redirect_url"]."</a><br />";
+				global $sql_queries;
+				if (isset($sql_queries))
+				{
+					echo $sql_queries;
+				}
+			}
+			else
+			{
+				echo ('<html><head><title>Logging in... please wait</title><meta http-equiv="refresh" content="1; url='.$_SESSION["redirect_url"].'"></head><body>Logging in and redirecting to <a href="'.$_SESSION["redirect_url"].'">'.$_SESSION["redirect_url"].'</a>, one moment please...</body></html>');
+			}
+			unset($_SESSION["redirect_url"]);
+		}
+		else
+		{
+			if (isset($config) and $config['debug'] == true)
+			{
+				echo "Debug is on.  Redirecting disabled...  Please click this link to continue.<br />";
+				echo "<a href=\"index.php\">index.php</a><br />";
+				global $sql_queries;
+				if (isset($sql_queries))
+				{
+					echo $sql_queries;
+				}
+			}
+			else
+			{
+				echo ('<html><head><title>Logging in... please wait</title><meta http-equiv="refresh" content="1; url=./index.php"></head><body>Logging in and redirecting to <a href="./index.php">index.php</a>, one moment please...</body></html>');
+			}
+		}
 		return;
 		#redirect("index.php");
 	}
-	else {
+	else if (isset($_POST["loginsubmit"])) { //No error if changing languages
 		$error .= "<p>".lang('usernameincorrect')."</p>";
 	}
 
 }
 
+// Language shizzle
+//header("Content-Encoding: " . get_encoding());
+header("Content-Language: " . $current_language);
+header("Content-Type: text/html; charset=" . get_encoding());
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html40/loose.dtd">
-<head>
+<HEAD>
 
-<title></title>
+<TITLE>CMS Admin Login</TITLE>
 
-<link rel="stylesheet" type="text/css" href="style.css" >
+<LINK REL="stylesheet" TYPE="text/css" HREF="style.css" >
 
-</head>
+</HEAD>
 
-<body>
+<BODY>
 
-<div class="login">
+<DIV CLASS="login">
 
 <?php
 
 	if ($error != "") {
-		echo "<div class=\"loginerror\">".$error."</div>";
+		echo "<div class=\"formError\">".$error."</div>";
 	}
 
 ?>
 
-<form method="post" action="login.php" id="login" name="login">
-<img src="../images/cms/cmslogo.png" border="0" alt="CMS Made Simple" align="right" >
-<table border="0" id="table">
-	<tr>
-		<td align="right"><?php echo lang('username')?>:</td>
-		<td><input type="text" id="username" name="username" value="<?php echo (isset($_POST["username"])?$_POST["username"]:"")?>" size="15"></td>
-	</tr>
-	<tr>
-		<td align="right"><?php echo lang('password')?>:</td>
-		<td><input type="password" id="password" name="password" size="15" ></td>
-	</tr>
-	<tr>
-		<td>&nbsp;</td>
-		<td><input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
-	</tr>
-</table>
-</form>
+<FORM METHOD="post" ACTION="login.php" ID="login" NAME="login" >
+<IMG SRC="../images/cms/cmsloginbanner.gif" ALT="CMS Made Simple" WIDTH="411" HEIGHT="114" BORDER="0" ALIGN="right" >
+<DIV ID=ctr ALIGN=center>
+<IMG SRC="../images/cms/login.gif" ALT="CMS Made Simple" WIDTH="64" HEIGHT="64" BORDER="0"  ID="loginbox">
+</DIV>
+<TABLE BORDER="0" ID="logintable" ALIGN="center">
+	<TR>
+		<TD ALIGN="right"><?php echo lang('username')?>:</TD>
+		<TD><INPUT TYPE="text" ID="userdata" NAME="username" VALUE="<?php echo (isset($_POST["username"])?$_POST["username"]:"")?>" SIZE="15"></TD>
+	</TR>
+	<TR>
+		<TD ALIGN="right"><?php echo lang('password')?>:</TD>
+		<TD><INPUT TYPE="password" ID="userdata_p" NAME="password" VALUE="<?php echo (isset($_POST["password"])?$_POST["password"]:"")?>" SIZE="15" ></TD>
+	</TR>
+	<TR>
+		<TD ALIGN="right"><?php echo lang('language')?>:</TD>
+		<TD>
+			<SELECT CLASS="smallselect"  NAME="change_cms_lang" onChange="document.login.submit()" STYLE="vertical-align: middle;">
+			<?php
+				asort($nls["language"]);
+				foreach ($nls["language"] as $key=>$val) {
+					echo "<option value=\"$key\"";
+					if (isset($_POST["change_cms_lang"])) {
+						if ($_POST["change_cms_lang"] == $key) {
+							echo " selected";
+						}
+					}else if(isset($_COOKIE["cms_language"])) {
+						if ($_COOKIE["cms_language"] == $key) {
+							echo " selected";
+						}
+					}else if($key == 'en_US'){//no language is set defaults to english.
+						echo ' selected';
+					}
+					echo ">$val";
+					/*
+					if (isset($nls["englishlang"][$key]))
+					{
+						echo " (".$nls["englishlang"][$key].")";
+					}
+					*/
+					echo "</option>\n";
+				}
+			?>
+			</SELECT>
+		</TD>
+	</TR>
+	<TR>
+		<TD>&nbsp;</TD>
+		<TD>
+			<INPUT TYPE="submit" NAME="loginsubmit" VALUE="<?php echo lang('submit')?>" CLASS="button" onMouseOver="this.className='buttonHover'" onMouseOut="this.className='button'">&nbsp;
+			<INPUT TYPE="submit" NAME="logincancel" VALUE="<?php echo lang('cancel')?>" CLASS="button" onMouseOver="this.className='buttonHover'" onMouseOut="this.className='button'">
+		</TD>
+	</TR>
+</TABLE>
+</FORM>
 
-</div>
-
-<script language="javascript">
+<script type="text/javascript">
 <!--
 	document.login.username.focus();
 //-->
 </script>
-
-</body>
-</html>
+</div>
+</BODY>
+</HTML>
 <?php
+	if (isset($gCms->config) and $gCms->config['debug'] == true)
+	{
+		global $sql_queries;
+		if (isset($sql_queries))
+		{
+			echo $sql_queries;
+		}
+	}
 # vim:ts=4 sw=4 noet
 ?>

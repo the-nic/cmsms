@@ -41,12 +41,14 @@ function check_login() {
 
 	if (!isset($_COOKIE["cms_admin_user_id"]))
 	{
+		$_SESSION["redirect_url"] = $_SERVER["REQUEST_URI"];
 		redirect($config["root_url"]."/admin/login.php");
 	}
 	else if (!isset($_SESSION["cms_admin_user_id"]))
 	{
 		if (!generate_user_object($_COOKIE["cms_admin_user_id"]))
 		{
+			$_SESSION["redirect_url"] = $_SERVER["REQUEST_URI"];
 			redirect($config["root_url"]."/admin/login.php");
 		}
 	}
@@ -130,7 +132,7 @@ function check_permission($userid, $permname) {
  * @returns mixed If they have ownership, true.  If they do not, false.
  * @since 0.1
  */
-function check_ownership($userid, $pagename, $pageid = "") {
+function check_ownership($userid, $pageid = "") {
 
 	$check = false;
 
@@ -155,7 +157,7 @@ function check_ownership($userid, $pagename, $pageid = "") {
  * @returns mixed If they have authorship, true.  If they do not, false.
  * @since 0.2
  */
-function check_authorship($userid, $pageid) {
+function check_authorship($userid, $pageid = "") {
 
 	$check = false;
 
@@ -343,12 +345,13 @@ function get_stylesheet($templateid) {
 	global $gCms;
 	$db = $gCms->db;
 
-	$query = "SELECT stylesheet FROM ".cms_db_prefix()."templates WHERE template_id = ".$templateid;
+	$query = "SELECT stylesheet, encoding FROM ".cms_db_prefix()."templates WHERE template_id = ".$templateid;
 	$result = $db->Execute($query);
 
 	if ($result && $result->RowCount() > 0) {
 		$line = $result->FetchRow();
 		$css = $line['stylesheet'];
+		header("Content-Type: text/html; charset=" . (isset($line['encoding']) && $line['encoding'] != ''?$line['encoding']:get_encoding()));
 	}
 
 	# add linked CSS if any
@@ -361,7 +364,7 @@ function get_stylesheet($templateid) {
 	{
 		while ($cssline = $cssresult->FetchRow())
 		{
-			$css .= "\n".$cssline[css_text]."\n";
+			$css .= "\n".$cssline['css_text']."\n";
 		}
 	}
 
@@ -391,30 +394,179 @@ function & strip_slashes(&$str) {
 
 /*
  * creates a textarea that does syntax highlighting on the source code.
- * This function could be made better if javascript was used to create
- * the syntax highlighting instead of php's highlight_string()
+ * The following also needs to be added to the <form> tag for submit to work.
+ * if($use_javasyntax){echo 'onSubmit="textarea_submit(
+ * this, \'custom404,sitedown\');"';}
  */
-function textarea_highlight($content, $textarea_name, $class_name="syntaxHighlight"){
-	ini_set("highlight.bg","#FFFFFF"); 
-	ini_set("highlight.comment", "#FF8000"); 
-	ini_set("highlight.default", "#0000BB");
-	ini_set("highlight.html", "#000000");
-	ini_set("highlight.keyword", "#007700");
-	ini_set("highlight.string", "#DD0000");
-
-	$text_highlight = highlight_string("<?$content?>", true);
-	$text_highlight = str_replace("&lt;?", "", $text_highlight);
-	$text_highlight = str_replace("?&gt;","", $text_highlight);
-	$text_highlight = str_replace('\'', '\\\'', $text_highlight);
-	$text_highlight = ereg_replace("\r", '', $text_highlight);
-	$text_highlight = ereg_replace("\n", '', $text_highlight);
-	$content = ereg_replace("\r", ' ', $content);
-
-	echo '<script type="text/javascript" language="Javascript1.2">';
-	echo 'document.write(\'<div id="syntax_highlight" style="border: 1px solid #A5ACB2; overflow: auto;" contenteditable="true" contentEditable="true" onSelect="saveCaret(this)" onClick="syntax_highlight_remove(\\\'onClick\\\', this, \\\''.$textarea_name.'\\\')" onKeyDown="syntax_highlight_remove(\\\'onKeyDown\\\', this, \\\''.$textarea_name.'\\\')" class="'.$class_name.'">'.$text_highlight.'</div>\');';
-	echo '</script>';
-	echo '<textarea name="'.$textarea_name.'" id="plain" rows="24" cols="80" style="border: 1px solid #A5ACB2" class="'.$class_name.'">'.$content.'</textarea>';
+function textarea_highlight($use_javasyntax, $text, $name,
+    $class_name="syntaxHighlight", $syntax_type="HTML (Complex)", $id="", $encoding=''){
+            
+    if ($use_javasyntax){
+        $text = ereg_replace("\r\n", "<CMSNewLine>", $text);
+        $text = ereg_replace("\r", "<CMSNewLine>", $text);
+        $text = cms_htmlentities(ereg_replace("\n", "<CMSNewLine>", $text));
+                
+        // possible values for syntaxType are: Java, C/C++, LaTeX, SQL, 
+        // Java Properties, HTML (Simple), HTML (Complex)
+        
+        $output = '<applet name="CMSSyntaxHighlight"
+            code="org.CMSMadeSimple.Syntax.Editor.class" width="100%">
+                <param name="cache_option" VALUE="Plugin">
+                <param name="cache_archive" VALUE="SyntaxHighlight.jar">
+                <param name="cache_version" VALUE="612.0.0.0">
+                <param name="content" value="'.$text.'">
+                <param name="syntaxType" value="'.$syntax_type.'">
+                Sorry, the syntax highlighted textarea will not work with your
+                browser. Please use a different browser or turn off syntax 
+                highlighting under user preferences.
+            </applet>
+            <input type="hidden" name="'.$name.'" value="">';
+       
+    }else{
+        $output = '<textarea name="'.$name.'" cols="80" rows="24" 
+            class="'.$class_name.'"';
+        if ($id<>"")
+            $output.=' id="'.$id.'"';
+        $output.='>'.cms_htmlentities($text,ENT_NOQUOTES,get_encoding($encoding)).'</textarea>';
+    }
+    
+    return $output;
 }
 
+
+/*
+ * Checks to see if password protected (frontend)
+ * @return int - page number or -1 if not protected
+ */
+function password_protected($page){
+	global $gCms;
+	$db = $gCms->db;
+
+	$query = "SELECT password_protected,page_id FROM ".cms_db_prefix()."pages WHERE page_id = ".$page." OR page_alias = ".$page;
+	$result = $db->Execute($query);
+
+	if ($result && $result->RowCount() > 0){
+		$row = $result->FetchRow();
+		if ($row['password_protected'] == 1)
+			return $row['page_id'];
+	}
+	return -1;
+}
+
+/*
+ * Displays the login form (frontend)
+ */
+function display_login_form(){
+	return '<form method=post action="'.$_SERVER['PHP_SELF'].'">'.
+	'Name: <input type="text" name="login_name"><br>'.
+	'Password: <input type="password" name="login_password"><br>'.
+	'<input type="submit">'.
+	'</form>';
+}
+
+/*
+ * check if the person has access to this file (frontend)
+ */
+function check_access($page_id){
+	global $gCms;
+	$db = $gCms->db;
+	
+	if (isset($_SESSION['login_name']) && isset($_SESSION['login_password'])) {
+		return true;
+	}
+
+	if (isset($_POST['login_password']) && isset($_POST['login_name'])){
+		$login_password = trim($_POST['login_password']);
+		$login_name = trim($_POST['login_name']);
+		$query = 'SELECT user_id FROM '.cms_db_prefix().'frontend_users WHERE page_id = '.$page_id;
+		$result = $db->Execute($query);
+		if ($result && $result->RowCount() > 0){
+			$query = 'SELECT user_id from '.cms_db_prefix().'users WHERE `username`=\''.$login_name.'\' AND `password`=\''.md5($login_password).'\'';
+			$result = $db->Execute($query);
+			if ($result && $result->RowCount() > 0) {
+				$_SESSION['login_name'] = $login_name;
+				$_SESSION['login_password'] = $login_password;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * Creates a string containing links to all the pages. 
+ * @param page - the current page to display
+ * @param totalrows - the amount of items being listed
+ * @param limit - the amount of items to list per page
+ * @return a string containing links to all the pages (ex. next 1,2 prev)
+ */
+ function pagination($page, $totalrows, $limit){
+	
+	$page_string = "";
+	$from = ($page * $limit) - $limit;
+	$numofpages = $totalrows / $limit;
+	if ($numofpages > 1) {
+		if($page != 1){
+			$pageprev = $page-1;
+			$page_string .= "<a href=\"".$_SERVER['PHP_SELF']."?page=$pageprev\">".lang('previous')."</a>&nbsp;";
+		}else{
+			$page_string .= lang('previous')." ";
+		}
+		for($i = 1; $i <= $numofpages; $i++){
+			if($i == $page){
+				$page_string .= $i."&nbsp;";
+			}else{
+				$page_string .= "<a href=\"".$_SERVER['PHP_SELF']."?page=$i\">$i</a>&nbsp;";
+			}
+		}
+
+		if(($totalrows % $limit) != 0){
+			if($i == $page){
+				$page_string .= $i."&nbsp;";
+			}else{
+				$page_string .= "<a href=\"".$_SERVER['PHP_SELF']."?page=$i\">$i</a>&nbsp;";
+			}
+		}
+
+		if(($totalrows - ($limit * $page)) > 0){
+			$pagenext = $page+1;
+			$page_string .= "<a href=\"".$_SERVER['PHP_SELF']."?page=$pagenext\">".lang('next')."</a>";
+		}else{
+			$page_string .= lang('next')." ";
+		}
+	}
+	return $page_string;
+ }
+ 
+ 
+/**
+ * Takes a page object as input
+ * Returns the page's URL as a string.
+ * If the page cannot have a valid URL (e.g. content_type='seperator'), it returns an empty string.
+ */
+function getURL($page) {
+	global $config;
+	$url = "";
+
+	# Fix URL where appropriate
+	if ($page->page_type == "link")	{
+		$url = $page->page_url;
+	} elseif ($page->page_type != "sectionheader") {
+		if (isset($page->page_alias) && $page->page_alias != "") {
+			if ($config["assume_mod_rewrite"]) 
+				$url = $config["root_url"]."/".$page->page_alias.".shtml";
+			else 
+				$url = $config["root_url"]."/index.php?".$config["query_var"]."=".$page->page_alias;
+			
+		} else {
+			if ($config["assume_mod_rewrite"])
+				$url = $config["root_url"]."/".$page->page_id.".shtml";
+			else 
+				$url = $config["root_url"]."/index.php?".$config["query_var"]."=".$page->page_id;
+		}
+	} 
+	return $url;
+
+ }
 # vim:ts=4 sw=4 noet
 ?>

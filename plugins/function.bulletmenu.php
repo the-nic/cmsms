@@ -100,7 +100,7 @@ function smarty_cms_function_bulletmenu($params, &$smarty) {
 	for ($i = 0; $i < $last_level; $i++) $menu .= "</ul>";
 
 	if ($showadmin == 1) {
-		$menu .= "<ul><li><a href='admin'>Admin</a></li></ul>\n";
+		$menu .= "<ul><li><a href='admin/'>Admin</a></li></ul>\n";
 	}
 
 	return $menu;
@@ -127,7 +127,7 @@ function smarty_cms_help_function_bulletmenu() {
 
 function smarty_cms_about_function_bulletmenu() {
 	?>
-	<p>Author: Julien Lancien&lt;calexico@ifrance.com&gt;</p>
+	<p>Author: Julien Lancien&lt;calexico@cmsmadesimple.org&gt;</p>
 	<p>Version: 1.0</p>
 	<p>
 	Change History:<br/>

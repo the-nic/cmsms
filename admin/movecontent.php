@@ -28,6 +28,7 @@ if (isset($_GET["page_id"])) {
 	$page_id = $_GET["page_id"];
 	$parent_id = $_GET["parent_id"];
 	$direction = $_GET["direction"];
+	$page = $_GET['page'];
 	$userid = get_userid();
 	$access = check_permission($userid, 'Modify Any Content');
 
@@ -63,10 +64,11 @@ if (isset($_GET["page_id"])) {
 			#echo $query;
 			$db->Execute($query);
 		}
+		set_all_pages_hierarchy_position();
 	}
 }
 
-redirect("listcontent.php");
+redirect("listcontent.php?page=$page");
 
 # vim:ts=4 sw=4 noet
 ?>

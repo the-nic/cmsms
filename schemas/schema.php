@@ -154,6 +154,39 @@ if (isset($CMS_INSTALL_CREATE_TABLES)) {
 
 	echo "[done]</p>";
 
+	echo "<p>Creating htmlblobs table...";
+
+	$dbdict = NewDataDictionary($db);
+	$flds = "
+		htmlblob_id I,
+		htmlblob_name C(255),
+		html X,
+		owner I,
+		create_date T,
+		modified_date T
+	";
+	$taboptarray = array('mysql' => 'TYPE=MyISAM');
+	$sqlarray = $dbdict->CreateTableSQL($db_prefix."htmlblobs", $flds, $taboptarray);
+	$dbdict->ExecuteSQLArray($sqlarray);
+
+	$db->CreateSequence($db_prefix."htmlblobs_seq");
+
+	echo "[done]</p>";
+
+	echo "<p>Creating additional_htmlblob_users table...";
+
+	$dbdict = NewDataDictionary($db);
+	$flds = "
+		additional_htmlblob_users_id I KEY,
+		user_id I,
+		htmlblob_id I
+	";
+	$taboptarray = array('mysql' => 'TYPE=MyISAM');
+	$sqlarray = $dbdict->CreateTableSQL($db_prefix."additional_htmlblob_users", $flds, $taboptarray);
+	$dbdict->ExecuteSQLArray($sqlarray);
+
+	echo "[done]</p>";
+
 	echo "<p>Creating modules table...";
 
 	$dbdict = NewDataDictionary($db);
@@ -177,6 +210,9 @@ if (isset($CMS_INSTALL_CREATE_TABLES)) {
 		news_title C(255),
 		news_data X,
 		news_date T,
+		start_time T,
+		end_time T,
+		icon C(255),
 		create_date T,
 		modified_date T
 	";
@@ -205,6 +241,8 @@ if (isset($CMS_INSTALL_CREATE_TABLES)) {
 		parent_id I,
 		template_id I,
 		head_tags X,
+		page_header X,
+		hierarchy_position C(255),
 		create_date T,
 		modified_date T
 	";
@@ -256,6 +294,7 @@ if (isset($CMS_INSTALL_CREATE_TABLES)) {
 		template_name C(25),
 		template_content X,
 		stylesheet X,
+		encoding C(25),
 		active I1,
 		create_date T,
 		modified_date T
@@ -303,6 +342,10 @@ if (isset($CMS_INSTALL_CREATE_TABLES)) {
 		user_id I KEY,
 		username C(25),
 		password C(40),
+		admin_access I1,
+		first_name C(50),
+		last_name C(50),
+		email C(255),
 		active I1,
 		create_date T,
 		modified_date T
@@ -326,8 +369,6 @@ if (isset($CMS_INSTALL_CREATE_TABLES)) {
 	$taboptarray = array('mysql' => 'TYPE=MyISAM');
 	$sqlarray = $dbdict->CreateTableSQL($db_prefix."userplugins", $flds, $taboptarray);
 	$dbdict->ExecuteSQLArray($sqlarray);
-
-	$db->CreateSequence($db_prefix."userplugins_seq");
 
 	echo "[done]</p>";
 

@@ -84,6 +84,17 @@ function cms_config_load($loadLocal = true)
 	#Automatically assign alias based on page title?
 	$config["auto_alias_content"] = true;
 
+	$config["image_manipulation_prog"] = "GD";
+	$config["image_transform_lib_path"] = "/usr/bin/ImageMagick/";
+	$config["use_Indite"] = true;
+
+	$config["image_uploads_path"] = $config["root_path"] . "/uploads/images";
+	$config["image_uploads_url"] = $config["root_url"] . "/uploads/images";
+
+	$config["default_encoding"] = "";
+
+	$config["disable_htmlarea_translation"] = false;
+
 	if ($loadLocal == true)
 	{
 		if (file_exists(dirname(dirname(__FILE__))."/config.php") && !cms_config_check_old_config())

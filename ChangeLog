@@ -1,13 +1,144 @@
-Version 0.6.1 -- Subversion
+Version 0.7.3 -- Subversion
+-----------------
+
+* Added Italian translation (emanuelez)
+* Added more callback functions to module API
+* Added config.php option to disable sending translations to htmlarea 
+(#000049)
+* Added active/inactive toggle in Content Management (Xorn725)
+* Added categories and other fixes to the News module (calguy1000)
+* Added breadcrumbs and sitemap plugins (Manarth)
+* Fixed syntax highlighting not submitting data of second textarea.
+* Fixed HTMLArea to display properly with all languages, even if some
+still default to en_US
+* Fixed bug with handling of aliases in add/editcontent
+* Fixed bug with relative paths in dhtmlmenu
+* Fixed changing ownership of html blobs
+* Fixed displaying html_blobs in modules with executeuser
+* Fixed HTML bug in print module (#000048)
+* Fixed error message with Deleting templates (Part of #000047)
+* Fixed check_ownership and check_authorship to be more consistant 
+(Xorn725)
+* Reenabled Image Manager
+* Removed Allow Admin Access from add/edit user
+* Updated adodb to 4.54
+
+Vrersion 0.7.2 -- Wed Nov 10 2004
+-----------------
+
+* Added missing edit links to titles in CSS and News admin (#000035)
+* Added ability to invert the foreground/background color of htmlarea 
+(#0000031)
+* Added search and replace to htmlarea
+* Added ability to clean pastes from Microsoft Word in htmlarea
+* Added pagination to majority of admin list pages
+* Added google search plugin
+* Added google pagerank plugin
+* Added Expand/Collapse plugin
+* Added print page plugin
+* Added strip_tags to RSS output in News module (#000042)
+* Changed en_US to UTF-8
+* Changed with of add and edit html blob pages
+* Changed all template lists to be ordered by template name (#000038)
+* Changed edit html blob so that is only modifies the timestamps of pages it 
+is actually used on.
+* Changed all user lists to be ordered by username (#000039)
+* Changed add content so that the alias is based off of menutext instead of
+the title
+* Changed upgrade script so that it always clears the cache directories even
+if there is no schema change.
+* Fixed custom 404 error template usage
+* Fixed add and edit content pages so that the alias field is more intelligent
+when auto_alias_content is on (#000043)
+* Fixed login to redirect back to originally requested link
+* Fixed stupid encoding issue with cms_htmlentities
+* Fixed htmlarea not loading due to a notice level error (#0000034)
+* Fixed a few problems with htmlarea's fullscreen not working in Internet 
+Explorer
+* Fixed htmlblob to fill the width of the screen (#0000037)
+* Updated Smarty to 2.6.6 (jope)
+
+Version 0.7.1 -- Wed Oct 26 2004
+-----------------
+
+* Added check for session functions to install script (#000004)
+* Added newline parsing to the comments module (#000011)
+* Added encoding override on templates.  Fixed bugs with
+htmlentities. (#000002, #000006)
+* Added missing CSS to the horizontal menu (#000008)
+* Added check to lang/addline.sh to make sure line doesn't already
+exist (#000017)
+* Added German translation (Piratos)
+* Added Czech translation (peca)
+* Added new div and swaptitledate parameter to News module
+* Fixed a bug when hitting cancel on the login page (#000029)
+* Fixed bug when not saving all fields when adding a user
+* Fixed html blobs so that they can  handle smarty functions inside of them.
+* Fixed email in add/edit user to accept 255 characters (#000003)
+* Fixed htmlblob NOTICE level messages (#000005)
+* Fixed delete confirmation text in file management (#000012)
+* Fixed java syntax highlighting to submit if advnaced wasn't
+expanded (#0000016)
+* Removed most references to BBCode without breaking backwards
+compatibility (#000013)
+* Removed a rogue div from the Comments module (#000010)
+* Fixed htmlarea displaying inproper align values (#0000021)
+* Fixed css not properly displaying in htmlarea until post (#0000031)
+* Fixed default language on login page to default to english. (#0000032)
+* Changed the header slogan to be text instead of an image (#0000015)
+
+Version 0.7 -- Mon Oct 11 2004
+-----------------
+
+* Added HTML blobs for easy administration of small chunks of html (Genie #3)
+* Added Image Manager to the files section for advanced image handling
+functions
+* Added horizontal option to dhtmlmenu (leen)
+* Added new admin style
+* Added new install and upgrade look
+* Added language as a user perference and also moved it to the login page
+* Added java based syntax highlighting as a user preference
+* Added support for mysql 4.1+ using the mysqli adodb driver
+* Added cancel link to login page that redirects back to site (Genie #6)
+* Added auto_upgrade functionality to modules (Genie #4)
+* Added more intelligent handling of file types to file management
+* Added ability to override the default encoding of the whole site, admin
+included (Genie #15)
+* Fixed News module so that post date shows on newly created items (Genie #5)
+* Fixed bug with start and end dates when adding new News item (BamaRob)
+* Fixed missing template option for News module (trac #67)
+* Updated adodb to 4.53
+
+Version 0.6.3 -- Wed Sep 22 2004 
+-----------------
+
+* Fixed a very bad bug where you can login with no password
+
+Version 0.6.2 -- Tue Sep 20 2004 
+-----------------
+
+* Added Chinese translations (ray)
+* Added dateformat parameter to News
+* Added showtemplate parameter to moduleinterface.php, so you can do things
+like show just an RSS feed and nothing else.
+* Fixed a bug with html entities not getting converted properly after preview
+or saved. (Fixes #62, #65)
+* Fixed bug with bug with news when it's the content type.
+* Updated the defalt website to be a little more up to date with the current
+feature set
+
+Version 0.6.1 -- Tue Sep 14 2004
 -----------------
 
 * Added section header content type
 * Added cms_selflink plugin
 * Added some functionality to the News module (make sure you upgrade it)
+* Added Dutch translation (Thijs)
 * Changed login and logout to work properly in IIS (Fixes #60)
 * Fixed a bug with view page in listcontent (Fixes #61)
 * Fixed so only content pages can be set as default (Fixes #59)
 * Started moving code to an easy object oriented design
+* Updated smarty to 2.6.5
 
 Version 0.6 -- Wed Sep 01 2004
 -----------------

@@ -7,7 +7,7 @@ global $ADODB_INCLUDED_LIB;
 $ADODB_INCLUDED_LIB = 1;
 
 /* 
- @version V4.50 6 July 2004 (c) 2000-2004 John Lim (jlim\@natsoft.com.my). All rights reserved.
+ @version V4.54 5 Nov 2004 (c) 2000-2004 John Lim (jlim\@natsoft.com.my). All rights reserved.
   Released under both BSD license and Lesser GPL library license. 
   Whenever there is any discrepancy between the two licenses, 
   the BSD license will take precedence. See License.txt. 
@@ -22,6 +22,7 @@ $ADODB_INCLUDED_LIB = 1;
 function _array_change_key_case($an_array)
 {
 	if (is_array($an_array)) {
+		$new_array = array();
 		foreach($an_array as $key=>$value)
 			$new_array[strtoupper($key)] = $value;
 
@@ -114,12 +115,12 @@ function _adodb_getmenu(&$zthis, $name,$defstr='',$blank1stItem=true,$multiple=f
 
 	if ($multiple or is_array($defstr)) {
 		if ($size==0) $size=5;
-		$attr = " multiple size=$size";
+		$attr = ' multiple size="'.$size.'"';
 		if (!strpos($name,'[]')) $name .= '[]';
-	} else if ($size) $attr = " size=$size";
+	} else if ($size) $attr = ' size="'.$size.'"';
 	else $attr ='';
-
-	$s = "<select name=\"$name\"$attr $selectAttr>";
+	
+	$s = '<select name="'.$name.'"'.$attr.' '.$selectAttr.'>';
 	if ($blank1stItem) 
 		if (is_string($blank1stItem))  {
 			$barr = explode(':',$blank1stItem);
@@ -416,9 +417,9 @@ function _adodb_getupdatesql(&$zthis,&$rs, $arrFields,$forceUpdate=false,$magicq
                 // is_null requires php 4.0.4
                 //********************************************************//
                 if (is_null($arrFields[$upperfname])
+					|| (empty($arrFields[$upperfname]) && strlen($arrFields[$upperfname]) == 0)
                     || $arrFields[$upperfname] === 'null'
-                    || $arrFields[$upperfname] === ''
-                    || empty($arrFields[$upperfname]))
+                    )
                 {
                     switch ($force) {
 
@@ -472,7 +473,8 @@ function _adodb_getupdatesql(&$zthis,&$rs, $arrFields,$forceUpdate=false,$magicq
 			// not a good hack, improvements?
 			if ($whereClause) {
 				if (preg_match('/\s(ORDER\s.*)/is', $whereClause[1], $discard));
-				else preg_match('/\s(LIMIT\s.*)/is', $whereClause[1], $discard);
+				else if (preg_match('/\s(LIMIT\s.*)/is', $whereClause[1], $discard));
+				else preg_match('/\s(FOR UPDATE.*)/is', $whereClause[1], $discard);
 			} else
 				$whereClause = array(false,false);
 				
@@ -512,6 +514,10 @@ function adodb_key_exists($key, &$arr,$force=2)
  */
 function _adodb_getinsertsql(&$zthis,&$rs,$arrFields,$magicq=false,$force=2)
 {
+static $cacheRS = false;
+static $cacheSig = 0;
+static $cacheCols;
+
 	$tableName = '';
 	$values = '';
 	$fields = '';
@@ -530,11 +536,24 @@ function _adodb_getinsertsql(&$zthis,&$rs,$arrFields,$magicq=false,$force=2)
 		$rsclass = $zthis->rsPrefix.$zthis->databaseType;
 		$recordSet =& new $rsclass(-1,$zthis->fetchMode);
 		$recordSet->connection = &$zthis;
-	
-		$columns = $zthis->MetaColumns( $tableName );
+		
+		if (is_string($cacheRS) && $cacheRS == $rs) {
+			$columns =& $cacheCols;
+		} else {
+			$columns = $zthis->MetaColumns( $tableName );
+			$cacheRS = $tableName;
+			$cacheCols = $columns;
+		}
 	} else if (is_subclass_of($rs, 'adorecordset')) {
-		for ($i=0, $max=$rs->FieldCount(); $i < $max; $i++) 
-			$columns[] = $rs->FetchField($i);
+		if (isset($rs->insertSig) && is_integer($cacheRS) && $cacheRS == $rs->insertSig) {
+			$columns =& $cacheCols;
+		} else {
+			for ($i=0, $max=$rs->FieldCount(); $i < $max; $i++) 
+				$columns[] = $rs->FetchField($i);
+			$cacheRS = $cacheSig;
+			$cacheCols = $columns;
+			$rs->insertSig = $cacheSig++;
+		}
 		$recordSet =& $rs;
 	
 	} else {
@@ -556,9 +575,9 @@ function _adodb_getinsertsql(&$zthis,&$rs,$arrFields,$magicq=false,$force=2)
 			
             /********************************************************/
             if (is_null($arrFields[$upperfname])
+                || (empty($arrFields[$upperfname]) && strlen($arrFields[$upperfname]) == 0)
                 || $arrFields[$upperfname] === 'null'
-                || $arrFields[$upperfname] === ''
-                || empty($arrFields[$upperfname]))
+				)
                {
                     switch ($force) {
 

@@ -19,7 +19,7 @@
 function smarty_cms_function_contact_form($params, &$smarty) {
 
 	if (empty($params['email'])){
-		echo '<div class="formAlert">A email address to send to must be specified in order to use this plugin.</div>';
+		echo '<div class="formError">A email address to send to must be specified in order to use this plugin.</div>';
 		exit;
 	}else{
 		$to = $params['email'];
@@ -80,7 +80,9 @@ function smarty_cms_help_function_contact_form() {
 	<h3>What does this do?</h3>
 	<p>Display's a contact form.  This can be used to allow others to send an email message to the address specified.</p>
 	<h3>How do I use it?</h3>
-	<p>Just insert the tag into your template/page like: <code>{contact_form email="yourname@yourdomain.com"}</code></p>
+	<p>Just insert the tag into your template/page like: <code>{contact_form email="yourname@yourdomain.com"}</code><br>
+	<br>
+	If you would like to send an email to multiple adresses, seperate each address with a comma.</p>
 	<h3>What parameters does it take?</h3>
 	<ul>
 		<li>email - The email address that the message will be sent to.</li>
