@@ -19,6 +19,7 @@
 $DONT_LOAD_DB=1;
 require_once(dirname(dirname(__FILE__))."/include.php");
 
+
 //Do module autoupgrades 
 function module_autoupgrade()
 {
@@ -79,6 +80,18 @@ function module_autoupgrade()
 <div class="main">
 
 <?php
+
+clearstatcache();
+if (!is_writable(dirname(dirname(__FILE__)).'/tmp/templates_c') || !is_writable(dirname(dirname(__FILE__)).'/tmp/cache'))
+{
+	echo '<p>The following directories must be writable by the web server:<br />';
+	echo 'tmp/cache<br />';
+	echo 'tmp/templates_c<br /></p>';
+	echo '<p>Please correct by executing:<br /><em>chmod 777 tmp/cache<br />chmod 777 tmp/templates_c</em><br />or the equivilent for your platform before continuing.</p>';
+	echo '</div></div>';
+	echo '</body></html>';
+	exit;
+}
 
 if (!isset($_GET["doupgrade"])) {
 	echo "<h3>Welcome to the CMS Upgrade System!</h3>";
@@ -174,6 +187,14 @@ else
 		}
 
 		module_autoupgrade();
+
+		if (file_exists(dirname(dirname(__FILE__))."/tmp/cache/SITEDOWN"))
+		{
+			if (!unlink(dirname(dirname(__FILE__))."/tmp/cache/SITEDOWN"))
+			{
+				echo "<p class=\"error\">Error: Could not remove the tmp/cache/SITEDOWN file.  Please remove manually.</p>";
+			}
+		}
 
 		echo "<p>Please review config.php,  modify any new settings as necessary and then reset it's permissions back to a locked state.</p>";
 		echo "<p>CMS is up to date.  Please click <a href=\"../index.php\">here</a> to go to your CMS site.</p>";

@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
@@ -48,8 +50,20 @@ if ($access)
 		}
 
 		#now insert a record
-		$query = "INSERT INTO ".cms_db_prefix()."modules (module_name, version, status, active) VALUES (".$db->qstr($module).",".$db->qstr($gCms->modules[$module]['Version']).",'Installed',1)";
+		$query = "INSERT INTO ".cms_db_prefix()."modules (module_name, version, status, active) VALUES (".$db->qstr($module).",".$db->qstr($gCms->modules[$module]['Version']).",'installed',1)";
 		$db->Execute($query);
+		
+		#and insert any dependancies
+        if (isset($gCms->modules[$module]['dependency'])) #Check for any deps
+        {
+            #Now check to see if we can satisfy any deps
+            foreach ($gCms->modules[$module]['dependency'] as $onedepkey=>$onedepvalue)
+            {
+				$query = "INSERT INTO ".cms_db_prefix()."module_deps (parent_module, child_module, minimum_version, create_date, modified_date) VALUES (?,?,?,?,?)";
+				$db->Execute($query, array($onedepkey, $module, $onedepvalue, $db->DBTimeStamp(time()), $db->DBTimeStamp(time())));
+            }
+        }
+		
 		redirect("plugins.php");
 	}
 
@@ -72,8 +86,13 @@ if ($access)
 		}
 
 		#now delete the record
-		$query = "DELETE FROM ".cms_db_prefix()."modules WHERE module_name = ".$db->qstr($module);
-		$db->Execute($query);
+		$query = "DELETE FROM ".cms_db_prefix()."modules WHERE module_name = ?";
+		$db->Execute($query, array($module));
+		
+		#delete any dependencies
+		$query = "DELETE FROM ".cms_db_prefix()."module_deps WHERE child_module = ?";
+		$db->Execute($query, array($module));
+		
 		redirect("plugins.php");
 	}
 
@@ -178,6 +197,48 @@ else if ($action == "showpluginabout")
 		<?php
 	}
 }
+else if ($action == 'missingdeps')
+{
+	echo "<div class=\"moduleabout\">";
+	echo '<h2>'.lang('depsformodule', array($module)).'</h2>';
+	echo '<table cellspacing="0" class="admintable">';
+	echo '<tr><td>'.lang('name').'</td><td>'.lang('minimumversion').'</td><td>'.lang('installed').'</td></tr>';
+
+	if (isset($gCms->modules[$module]['dependency']))
+	{
+		$curclass = 'row1';
+		foreach ($gCms->modules[$module]['dependency'] as $key=>$value)
+		{
+			echo '<tr class="'.$curclass.'"><td>'.$key.'</td><td>'.$value.'</td><td>';
+
+			$havedep = false;
+
+			#Now check to see if we can satisfy any deps
+			foreach ($gCms->modules[$module]['dependency'] as $onedepkey=>$onedepvalue)
+			{
+				if (isset($gCms->modules[$onedepkey]) && 
+					$gCms->modules[$onedepkey]['Installed'] == true &&
+					$gCms->modules[$onedepkey]['Active'] == true &&
+					version_compare($gCms->modules[$onedepkey]['Version'], $onedepvalue) > -1)
+				{
+					$havedep = true;
+				}
+			}
+
+			echo lang(($havedep?'true':'false'));
+			echo '</td></tr>';
+			($curclass=="row1"?$curclass="row2":$curclass="row1");
+		}
+	}
+
+	echo '</table>';
+
+	?>
+	<FORM ACTION="plugins.php" METHOD="get">
+	<P><INPUT TYPE="submit" VALUE="<?php echo lang('backtoplugins')?>" CLASS="button" onMouseOver="this.className='buttonHover'" onMouseOut="this.className='button'"></P>
+	</FORM>
+	<?php
+}
 else
 {
 
@@ -198,37 +259,82 @@ else
 ?>
 
 
-	<H3><?php echo lang('modules')?></H3>
+	<h3><?php echo lang('modules')?></h3>
 
-	<TABLE CELLSPACING="0" CLASS="admintable">
-		<TR>
-			<TD><?php echo lang('name')?></TD>
-			<TD WIDTH="10%"><?php echo lang('version')?></TD>
-			<TD WIDTH="10%"><?php echo lang('status')?></TD>
-			<TD WIDTH="10%"><?php echo lang('active')?></TD>
-			<TD WIDTH="10%"><?php echo lang('action')?></TD>
-			<TD WIDTH="10%"><?php echo lang('help')?></TD>
-			<TD WIDTH="10%"><?php echo lang('about')?></TD>
-		</TR>
+	<?php
+
+	if (isset($_SESSION['modules_messages']) && count($_SESSION['modules_messages']) > 0)
+	{
+		echo '<ul class="messages">';
+		foreach ($_SESSION['modules_messages'] as $onemessage)
+		{
+			echo "<li>" . $onemessage . "</li>";
+		}
+		echo "</ul>";
+		unset($_SESSION['modules_messages']);
+	}
+
+	?>
+
+	<table cellspacing="0" class="admintable">
+		<tr>
+			<td><?php echo lang('name')?></td>
+			<td width="10%"><?php echo lang('version')?></td>
+			<td width="10%"><?php echo lang('status')?></td>
+			<td width="10%"><?php echo lang('active')?></td>
+			<td width="10%"><?php echo lang('action')?></td>
+			<td width="10%"><?php echo lang('help')?></td>
+			<td width="10%"><?php echo lang('about')?></td>
+		</tr>
 
 <?php
 
 		$curclass = "row1";
 		// construct true/false button images
-		$image_true ="<img src=\"../images/cms/true.gif\" alt=\"".lang('true')."\" title=\"".lang('true')."\" border=\"0\">";
-		$image_false ="<img src=\"../images/cms/false.gif\" alt=\"".lang('false')."\" title=\"".lang('false')."\" border=\"0\">";
+		$image_true ="<img src=\"../images/cms/true.gif\" alt=\"".lang('true')."\" title=\"".lang('true')."\" border=\"0\" />";
+		$image_false ="<img src=\"../images/cms/false.gif\" alt=\"".lang('false')."\" title=\"".lang('false')."\" border=\"0\" />";
 		
 		foreach($gCms->modules as $key=>$value)
 		{
 			echo "<tr class=\"$curclass\">\n";
 			echo "<td>$key</td>\n";
-			if (!isset($dbm[$key])) #Not installed, lets put up the install button
-			{
-				echo "<td>".$gCms->modules[$key]['Version']."</td>";
+            if (!isset($dbm[$key])) #Not installed, lets put up the install button
+            {
+                $havedep = false;
+
+                if (isset($gCms->modules[$key]['dependency'])) #Check for any deps
+                {
+                    #Now check to see if we can satisfy any deps
+                    foreach ($gCms->modules[$key]['dependency'] as $onedepkey=>$onedepvalue)
+                    {
+                    	if (isset($gCms->modules[$onedepkey]) && 
+                    		$gCms->modules[$onedepkey]['Installed'] == true &&
+                    		$gCms->modules[$onedepkey]['Active'] == true &&
+                    		version_compare($gCms->modules[$onedepkey]['Version'], $onedepvalue) > -1)
+                    	{
+                    		$havedep = true;
+                    	}
+                    }
+                }
+                else
+                {
+                    $havedep = true;
+                }
+
+                echo "<td>".$gCms->modules[$key]['Version']."</td>";
 				echo "<td>".lang('notinstalled')."</td>";
-				echo "<td>&nbsp;</td>";
-				echo "<td><a href=\"plugins.php?action=install&amp;module=".$key."\">".lang('install')."</a></td>";
-			}
+
+                if ($havedep)
+                {
+                	echo "<td>&nbsp;</td>";
+                    echo "<td><a href=\"plugins.php?action=install&amp;module=".$key."\">".lang('install')."</a></td>";
+                }
+                else
+                {
+                	echo "<td>&nbsp;</td>";
+                	echo '<td><a href="plugins.php?action=missingdeps&amp;module='.$key.'">'.lang('missingdependency').'</a></td>';
+                }
+            }
 			else if (version_compare($gCms->modules[$key]['Version'], $dbm[$key]['Version']) == 1) #Check for an upgrade
 			{
 				echo "<td>".$dbm[$key]['Version']."</td>";
@@ -238,10 +344,20 @@ else
 			}
 			else #Must be installed
 			{
+				#Can't be removed if it has a dependency...
+				$hasdeps = cms_mapi_check_for_dependents($key);
+				
 				echo "<td>".$dbm[$key]['Version']."</td>";
-				echo "<td>".$dbm[$key]['Status']."</td>";
+				echo "<td>".lang('installed')."</td>";
 				echo "<td>".($dbm[$key]['Active']==="1"?"<a href='plugins.php?action=setfalse&amp;module=".$key."'>".$image_true."</a>":"<a href='plugins.php?action=settrue&amp;module=".$key."'>".$image_false."</a>")."</td>";
-				echo "<td><a href=\"plugins.php?action=uninstall&amp;module=".$key."\" onclick=\"return confirm('".lang('uninstallconfirm')."');\">".lang('uninstall')."</a></td>";
+				if (!$hasdeps)
+				{
+					echo "<td><a href=\"plugins.php?action=uninstall&amp;module=".$key."\" onclick=\"return confirm('".lang('uninstallconfirm')."');\">".lang('uninstall')."</a></td>";
+				}
+				else
+				{
+					echo "<td>".lang('hasdependents')."</td>";
+				}
 			}
 			if (isset($gCms->modules[$key]['help_function']))
 			{
@@ -267,18 +383,18 @@ else
 
 	?>
 
-</TABLE>
+</table>
 
-	<H3><?php echo lang('tags')?></H3>
+	<h3><?php echo lang('tags')?></h3>
 
-	<TABLE CELLSPACING="0" CLASS="admintable">
-		<TR>
-			<TD><?php echo lang('name')?></TD>
-			<TD WIDTH="16">&nbsp;</TD>
-			<TD WIDTH="16">&nbsp;</TD>
-			<TD WIDTH="8%"><?php echo lang('help')?></TD>
-			<TD WIDTH="8%"><?php echo lang('about')?></TD>
-		</TR>
+	<table cellspacing="0" class="admintable">
+		<tr>
+			<td><?php echo lang('name')?></td>
+			<td width="16">&nbsp;</td>
+			<td width="16">&nbsp;</td>
+			<td width="8%"><?php echo lang('help')?></td>
+			<td width="8%"><?php echo lang('about')?></td>
+		</tr>
 
 <?php
 
@@ -297,7 +413,7 @@ else
 			}
 			if (array_key_exists($oneplugin, $gCms->userplugins))
 			{
-				echo "<td><a href=\"edituserplugin.php?userplugin_id=".$gCms->userplugins[$oneplugin]."\"><img src=\"../images/cms/edit.gif\" width=\"16\" height=\"16\" border=\"0\" title=\"".lang('edit')."\" alt=\"".lang('edit')."\"></a></td>\n";
+				echo "<td><a href=\"edituserplugin.php?userplugin_id=".$gCms->userplugins[$oneplugin]."\"><img src=\"../images/cms/edit.gif\" width=\"16\" height=\"16\" border=\"0\" title=\"".lang('edit')."\" alt=\"".lang('edit')."\" /></a></td>\n";
 			}
 			else
 			{
@@ -305,7 +421,7 @@ else
 			}
 			if (array_key_exists($oneplugin, $gCms->userplugins))
 			{
-				echo "<td><a href=\"deleteuserplugin.php?userplugin_id=".$gCms->userplugins[$oneplugin]."\" onclick=\"return confirm('".lang('deleteconfirm')."');\"><img src=\"../images/cms/delete.gif\" width=\"16\" height=\"16\" border=\"0\" alt=\"".lang('delete')."\" title=\"".lang('delete')."\"></a></td>\n";
+				echo "<td><a href=\"deleteuserplugin.php?userplugin_id=".$gCms->userplugins[$oneplugin]."\" onclick=\"return confirm('".lang('deleteconfirm')."');\"><img src=\"../images/cms/delete.gif\" width=\"16\" height=\"16\" border=\"0\" alt=\"".lang('delete')."\" title=\"".lang('delete')."\" /></a></td>\n";
 			}
 			else
 			{
@@ -335,11 +451,11 @@ else
 
 	?>
 
-</TABLE>
+</table>
 
-<DIV CLASS="button"><A HREF="adduserplugin.php"><?php echo lang('addusertag')?></A></DIV>
+<div class="button"><a href="adduserplugin.php"><?php echo lang('addusertag')?></a></div>
 
-<BR />
+<br />
 
 	<?php
 

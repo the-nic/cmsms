@@ -15,18 +15,41 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 require_once(dirname(__FILE__)."/include.php");
 
 $templateid = "";
+$stripbackground = false;
 if (isset($_GET["templateid"])) $templateid = $_GET["templateid"];
+if (isset($_GET["stripbackground"])) $stripbackground = true;
 
 $result = get_stylesheet($templateid);
+
+$css = $result['stylesheet']; 
+
+#Perform the content stylesheet callback
+foreach($gCms->modules as $key=>$value)
+{
+	if (isset($gCms->modules[$key]['content_stylesheet_function']) &&
+		$gCms->modules[$key]['Installed'] == true &&
+		$gCms->modules[$key]['Active'] == true)
+	{
+		call_user_func_array($gCms->modules[$key]['content_stylesheet_function'], array(&$gCms, &$css));
+	}
+}
 
 #header("Content-Language: " . $current_language);
 header("Content-Type: text/css; charset=" . $result['encoding']);
 
-echo $result['stylesheet'];
+if ($stripbackground)
+{
+	#$css = preg_replace('/(\w*?background-color.*?\:\w*?).*?(;.*?)/', '', $css);
+	$css = preg_replace('/(\w*?background-color.*?\:\w*?).*?(;.*?)/', '\\1transparent\\2', $css);
+}
+
+echo $css;
 
 # vim:ts=4 sw=4 noet
 ?>

@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * Entry point for all non-admin pages
@@ -25,27 +27,28 @@ $starttime = microtime();
 
 @ob_start();
 
-if (!file_exists("config.php") || filesize("config.php") == 0) {
+clearstatcache();
+if (!file_exists("config.php") || filesize("config.php") == 0)
+{
     require_once("lib/misc.functions.php");
     redirect("install/install.php");
-    exit;
-} ## if
+}
+else if (file_exists(dirname(__FILE__)."/tmp/cache/SITEDOWN"))
+{
+	echo "<html><head><title>Maintenance</title></head><body><p>Site down for maintenance.</p></body></html>";
+	exit;
+}
 
-/*
-if (isset($_GET["deleteinstall"]) && $_GET["deleteinstall"] == "true") {
-    @unlink("install/install.php");
-} ## if
-
-if (file_exists("config.php") && file_exists("install/install.php")) {
-    echo "You cannot start CMS until you remove the install.php<br>\n";
-    if (isset($_GET["deleteinstall"]) && $_GET["deleteinstall"] == "true") {
-        echo "Looks like you tried to have CMS delete the install file but that was not sucessful.  You will have to remove it manually before you can continue<br>\n";
-        exit;
-    } ## if
-    echo "Click <a href=\"index.php?deleteinstall=true\">here</a> to have CMS try to delete it for you.  If successful you will see the CMS main page<br>\n";
-    exit;
-} ## if
-*/
+if (!is_writable(dirname(__FILE__).'/tmp/templates_c') || !is_writable(dirname(__FILE__).'/tmp/cache'))
+{
+	echo '<html><title>Error</title></head><body>';
+	echo '<p>The following directories must be writable by the web server:<br />';
+	echo 'tmp/cache<br />';
+	echo 'tmp/templates_c<br /></p>';
+	echo '<p>Please correct by executing:<br /><em>chmod 777 tmp/cache<br />chmod 777 tmp/templates_c</em><br />or the equivilent for your platform before continuing.</p>';
+	echo '</body></html>';
+	exit;
+}
 
 require_once(dirname(__FILE__)."/include.php"); #Makes gCms object
 
@@ -74,7 +77,7 @@ if ($page == "")
 
 if (get_site_preference('enablecustom404') == "0")
 {
-	#$old_error_handler = set_error_handler("ErrorHandler404");
+	$old_error_handler = set_error_handler("ErrorHandler404");
 }
 
 $html = "";
@@ -91,13 +94,24 @@ else
 
 if (get_site_preference('enablecustom404') == "0")
 {
-	#set_error_handler($old_error_handler);
+	set_error_handler($old_error_handler);
 }
 
 #if(password_protected($page) != -1 && !check_access(password_protected($page)))
 #{
 #	$html = display_login_form();
 #}
+
+#Perform the content postrender callback
+foreach($gCms->modules as $key=>$value)
+{
+	if (isset($gCms->modules[$key]['content_postrender_function']) &&
+		$gCms->modules[$key]['Installed'] == true &&
+		$gCms->modules[$key]['Active'] == true)
+	{
+		call_user_func_array($gCms->modules[$key]['content_postrender_function'], array(&$gCms, &$html));
+	}
+}
 
 echo $html;
 
@@ -106,6 +120,7 @@ echo $html;
 $endtime = microtime();
 
 echo "<!-- Generated in ".microtime_diff($starttime,$endtime)." seconds by CMS Made Simple $CMS_VERSION (".$cached."cached) using $sql_execs SQL queries -->\n";
+echo "<!-- CMS Made Simple - Released under the GPL - http://cmsmadesimple.org -->\n";
 
 if (get_site_preference('enablesitedownmessage') == "1")
 {
@@ -116,6 +131,10 @@ if (get_site_preference('enablesitedownmessage') == "1")
 if ($config["debug"] == true)
 {
 	echo $sql_queries;
+	foreach ($gCms->errors as $error)
+	{
+		echo $error;
+	}
 }
 
 # vim:ts=4 sw=4 noet

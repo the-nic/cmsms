@@ -15,23 +15,34 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
 require_once("../include.php");
+require_once("header.php");
 
 if (isset($_POST["cancel"]))
 {
 	redirect("listcontent.php");
-	return;
 }
 
 check_login();
 
-$error = "";
+$error = FALSE;
+
+$firsttime = "1"; #Flag to make sure we're not trying to fill params on the first display
+if (isset($_POST["firsttime"])) $firsttime = $_POST["firsttime"];
+
+$preview = false;
+if (isset($_POST["previewbutton"])) $preview = true;
 
 $submit = false;
 if (isset($_POST["submitbutton"])) $submit = true;
+
+$apply = false;
+if (isset($_POST["applybutton"])) $apply = true;
 
 #Get current userid and make sure they have permission to add something
 $userid = get_userid();
@@ -60,7 +71,7 @@ $contentobj = "";
 if (isset($_POST["serialized_content"]))
 {
 	$contentobj = unserialize(base64_decode($_POST["serialized_content"]));
-	if (get_class($contentobj) != $content_type)
+	if (strtolower(get_class($contentobj)) != $content_type)
 	{
 		#Fill up the existing object with values in form
 		#Create new object
@@ -68,7 +79,8 @@ if (isset($_POST["serialized_content"]))
 		#Put new object on top of old on
 
 		$contentobj->FillParams($_POST);
-		$tmpobj = new $content_type;
+		$newcontenttype = strtolower($content_type);
+		$tmpobj = new $newcontenttype;
 		$tmpobj->mName = $contentobj->mName;
 		$tmpobj->mMenuText = $contentobj->mMenuText;
 		$tmpobj->mTemplateId = $contentobj->mTemplateId;
@@ -76,6 +88,8 @@ if (isset($_POST["serialized_content"]))
 		$tmpobj->mOwner = $contentobj->mOwner;
 		$tmpobj->mActive = $contentobj->mActive;
 		$tmpobj->mShowInMenu = $contentobj->mShowInMenu;
+		$tmpobj->mCachable = $contentobj->mCachable;
+		$tmpobj->SetAdditionalEditors($contentobj->GetAdditionalEditors());
 		$contentobj = $tmpobj;
 	}
 }
@@ -83,28 +97,72 @@ else
 {
 	$contentobj = new $content_type;
 	$contentobj->mOwner = $userid;
-	$contentobj->mActive = true;
-	$contentobj->mShowInMenu = true;
+	$contentobj->mActive = True;
+	$contentobj->mShowInMenu = True;
 }
 
 if ($access)
 {
-	if ($submit)
+	if ($submit || $apply)
 	{
 		#Fill contentobj with parameters
 		$contentobj->FillParams($_POST);
-		$contentobj->Save();
-		ContentManager::SetAllHierarchyPositions();
-		audit($contentobj->Id(), $contentobj->Name(), 'Added Content');
-		redirect("listcontent.php");
-		return;
+		$contentobj->mOwnerId = $userid;
+
+		#Fill Additional Editors (kind of kludgy)
+		$addtarray = array();
+		if (isset($_POST["additional_editors"]))
+		{
+			foreach ($_POST["additional_editors"] as $addt_user_id)
+			{
+				array_push($addtarray, $addt_user_id);
+			}
+		}
+		$contentobj->SetAdditionalEditors($addtarray);
+
+		$error = $contentobj->ValidateData();
+		if ($error === FALSE)
+		{
+			$contentobj->Save();
+			ContentManager::SetAllHierarchyPositions();
+			if ($submit)
+			{
+				audit($contentobj->Id(), $contentobj->Name(), 'Added Content');
+				redirect("listcontent.php");
+			}
+		}
+	}
+	else if ($firsttime == "0") #Either we're a preview or a template postback
+	{
+		$contentobj->FillParams($_POST);
+		if ($preview) #If preview, check for errors...
+		{
+			$error = $contentobj->ValidateData();
+		}
+		$addtarray = array();
+		if (isset($_POST["additional_editors"]))
+		{
+			foreach ($_POST["additional_editors"] as $addt_user_id)
+			{
+				array_push($addtarray, $addt_user_id);
+			}
+		}
+		$contentobj->SetAdditionalEditors($addtarray);
+	}
+	else
+	{
+		$firsttime = "0";
 	}
 }
 
-include_once("header.php");
-
+if (!$access)
+{
+	echo "<h3>".lang('noaccessto',array(lang('addcontent')))."</h3>\n";
+}
+else
+{
 #Get a list of content_types and build the dropdown to select one
-$typesdropdown = '<select name="content_type" onchange="document.addform.submit()" class="standard">';
+$typesdropdown = '<select name="content_type" onchange="document.contentform.submit()" class="standard">';
 foreach ($existingtypes as $onetype)
 {
 	$typesdropdown .= "<option value=\"$onetype\"";
@@ -116,9 +174,56 @@ foreach ($existingtypes as $onetype)
 }
 $typesdropdown .= "</select>";
 
+if ($error !== FALSE)
+{
+	echo '<ul>';
+	foreach ($error as $oneerror)
+	{
+		echo '<li>'.$oneerror.'</li>';
+	}
+	echo '</ul>';
+}
+else if ($preview)
+{
+	$data["content_id"] = $contentobj->Id();
+	$data["title"] = $contentobj->Name();
+	$data["content"] = $contentobj->Show();
+	$data["template_id"] = $contentobj->TemplateId();
+	$data["hierarchy"] = $contentobj->Hierarchy();
+	
+	$templateobj = TemplateOperations::LoadTemplateById($contentobj->TemplateId());
+	$data['template'] = $templateobj->content;
+
+	$stylesheetobj = get_stylesheet($contentobj->TemplateId());
+	$data['encoding'] = $stylesheetobj['encoding'];
+	$data['stylesheet'] = $stylesheetobj['stylesheet'];
+
+	$tmpfname = '';
+	if (is_writable($config["previews_path"]))
+	{
+		$tmpfname = tempnam($config["previews_path"], "cmspreview");
+	}
+	else
+	{
+		$tmpfname = tempnam(dirname(dirname(__FILE__)) . '/tmp/cache', "cmspreview");
+	}
+	$handle = fopen($tmpfname, "w");
+	fwrite($handle, serialize($data));
+	fclose($handle);
+
+?>
+<h3><?php echo lang('preview')?></h3>
+
+<iframe name="previewframe" width="90%" height="400" frameborder="0" src="<?php echo $config["root_url"] ?>/preview.php?tmpfile=<?php echo urlencode(basename($tmpfname))?>" style="margin: 10px; border: 1px solid #8C8A8C;">
+
+</iframe>
+<?php
+
+}
+
 ?>
 
-<form method="post" action="addcontent.php" name="addform" id="addform">
+<form method="post" action="addcontent.php" name="contentform" id="contentform"##FORMSUBMITSTUFFGOESHERE##>
 
 <h3><?php echo lang('addcontent')?></h3>
 
@@ -130,28 +235,49 @@ $typesdropdown .= "</select>";
 		<td><?php echo $typesdropdown ?></td>
 	</tr>
 	<?php
-		#Make sure the edit method exists in our contentobj
-		#If so, run it
-		if (in_array('edit', get_class_methods($contentobj)))
-		{
-			echo $contentobj->Edit();
-		}
+		echo $contentobj->Edit();
 	?>
+	<tr>
+		<td>Additional Editors:</td>
+		<td>
+			<select name="additional_editors[]" multiple="multiple" size="5">
+				<?php
+				$allusers = UserOperations::LoadUsers();
+				$addteditors = $contentobj->GetAdditionalEditors();
+				foreach ($allusers as $oneuser)
+				{
+					if ($oneuser->id != $userid)
+					{
+						echo '<option value="'.$oneuser->id.'"';
+						if (in_array($oneuser->id, $addteditors))
+						{
+							echo ' selected="selected"';
+						}
+						echo '>'.$oneuser->username.'</option>';
+					}
+				}
+				?>
+			</select>
+		</td>
+	</tr>
 </table>
 
 <?php if (isset($contentobj->mPreview) && $contentobj->mPreview == true) { ?>
-<input type="submit" name="preview" value="<?php echo lang('preview')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
+<input type="submit" name="previewbutton" value="<?php echo lang('preview')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
 <?php } ?>
 <input type="submit" name="submitbutton" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
 <input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
 
 </div> <!--end adminform-->
 
-<input type="hidden" name="serialized_content" value="<?php echo base64_encode(serialize($contentobj)) ?>">
+<input type="hidden" name="serialized_content" value="<?php echo base64_encode(serialize($contentobj)) ?>" />
+<input type="hidden" name="firsttime" value="<?php echo $firsttime ?>" />
 
 </form>
 
 <?php
+
+}
 
 include_once("footer.php");
 

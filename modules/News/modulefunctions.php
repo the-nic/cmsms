@@ -1,4 +1,22 @@
 <?php
+#CMS - CMS Made Simple
+#(c)2004 by Ted Kulp (wishy@users.sf.net)
+#This project's homepage is: http://cmsmadesimple.sf.net
+#
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 2 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 function news_module_install($cms)
 {
@@ -70,7 +88,7 @@ function news_module_execute( $cms, $id, $params )
 }
 
 
-function strip_to_length( $str, $len, $tags=true )
+function news_strip_to_length( $str, $len, $tags=true )
 {
 	if ($tags == true)
 	{
@@ -99,18 +117,27 @@ function news_module_executeuser( $cms, $id, $return_id, $params )
 	{
 		$query =  "SELECT news_id, news_title, news_data, news_date FROM ";
 		$query .= cms_db_prefix()."module_news WHERE news_cat = \"";
-		$query .= $params["category"]."\" AND ((".$db->IfNull('start_time',"''");
-		$query .= " = '' AND ".$db->IfNull('end_time',"''");
-		$query .= " = '') OR (start_time < ".$db->DBTimeStamp(time());
-		$query .= " AND end_time > ".$db->DBTimeStamp(time()).")) ORDER BY news_date desc";
+		$query .= $params["category"]."\" AND ((".$db->IfNull('start_time',"'1/1/1900'");
+		$query .= " = '1/1/1900' AND ".$db->IfNull('end_time',"'1/1/1900'");
+		$query .= " = '1/1/1900') OR (start_time < '".$db->DBTimeStamp(time()) . "'";
+		$query .= " AND end_time > '".$db->DBTimeStamp(time())."')) ";
 	}
 	else 
 	{
 		$query =  "SELECT news_id, news_cat, news_title, news_data, news_date ";
 		$query .= "FROM ".cms_db_prefix()."module_news WHERE ";
-		$query .= "((".$db->IfNull('start_time',"''")." = '' AND ".$db->ifNull('end_time',"''");
-		$query .= " = '') OR (start_time < ".$db->DBTimeStamp(time());
-		$query .= " AND end_time > ".$db->DBTimeStamp(time()).")) ORDER BY news_date desc";
+		$query .= "((".$db->IfNull('start_time',"'1/1/1900'")." = '1/1/1900' AND ".$db->ifNull('end_time',"'1/1/1900'");
+		$query .= " = '1/1/1900') OR (start_time < '".$db->DBTimeStamp(time()) . "'";
+		$query .= " AND end_time > '".$db->DBTimeStamp(time())."')) ";
+	}
+	
+	if (isset($params["sortasc"]))
+	{
+		$query .= "ORDER BY news_date asc";
+	}
+	else
+	{
+		$query .= "ORDER BY news_date desc";
 	}
 
 	if( isset( $params["number"]))
@@ -143,9 +170,15 @@ function news_module_executeuser( $cms, $id, $return_id, $params )
 		if ($type == "rss")
 		{
 			header('Content-type: text/xml');
-			echo "<xml version='1.0'>\n";
+			echo "<?xml version='1.0'?>\n";
 			echo "<rss version='2.0'>\n";
 			echo "   <channel>\n";
+			echo "  <title>".$cms->config["news_rss_title"]."</title>\n";
+			echo "  <link>";
+			echo cms_htmlentities($cms->config["news_url"], ENT_NOQUOTES, get_encoding($encoding));
+			echo "</link>\n";
+			echo "  <description>Current linkblog entries</description>\n";
+
 		}
 
 		while( ($row = $dbresult->FetchRow()) )
@@ -155,7 +188,14 @@ function news_module_executeuser( $cms, $id, $return_id, $params )
 				echo "        <item>\n";
 				if( !isset( $params["category"] ) )
 				{
-					echo "            <title>".$row["news_cat"].": ".$row["news_title"]."</title>\n";
+					if (isset($params["showcategorywithtitle"]) && ($params["showcategorywithtitle"] == "true" || $params["showcategorywithtitle"] == "1"))
+					{
+						echo "            <title>".$row["news_cat"].": ".$row["news_title"]."</title>\n";
+					}
+					else
+					{
+						echo "            <title>".$row["news_title"]."</title>\n";
+					}
 				}
 				else
 				{
@@ -170,19 +210,19 @@ function news_module_executeuser( $cms, $id, $return_id, $params )
 				}
 				if( isset( $params["summary"] ) )
 				{
-					echo "            <description>".strip_to_length($row["news_data"],$params["length"])."</description>\n";
+					echo "            <description>".news_strip_to_length($row["news_data"],$params["length"])."</description>\n";
 				}
 				else
 				{
-					echo "            <description>".strip_to_length($row["news_data"],0)."</description>\n";
+					echo "            <description>".news_strip_to_length($row["news_data"],0)."</description>\n";
 				} 
-				echo "            <pubDate>".gmdate('D d M, Y H:i:s', $db->UnixTimeStamp($row["news_date"]))." GMT</pubDate>\n";
+				echo "            <pubDate>".gmdate('D, j M Y H:i:s T', $db->UnixTimeStamp($row["news_date"]))."</pubDate>\n";
 				echo "        </item>\n";
 			}
 			else
 			{
-				echo "<object><div class=\"cms-module-news\">";
-				echo "<div class=\"cms-module-news-header\">";
+				echo "<span class=\"cms-module-news\">";
+				echo "<span class=\"cms-module-news-header\">";
 				if (!(isset($params['swaptitledate']) && 
 						($params['swaptitledate'] == 'true' || 
 						 $params['swaptitledate'] == '1')))
@@ -209,10 +249,10 @@ function news_module_executeuser( $cms, $id, $return_id, $params )
 				{
 					echo "<span class=\"cms-news-date\">".date($dateformat, $db->UnixTimeStamp($row['news_date']))."</span><br />";
 				}
-				echo "</div>";
+				echo "</span>";
 				if( isset( $params["summary"] ) )
 				{
-					echo "<span class=\"cms-news-content\">".strip_to_length($row["news_data"],$params["length"],false)."</span>";
+					echo "<span class=\"cms-news-content\">".news_strip_to_length($row["news_data"],$params["length"],false)."</span>";
 					if (strlen($row["news_data"]) >$params["length"])
 					{
 						$moretext = "more...";
@@ -220,14 +260,14 @@ function news_module_executeuser( $cms, $id, $return_id, $params )
 						{
 							$moretext = $params['moretext'];
 						}
-						echo "<br><a href=\"index.php?page=".$params["summary"]."#".$row["news_id"]."\">$moretext</a>";
+						echo "<br /><a href=\"index.php?page=".$params["summary"]."#".$row["news_id"]."\">$moretext</a>";
 					}
 				}
 				else
 				{
 					echo "<span class=\"cms-news-content\">".$row["news_data"]."</span>";
 				}
-				echo "</div></object>";
+				echo "</span>";
 			}
 		}
 
@@ -240,26 +280,32 @@ function news_module_executeuser( $cms, $id, $return_id, $params )
 }
 
 
-function get_var( $var )
+function news_get_var( $var )
 {
 	if( isset( $_POST[$var] ) )
 	{
 		return $_POST[$var];
 	}
-	if( isset( $HTTP_GET_VARS[$var] ) )
+	if( isset( $_GET[$var] ) )
 	{
-		return $HTTP_GET_VARS[$var];
+		return $_GET[$var];
 	}
 	return;
 }
 
 function news_module_executeadmin($cms,$id)
 {
+    $rowsperpage=20;
 	$access = cms_mapi_check_permission($cms, "Modify News");
-	$newscat = get_var( $id."news_cat" );
+	$newscat = news_get_var( $id."news_cat" );
+    $current_page = news_get_var( $id."page" );
+    if( !isset( $current_page ) )
+    {
+      $current_page = 1;
+    }
 	if( !isset( $newscat ) || (strlen($newscat) == 0) )
 	{
-		$newscat = get_var( $id."add_news_cat" );
+		$newscat = news_get_var( $id."add_news_cat" );
 	}
 	$moduleaction = (isset($_POST[$id."action"])?$_POST[$id."action"]:"") . 
 		(isset($_GET[$id."action"])?$_GET[$id."action"]:"");
@@ -277,46 +323,6 @@ function news_module_executeadmin($cms,$id)
 	}
 	else
 	{
-#    if( !isset( $newscat ) || strlen( $newscat ) == 0 ) 
-#    {
-#      $query = "SELECT news_cat FROM "
-#           .cms_db_prefix()."module_news GROUP BY news_cat";
-#      $dbresult = $db->Execute($query);
-#
-#      if ($dbresult && $dbresult->RowCount())
-#      {
-#        echo cms_mapi_create_admin_form_start("News", $id);
-#        echo "<TABLE><TR ALIGN=\"BOTTOM\"><TD ALIGN=\"CENTER\">";
-#        echo "<H3>Select Category:</H3>";
-#        echo "<SELECT NAME=\"".$id."news_cat\" SIZE=\"4\">";
-#        while ($row = $dbresult->FetchRow())
-#        {
-#          $x = $row["news_cat"];
-#          if( strlen($x) == 0 )
-#          {
-#            $x = "**Empty**";
-#          }
-# 
-#          echo "<OPTION>".$x."</OPTION>";
-#        } 
-#        echo "</SELECT></TD>";
-#        echo "<TD><INPUT TYPE=\"SUBMIT\" NAME=\"".$id."maction\" VALUE=\"Select\" /></TD>";
-#        echo "</TR></TD>";
-#        echo cms_mapi_create_admin_form_end();
-#      }
-#
-#      echo cms_mapi_create_admin_form_start("News", $id);
-#      echo "<TABLE>";
-#      echo "<TR VALIGN=\"BOTTOM\"><TD>";
-#      echo "<H3>New Category:</H3>";
-#      echo "<INPUT TYPE=\"TEXT\" NAME=\"".$id."add_news_cat\" SIZE=\"40\" MAXLENGTH=\"255\">";
-#      echo "</TD>";
-#      echo "<TD><INPUT TYPE=\"SUBMIT\" NAME=\"".$id."maction\" VALUE=\"Add\" /></TD>";
-#      echo "</TR></TABLE>";
-#      echo "".cms_mapi_create_admin_form_end();
-#    }
-#    else 
-#    {
 
 	$query = "SELECT news_cat FROM "
 		.cms_db_prefix()."module_news GROUP BY news_cat";
@@ -324,15 +330,15 @@ function news_module_executeadmin($cms,$id)
 	if ($dbresult && $dbresult->RowCount())
 	{
 		echo cms_mapi_create_admin_form_start("News", $id);
-		echo "<TABLE><TR>";
-		echo "<TD><H5>Filter:</H5></TD>";
-		echo "<TD><SELECT NAME=\"".$id."news_cat\">";
-		echo "<OPTION";
+		echo "<table><tr>";
+		echo "<td><h5>Filter:</h5></td>";
+		echo "<td><select name=\"".$id."news_cat\">";
+		echo "<option";
 		if ($newscat == "All")
 		{
-			echo " SELECTED";
+			echo " selected=\"selected\"";
 		}
-		echo ">All</OPTION>";
+		echo ">All</option>";
 		while ($row = $dbresult->FetchRow())
 		{
 			$x = $row["news_cat"];
@@ -340,36 +346,42 @@ function news_module_executeadmin($cms,$id)
 			{
 				$x = "**Empty**";
 			}
-			echo "<OPTION";
+			echo "<option";
 			if ($newscat == $x)
 			{
-				echo " SELECTED";
+				echo " selected=\"selected\"";
 			}
-			echo ">".$x."</OPTION>";
+			echo ">".$x."</option>";
 		}
-		echo "</SELECT></TD>";
-		echo "<TD><INPUT TYPE=\"SUBMIT\" NAME=\"".$id."filter\" VALUE=\"Select\" /></TD>";
-		echo "</TR></TABLE>";
+		echo "</select></td>";
+		echo "<td><input type=\"submit\" name=\"".$id."filter\" value=\"Select\" /></td>";
+		echo "</tr></table>";
 		echo cms_mapi_create_admin_form_end();
 	}
+
+    echo cms_mapi_create_admin_form_start("News", $id);
+    echo "<input type=\"hidden\" name=\"".$id."news_cat\" value=\"$newscat\" />";
+    echo "<input type=\"hidden\" name=\"".$id."action\" value=\"add\" />";
+    echo "<input type=\"submit\" name=\"submit\" value=\"Add News Item\" />";
+    echo cms_mapi_create_admin_form_end();
 
 	if( isset($newscat) && strlen($newscat) ) 
 	{
 		if( $newscat == "All" )
 		{
-			echo "<H4>All Entries:</H4><BR>";
+			echo "<h4>All Entries:</h4><br />";
 			$query = "SELECT news_id, news_cat, news_title, news_data, news_date FROM "
 				.cms_db_prefix()."module_news ORDER BY news_date desc";
 		}
 		else if( $newscat == "**Empty**" )
 		{
-			echo "<H4>**Empty** Entries:</H4><BR>";
+			echo "<h4>**Empty** Entries:</h4><br />";
 			$query = "SELECT news_id, news_cat, news_title, news_data, news_date FROM "
 				.cms_db_prefix()."module_news ORDER BY news_date desc";
 		}
 		else 
 		{
-			echo "<H4>$newscat Entries:</H4><BR>";
+			echo "<h4>$newscat Entries:</h4><br />";
 			$query = "SELECT news_id, news_cat, news_title, news_data, news_date FROM "
 				.cms_db_prefix()."module_news WHERE news_cat = \""
 				.$newscat."\" ORDER BY news_date desc";
@@ -377,15 +389,19 @@ function news_module_executeadmin($cms,$id)
 	}
 	else
 	{
-		echo "<H4>All Entries:</H4><BR>";
+		echo "<h4>All Entries:</h4><br />";
 		$query = "SELECT news_id, news_cat, news_title, news_data, news_date FROM "
 			.cms_db_prefix()."module_news ORDER BY news_date desc";
 	}
 
 	$dbresult = $db->Execute($query);
 	if ($dbresult && $dbresult->RowCount())
-	{ 
-		echo "<table cellspacing=\"0\" class=\"admintable\">\n";                        echo "<tr>\n";
+	{
+		echo "<table cellspacing=\"0\" class=\"admintable\">\n";
+        echo "<tr>\n";
+        echo "<td colspan=\"6\"><div align=\"right\" class=\"clearbox\">".cms_mapi_admin_pagination("News",$id,$current_page,$dbresult->RowCount(),$rowsperpage)."</td>";
+        echo "</tr>\n";
+        echo "<tr>\n";
 		echo "<td width=\"2%\">&nbsp;</td>\n";
 		echo "<td width=\"50%\">Title</td>\n";
 		echo "<td width=\"10%\">Category</td>\n";
@@ -394,11 +410,21 @@ function news_module_executeadmin($cms,$id)
 		echo "<td width=\"10%\">&nbsp;</td>\n";
 		echo "</tr>\n";
 		$rowclass="row1";
-		$r=1;
+		$r=0;
+
+	    $startn = ($current_page - 1) * $rowsperpage;
+        $endn   = ($current_page * $rowsperpage) - 1;
 		while ($row = $dbresult->FetchRow()) 
 		{
+            if( $r < $startn || $r > $endn )
+            {
+               $r++;
+               continue;
+            } 
+            $r++;
+
 			echo "<tr class=\"$rowclass\">\n";
-			echo "<td align=\"right\">".$r."</td>\n"; $r++;
+			echo "<td align=\"right\">".$r."</td>\n";
 			echo "<td>".$row["news_title"]."</td>\n";
 			echo "<td>".$row["news_cat"]."</td>\n";
 			echo "<td>".$row["news_date"]."</td>\n";
@@ -413,19 +439,12 @@ function news_module_executeadmin($cms,$id)
 	{
 		echo "<p><b>No</b> news items found for category: ".$newscat."</p>";
 	}
-	echo cms_mapi_create_admin_form_start("News", $id);
-	echo "<input type=\"hidden\" name=\"".$id."news_cat\" value=\"$newscat\">";
-	echo "<input type=\"hidden\" name=\"".$id."action\" value=\"add\">";
-	echo "<input type=\"submit\" name=\"submit\" value=\"Add News Item\">"; 
-	echo cms_mapi_create_admin_form_end();
-#    }
 	}
 }
 
 function news_module_help($cms)
 {
 	?>
-
 		<h3>What does this do?</h3>
 		<p>News is a module for displaying news events on your page, similar to a blog style, except with more features!.  When the module is installed, a News admin page is added to the bottom menu that will allow you to select or add a news category.  Once a news category is created or selected, a list of news items for that category will be displayed.  From here, you can add, edit or delete news items for that category.</p>
 		<h3>Security</h3>
@@ -436,9 +455,11 @@ function news_module_help($cms)
 		<p>
 		<ul>
 		<li><em>(optional)</em> number="5" - Maximum number of items to display =- leaving empty will show all items</li>
-		<li><em>(optional)</em> dateformat - Date/Time format using parameters from php's strftime function.  See <a href="http://php.net/strftime" target="_blank">here</a> for a parameter list and information.</li>
+		<li><em>(optional)</em> dateformat - Date/Time format using parameters from php's date function.  See <a href="http://php.net/date" target="_blank">here</a> for a parameter list and information.</li>
 		<li><em>(optional)</em> makerssbutton="true" - Make a button to
-		link to an RSS feed of the News items</li>
+		link to an RSS feed of the News items. Two values in config.php are required for this to work.<br />
+		<code>$config["news_url]</code><br />
+		<code>$config["news_rss_title"]</code></li>
 		<li><em>(optional)</em> swaptitledate="true" - Switch the order
 		of the date and title</li>
 		<li><em>(optional)</em> category="category" - Only display items for that category.  leaving empty, will show all categories</li>
@@ -446,6 +467,7 @@ function news_module_help($cms)
 		<li><em>(optional)</em> length="80" - Used in summary mode (see above) this trims the length of each article to the specified number of characters after stripping all html tags.</li>
 		<li><em>(optional)</em> showcategorywithtitle="true" - Display the title with the category in front of it (Category: Title).  Leave false for old style behavior.</li>
 		<li><em>(optional)</em> moretext="more..." - Text to display at the end of a news item if it goes over the summary length.  Defaults to "more...".</li>
+		<li><em>(optional)</em> sortasc="true" - Sort news items in ascending date order rather than descending.</li>
 		</ul>
 		</p>
 	<?php
@@ -476,6 +498,11 @@ function news_module_about()
 		<li>
 		<p>Version 1.5</p>
 		<p>Merged into the trunk News module</p>
+        </li>
+		<li>
+		<p>Version 1.6</p>
+		<p>Added pagination, and moved the add button to the top (calguy)</p>
+        </li>
 		</ul>
 	<?php
 }

@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 require_once(dirname(__FILE__)."/include.php");
 require_once(dirname(__FILE__)."/lib/preview.functions.php");
@@ -24,11 +26,27 @@ $gCms->smarty = &$smarty;
 
 $page = "";
 
-if (isset($_GET["tmpfile"]) && $_GET["tmpfile"] != "") {
+if (isset($_GET["tmpfile"]) && $_GET["tmpfile"] != "")
+{
 	$page = $_GET["tmpfile"];
+
 	#header("Content-Language: " . $current_language);
 	#header("Content-Type: text/html; charset=" . get_encoding());
-	echo $smarty->fetch('preview:'.$page);
+
+	$html = $smarty->fetch('preview:'.$page);
+
+	#Perform the content postrender callback
+	foreach($gCms->modules as $key=>$value)
+	{
+		if (isset($gCms->modules[$key]['content_postrender_function']) &&
+			$gCms->modules[$key]['Installed'] == true &&
+			$gCms->modules[$key]['Active'] == true)
+		{
+			call_user_func_array($gCms->modules[$key]['content_postrender_function'], array(&$gCms, &$html));
+		}
+	}
+
+	echo $html;
 }
 
 # vim:ts=4 sw=4 noet

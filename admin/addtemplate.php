@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
@@ -153,7 +155,15 @@ else
 		$data["template"] = $content;
 		$data["encoding"] = $encoding;
 
-		$tmpfname = tempnam($config["previews_path"], "cmspreview");
+		$tmpfname = '';
+		if (is_writable($config["previews_path"]))
+		{
+			$tmpfname = tempnam($config["previews_path"], "cmspreview");
+		}
+		else
+		{
+			$tmpfname = tempnam(dirname(dirname(__FILE__)) . '/tmp/cache', "cmspreview");
+		}
 		$handle = fopen($tmpfname, "w");
 		fwrite($handle, serialize($data));
 		fclose($handle);
@@ -161,7 +171,7 @@ else
 ?>
 <h3><?php echo lang('preview')?></h3>
 
-<iframe name="previewframe" width="100%" height="400" src="<?php echo $config["root_url"]?>/preview.php?tmpfile=<?php echo urlencode(basename($tmpfname))?>">
+<iframe name="previewframe" width="90%" height="400" src="<?php echo $config["root_url"]?>/preview.php?tmpfile=<?php echo urlencode(basename($tmpfname))?>" style="margin: 10px; border: 1px solid #8C8A8C;">
 
 </iframe>
 <?php
@@ -171,38 +181,38 @@ else
 
 <form method="post" action="addtemplate.php" <?php if($use_javasyntax){echo 'onSubmit="textarea_submit(this, \'content,stylesheet\');"';} ?>>
 
-<div class="adminform">
-
 <h3><?php echo lang('addtemplate')?></h3>
+
+<div class="adminform">
 
 <table width="100%" border="0">
 
 	<tr>
 		<td width="100">*<?php echo lang('name')?>:</td>
-		<td><input type="text" name="template" maxlength="25" value="<?php echo $template?>"></td>
+		<td><input type="text" name="template" maxlength="25" value="<?php echo $template?>" /></td>
 	</tr>
 	<tr>
 		<td>*<?php echo lang('content')?>:</td>
-		<td><?php echo textarea_highlight($use_javasyntax, $content, "content", 'syntaxHighlight', 'HTML (Complex)', '', $encoding); ?></td>
+		<td><?php echo create_textarea(false, $content, 'content', 'syntaxHighlight', 'content', $encoding)?></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('stylesheet')?>:</td>
-		<td><?php echo textarea_highlight($use_javasyntax, $stylesheet, "stylesheet", "syntaxHighlight", "Java Properties", '', $encoding) ?></textarea></td>
+		<td><?php echo create_textarea(false, $stylesheet, 'stylesheet', 'syntaxHighlight', 'stylesheet', $encoding)?></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('encoding')?>:</td>
-		<td><input type="text" name="encoding" maxlength="25" value="<?php echo $encoding?>"></td>
+		<td><input type="text" name="encoding" maxlength="25" value="<?php echo $encoding?>" /></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('active')?>:</td>
-		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked":"")?>></td>
+		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked=\"checked\"":"")?> /></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><input type="hidden" name="addtemplate" value="true">
-		<input type="submit" name="preview" value="<?php echo lang('preview')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
+		<td><input type="hidden" name="addtemplate" value="true"/>
+		<input type="submit" name="preview" value="<?php echo lang('preview')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" /></td>
 	</tr>
 
 </table>
@@ -211,7 +221,7 @@ else
 
 </form>
 
-<h4 onClick="expandcontent('helparea')" style="cursor:hand; cursor:pointer"><?php echo lang('help') ?>?</h4>
+<h4 onclick="expandcontent('helparea')" style="cursor:hand; cursor:pointer"><?php echo lang('help') ?>?</h4>
 <div id="helparea" class="expand">
 <?php echo lang("helpaddtemplate")?>
 </div>

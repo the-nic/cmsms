@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * This page is both the interface of the CSS editing, and used for actually
@@ -119,7 +121,7 @@ if ($access)
 #******************************************************************************
 		if ($validinfo)
 		{
-			$query = "UPDATE ".cms_db_prefix()."css SET css_name = ".$db->qstr($css_name).", css_text = ".$db->qstr($css_text).", modified_date = ".$db->DBTimeStamp(time())." WHERE css_id = $css_id";
+			$query = "UPDATE ".cms_db_prefix()."css SET css_name = ".$db->qstr($css_name).", css_text = ".$db->qstr($css_text).", modified_date = '".$db->DBTimeStamp(time())."' WHERE css_id = $css_id";
 			$result = $db->Execute($query);
 
 			if ($result)
@@ -137,7 +139,7 @@ if ($access)
 					# now updating templates
 					while ($line = $cssresult->FetchRow())
 					{
-						$query = "UPDATE ".cms_db_prefix()."templates SET modified_date = ".$db->DBTimeStamp(time())." 
+						$query = "UPDATE ".cms_db_prefix()."templates SET modified_date = '".$db->DBTimeStamp(time())."' 
 							WHERE template_id = '".$line["assoc_to_id"]."'";
 						$result = $db->Execute($query);
 
@@ -210,8 +212,8 @@ else
 	<tr>
 		<td width="100">*<?php echo lang('name')?>:</td>
 		<td>
-			<input type="text" name="css_name" maxlength="25" value="<?php echo $css_name?>">
-			<input type="hidden" name="orig_css_name" value="<?php echo $orig_css_name?>">
+			<input type="text" name="css_name" maxlength="25" value="<?php echo $css_name?>" />
+			<input type="hidden" name="orig_css_name" value="<?php echo $orig_css_name?>" />
 		</td>
 	</tr>
 	<tr>
@@ -221,10 +223,10 @@ else
 	<tr>
 		<td>&nbsp;</td>
 		<td>
-			<input type="hidden" name="css_id" value="<?php echo $css_id?>">
-			<input type="hidden" name="editcss" value="true">
-			<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
+			<input type="hidden" name="css_id" value="<?php echo $css_id?>" />
+			<input type="hidden" name="editcss" value="true" />
+			<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
 		</td>
 	</tr>
 

@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
@@ -80,7 +82,7 @@ if (isset($_POST["adduser"]))
 	if ($validinfo)
 	{
 		#$new_user_id = $db->GenID(cms_db_prefix()."users_seq");
-		#$query = "INSERT INTO ".cms_db_prefix()."users (user_id, username, password, active, create_date, modified_date) VALUES ($new_user_id, ".$db->qstr($user).", ".$db->qstr(md5($password)).", $active, ".$db->DBTimeStamp(time()).", ".$db->DBTimeStamp(time()).")";
+		#$query = "INSERT INTO ".cms_db_prefix()."users (user_id, username, password, active, create_date, modified_date) VALUES ($new_user_id, ".$db->qstr($user).", ".$db->qstr(md5($password)).", $active, '".$db->DBTimeStamp(time())."', '".$db->DBTimeStamp(time())."')";
 		#$result = $db->Execute($query);
 
 		$newuser = new User();
@@ -148,43 +150,43 @@ if ($error != "")
 
 	<tr>
 		<td>*<?php echo lang('name')?>:</td>
-		<td><input type="text" name="user" maxlength="255" value="<?php echo $user?>" class="standard"></td>
+		<td><input type="text" name="user" maxlength="255" value="<?php echo $user?>" class="standard" /></td>
 	</tr>
 	<tr>
 		<td>*<?php echo lang('password')?>:</td>
-		<td><input type="password" name="password" maxlength="255" value="" class="standard"></td>
+		<td><input type="password" name="password" maxlength="255" value="" class="standard" /></td>
 	</tr>
 	<tr>
 		<td>*<?php echo lang('passwordagain')?>:</td>
-		<td><input type="password" name="passwordagain" maxlength="255" value="" class="standard"></td>
+		<td><input type="password" name="passwordagain" maxlength="255" value="" class="standard" /></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('firstname')?>:</td>
-		<td><input type="text" name="firstname" maxlength="50" value="" class="standard"></td>
+		<td><input type="text" name="firstname" maxlength="50" value="" class="standard" /></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('lastname')?>:</td>
-		<td><input type="text" name="lastname" maxlength="50" value="" class="standard"></td>
+		<td><input type="text" name="lastname" maxlength="50" value="" class="standard" /></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('email')?>:</td>
-		<td><input type="text" name="email" maxlength="255" value="" class="standard"></td>
+		<td><input type="text" name="email" maxlength="255" value="" class="standard" /></td>
 	</tr>
 	<!--
 	<tr>
 		<td><?php echo lang('adminaccess')?>:</td>
-		<td><input type="checkbox" name="adminaccess" <?php echo ($adminaccess == 1?"checked":"")?>></td>
+		<td><input type="checkbox" name="adminaccess" <?php echo ($adminaccess == 1?"checked=\"checked\"":"")?> /></td>
 	</tr>
 	-->
 	<tr>
 		<td><?php echo lang('active')?>:</td>
-		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked":"")?>></td>
+		<td><input type="checkbox" name="active" <?php echo ($active == 1?"checked=\"checked\"":"")?> /></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><input type="hidden" name="adduser" value="true">
-		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
+		<td><input type="hidden" name="adduser" value="true" />
+		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" /></td>
 	</tr>
 
 </table>

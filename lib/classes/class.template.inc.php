@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 class Template
 {
@@ -258,7 +260,7 @@ class TemplateOperations
 		return $result;
 	}
 	
-	function TemplateDropdown($id = 'template_id', $selected_id = -1)
+	function TemplateDropdown($id = 'template_id', $selected_id = -1, $othertext = '')
 	{
 		$result = "";
 
@@ -266,14 +268,19 @@ class TemplateOperations
 		
 		if (count($alltemplates) > 0)
 		{
-			$result .= '<select name="'.$id.'">';
+			$result .= '<select name="'.$id.'"';
+			if ($othertext != '')
+			{
+				$result .= ' ' . $othertext;
+			}
+			$result .= '>';
 			$result .= '<option value="">Select Template</option>';
 			foreach ($alltemplates as $onetemplate)
 			{
 				$result .= '<option value="'.$onetemplate->id.'"';
 				if ($onetemplate->id == $selected_id)
 				{
-				    $result .= ' selected="true"';
+				    $result .= ' selected="selected"';
 				}
 				$result .= '>'.$onetemplate->name.'</option>';
 			}

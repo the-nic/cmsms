@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
@@ -87,7 +89,7 @@ if ($access) {
 
 		if ($validinfo) {
 			$new_usertag_id = $db->GenID(cms_db_prefix()."userplugins_seq");
-			$query = "INSERT INTO ".cms_db_prefix()."userplugins (userplugin_id, userplugin_name, code, create_date, modified_date) VALUES ($new_usertag_id, ".$db->qstr($plugin_name).", ".$db->qstr($code).", ".$db->DBTimeStamp(time()).", ".$db->DBTimeStamp(time()).")";
+			$query = "INSERT INTO ".cms_db_prefix()."userplugins (userplugin_id, userplugin_name, code, create_date, modified_date) VALUES ($new_usertag_id, ".$db->qstr($plugin_name).", ".$db->qstr($code).", '".$db->DBTimeStamp(time())."', '".$db->DBTimeStamp(time())."')";
 			$result = $db->Execute($query);
 			if ($result) {
 				audit($new_usertag_id, $plugin_name, 'Added User Defined Tag');
@@ -121,7 +123,7 @@ else {
 <table width="100%" border="0">
 	<tr>
 		<td width="60">*<?php echo lang('name')?>:</td>
-		<td><input type="text" name="plugin_name" maxlength="255" value="<?php echo $plugin_name?>" class="standard"></td>
+		<td><input type="text" name="plugin_name" maxlength="255" value="<?php echo $plugin_name?>" class="standard" /></td>
 	</tr>
 	<tr>
 		<td>*<?php echo lang('code')?></td>
@@ -129,9 +131,9 @@ else {
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><input type="hidden" name="addplugin" value="true">
-		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
+		<td><input type="hidden" name="addplugin" value="true" />
+		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" /></td>
 	</tr>
 </table>
 

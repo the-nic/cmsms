@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * Handles content related functions
@@ -45,7 +47,7 @@ class Smarty_CMS extends Smarty {
 		$this->compile_dir = $config["root_path"].'/tmp/templates_c/';
 		$this->config_dir = $config["root_path"].'/tmp/configs/';
 		$this->cache_dir = $config["root_path"].'/tmp/cache/';
-		$this->plugins_dir = array($config["root_path"].'/smarty/plugins/',$config["root_path"].'/plugins/');
+		$this->plugins_dir = array($config["root_path"].'/lib/smarty/plugins/',$config["root_path"].'/plugins/');
 
 		$this->caching = true;
 		$this->compile_check = true;
@@ -123,35 +125,10 @@ class Smarty_CMS extends Smarty {
 			#If this fails, then it basically is a standard 404 error or a custom with no template
 			if (!($contentobj === FALSE && $templateobj === FALSE))
 			{
-				$stylesheet = '<link rel="stylesheet" type="text/css" href="stylesheet.php?templateid='.$template_id.'" />';
+				$stylesheet = '';
 
-				/*
-				if (isset($templateobj->stylesheet) && $templateobj->stylesheet != '')
-				{
-					$stylesheet .= "<style type=\"text/css\">\n";
-					$stylesheet .= "{literal}".$templateobj->stylesheet."{/literal}";
-					$stylesheet .= "</style>\n";
-				}
 
-				#Handle "advanced" CSS Management
-				$cssquery = "SELECT css_text FROM ".cms_db_prefix()."css, ".cms_db_prefix()."css_assoc
-					WHERE	css_id		= assoc_css_id
-					AND		assoc_type	= 'template'
-					AND		assoc_to_id = '".$contentobj->TemplateId()."'";
-				$cssresult = $db->Execute($cssquery);
-
-				if ($cssresult && $cssresult->RowCount() > 0)
-				{
-					$tempstylesheet = "";
-					$stylesheet .= "<style type=\"text/css\">\n";
-					while ($cssline = $cssresult->FetchRow())
-					{
-						$tempstylesheet .= "\n".$cssline['css_text']."\n";
-					}
-					$stylesheet .= "{literal}".$tempstylesheet."{/literal}";
-					$stylesheet .= "</style>\n";
-				}
-				*/
+				$stylesheet .='<link rel="stylesheet" type="text/css" href="stylesheet.php?templateid='.$template_id.'" />'; 
 
 				#Time to fill our template content
 				#If it's in print mode, then just create a simple stupid template
@@ -164,10 +141,45 @@ class Smarty_CMS extends Smarty {
 					$tpl_source = $templateobj->content;
 				}
 
+				#Perform the content template callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['content_template_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['content_template_function'], array(&$gCms, &$tpl_source));
+					}
+				}
+
 				#Fill some variables with various information
 				$content = $contentobj->Show();
+
+				#Perform the content data callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['content_data_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['content_data_function'], array(&$gCms, &$content));
+					}
+				}
+
 				$title = $contentobj->Name();
-				$head_tags = $contentobj->mProperties->GetValue('head_tags');
+
+				#Perform the content title callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['content_title_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['content_title_function'], array(&$gCms, &$title));
+					}
+				}
+
+				$head_tags = $contentobj->mProperties->GetValue('headtags');
 				$header_script = $contentobj->mProperties->GetValue('page_header');
 
 				#Replace stylesheet and title tags
@@ -180,19 +192,9 @@ class Smarty_CMS extends Smarty {
 					$tpl_source = ereg_replace("<\/head>", $head_tags."</head>", $tpl_source);
 				}
 
-				#So no one can do anything nasty, take out the php smarty tags.  Use a user
-				#defined plugin instead.
-				if (!(isset($config["use_smarty_php_tags"]) && $config["use_smarty_php_tags"] == true))
+				#Check to see if Show() actually gave us something
+				if ($content != '')
 				{
-					$tpl_source = ereg_replace("\{\/?php\}", "", $tpl_source);
-				}
-
-				#Check to see if it's a content type...  this should really be part of content
-				#manager, but we're talking baby steps here
-				if ($contentobj->Type() == 'content')
-				{
-					#Do html_blobs
-					$tpl_source = preg_replace_callback("|\{html_blob name=[\'\"]?(.*?)[\'\"]?\}|", "html_blob_regex_callback", $tpl_source);
 
 					#If it's regular content, do this...
 					$tpl_source = ereg_replace("\{content\}", $content, $tpl_source);
@@ -226,6 +228,27 @@ class Smarty_CMS extends Smarty {
 						$tpl_source = $header_script.$tpl_source;
 					}
 				}
+
+				#So no one can do anything nasty, take out the php smarty tags.  Use a user
+				#defined plugin instead.
+				if (!(isset($config["use_smarty_php_tags"]) && $config["use_smarty_php_tags"] == true))
+				{
+					$tpl_source = ereg_replace("\{\/?php\}", "", $tpl_source);
+				}
+
+				#Do html_blobs
+				$tpl_source = preg_replace_callback("|\{html_blob name=[\'\"]?(.*?)[\'\"]?\}|", "html_blob_regex_callback", $tpl_source);
+
+				#Perform the content prerender callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['content_prerender_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['content_prerender_function'], array(&$gCms, &$tpl_source));
+					}
+				}
 				return true;
 			}
 			else
@@ -233,6 +256,17 @@ class Smarty_CMS extends Smarty {
 				if (get_site_preference('enablecustom404') == "1")
 				{
 					$tpl_source = get_site_preference('custom404');
+
+					#Perform the content prerender callback
+					foreach($gCms->modules as $key=>$value)
+					{
+						if (isset($gCms->modules[$key]['content_prerender_function']) &&
+							$gCms->modules[$key]['Installed'] == true &&
+							$gCms->modules[$key]['Active'] == true)
+						{
+							call_user_func_array($gCms->modules[$key]['content_prerender_function'], array(&$gCms, &$tpl_source));
+						}
+					}
 					return true;	
 				}
 				else
@@ -258,11 +292,11 @@ class Smarty_CMS extends Smarty {
 		{
 			if (is_numeric($tpl_name) && strpos($tpl_name,'.') === FALSE && strpos($tpl_name,',') === FALSE) //Fix for postgres
 			{ 
-				$query = "SELECT c.content_id, t.modified_date as template_date, c.modified_date as content_date, c.type, c.hierarchy, t.encoding FROM ".cms_db_prefix()."content c INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = c.template_id WHERE (c.content_id = ".$tpl_name." OR c.content_alias=".$db->qstr($tpl_name).") AND c.active = 1";
+				$query = "SELECT c.content_id, c.cachable, t.modified_date as template_date, c.modified_date as content_date, c.type, c.hierarchy, t.encoding FROM ".cms_db_prefix()."content c INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = c.template_id WHERE (c.content_id = ".$tpl_name." OR c.content_alias=".$db->qstr($tpl_name).") AND c.active = 1";
 			}
 			else
 			{
-				$query = "SELECT c.content_id, t.modified_date as template_date, c.modified_date as content_date, c.type, c.hierarchy, t.encoding FROM ".cms_db_prefix()."content c INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = c.template_id WHERE c.content_alias=".$db->qstr($tpl_name)." AND c.active = 1";
+				$query = "SELECT c.content_id, c.cachable, t.modified_date as template_date, c.modified_date as content_date, c.type, c.hierarchy, t.encoding FROM ".cms_db_prefix()."content c INNER JOIN ".cms_db_prefix()."templates t ON t.template_id = c.template_id WHERE c.content_alias=".$db->qstr($tpl_name)." AND c.active = 1";
 			}
 			$result = $db->Execute($query);
 
@@ -287,13 +321,19 @@ class Smarty_CMS extends Smarty {
 				if ($line['type'] == 'content')
 				{
 					header("Content-Type: text/html; charset=" . (isset($line['encoding']) && $line['encoding'] != ''?$line['encoding']:get_encoding()));
-					$tpl_timestamp = ($content_date<$template_date?$template_date:$content_date);
+					if ($line['cachable'] == 1)
+					{
+						$tpl_timestamp = ($content_date<$template_date?$template_date:$content_date);
+					}
+					else
+					{
+						$tpl_timestamp = time();
+					}
 					return true;
 				}
 				else
 				{
 					$tpl_timestamp = time();
-					echo "2";
 					return true;
 				}
 			}
@@ -301,7 +341,6 @@ class Smarty_CMS extends Smarty {
 			{
 				$smarty_obj->assign('modified_date',time());
 				$tpl_timestamp = time();
-				echo "3";
 				return true;
 			}
 		}
@@ -387,345 +426,28 @@ function load_plugins(&$smarty)
 	sort($plugins);
 }
 
-/**
- * Returns the id of the current selected default page
- *
- * @since 0.1
- */
-function db_get_default_page () {
-
-	global $gCms;
-	
-	$db = $gCms->db;
-	$config = $gCms->config;
-
-	$result = "";
-
-	$query = "SELECT page_id FROM ".cms_db_prefix()."pages WHERE default_page = 1";
-	$dbresult = $db->Execute($query);
-
-	if ($dbresult) {
-		$line = $dbresult->FetchRow();
-		$result = $line["page_id"];
-	}
-
-	#We have no default.  Just get something!!!
-	if ($result == "") {
-		$query = "SELECT page_id FROM ".cms_db_prefix()."pages";
-		$dbresult = $db->SelectLimit($query, 1);
-
-		if ($dbresult) {
-			$line = $dbresult->FetchRow();
-			$result = $line["page_id"];
-		}
-	}
-
-	return $result;
-}
-
-class MenuItem {
-	var $name;
-	var $url;
-}
-
-class Page {
-	var $page_id;
-	var $page_title;
-	var $page_alias;
-	var $display_title;
-	var $page_url;
-	var $menu_text;
-	var $show_in_menu;
-	var $page_type;
-	var $item_order;
-	var $active;
-	var $section_id;
-	var $parent_id;
-	var $level;
-	var $hier;
-	var $num_same_level;
-	var $childs;
-		
-} ## class
-
-function db_get_menu_items($params = array()) {
-
-	global $sorted_content;
-
-	global $gCms;
-	$db = $gCms->db;
-	$config = $gCms->config;
-
-	$sorted_content = array();
-	$content_array = array();
-	
-	$query = "select p.*, u.username, t.template_name from ".cms_db_prefix()."pages p LEFT OUTER JOIN ".cms_db_prefix()."users u on u.user_id=p.owner LEFT OUTER JOIN ".cms_db_prefix()."templates t on t.template_id=p.template_id order by p.parent_id, p.item_order";
-	$result = $db->Execute($query);
-
-	if ($result && $result->RowCount() > 0) {
-		$content_array = array();
-		while ($line = $result->FetchRow()) {
-			$current_content = new Page;
-			$current_content->page_id		= $line["page_id"];
-			$current_content->page_title	= $line["page_title"];
-			$current_content->page_alias	= $line["page_alias"];
-			$current_content->page_url		= $line["page_url"];
-			$current_content->menu_text		= $line["menu_text"];
-			$current_content->page_type		= $line["page_type"];
-			$current_content->item_order	= $line["item_order"];
-			$current_content->active		= $line["active"];
-			$current_content->show_in_menu	= $line["show_in_menu"];
-			$current_content->default_page	= $line["default_page"];
-			$current_content->username		= $line["username"];
-			$current_content->template_name = $line["template_name"];
-			$current_content->parent_id		= $line["parent_id"];
-			if (isset($line["url"]))
-			{
-				$current_content->url = $line["url"];
-			}
-			
-			# Fix URL where appropriate
-			if ($current_content->page_type == "sectionheader") {
-				$current_content->page_title = $current_content->menu_text;
-				$current_content->url = "";
-			} else if ($current_content->page_type != "link") {
-				$current_content->page_url = "";	
-				$current_content->url = getURL($current_content);
-			} else {
-				$current_content->url = $current_content->page_url;
-			}
-			# Special display for separator
-			if ($current_content->page_type == "separator") {
-				$current_content->page_title = "--------";
-			}
-
-			# Now that all treatment have been done to $current_content, we push it in the array
-			$content_array[$line["page_id"]] = $current_content;
-			$parents[$line["page_id"]] = $line["parent_id"];
-		} ## while
-		
-			construct_tree_from_list($content_array, $parents, $params);
-		
-			# to change : this should be a parameter of the function
-			$start_element = 0;
-
-			$new_array			= array();
-
-			$show				= isset($params['show'])				? $params['show']				: "all" ;
-			$start_element		= isset($params['start_element'])		? $params['start_element']		: 0 ;
-			$number_of_levels	= isset($params['number_of_levels'])	? $params['number_of_levels']	: 10 ;
-
-			$first_level_childs	= array_keys($parents,$start_element);
-
-			foreach($first_level_childs as $element)
-			{
-				if (($show == "all") or ($show == "menu" && $content_array[$element]->active && $content_array[$element]->show_in_menu && $number_of_levels > 0))
-				{
-					array_push($new_array, $content_array[$element]);
-				}
-			}
-			
-			flatten_tree_to_list($new_array, $sorted_content);
-
-		} ## if
-
-		return $sorted_content;
-
-} ## function
-
-/**
- * Construct a tree array from a flat array. Returns nothing.
- *
- * This function will take an array of elements, an array of equivalence between elements
- * and parents. It then constructs an array which contains :
- * - element1
- * - element1->child = array contening the childs of element1
- * - etc...
- *
- * It is recursive in the sense it recalls itself.
- * It does not matter what kind of elements it is.
- *
- * @param array		content_array		this is the array you want to construct the tree from.
- * @param array		parents				this is the array containing the associations : $parents[identifier] = parent_identifier of element
- * @param array		params				this is the array containing all the parameters
- *
- * @since 0.5
- */
-function construct_tree_from_list(&$content_array, &$parents, $params) {
-
-	# we get all the parameters and define default options
-	$start_element		= isset($params['start_element'])		? $params['start_element']			: 0 ;
-	$number_of_levels	= isset($params['number_of_levels'])	? $params['number_of_levels']		: 10 ;
-	$hierarchy_level	= isset($params['hierarchy_level'])		? $params['hierarchy_level']		: 0 ;
-	$total_hierarchy	= isset($params['total_hierarchy'])		? $params['total_hierarchy']		: "" ;
-	$show				= isset($params['show'])				? $params['show']					: "all" ;
-
-	if ($number_of_levels > 0)
-	{
-		# the current element
-		$current = &$content_array[$start_element];
-
-		# this array contains the child of our current element
-		$childs			= array_keys($parents, $start_element);
-		$num_of_childs	= count($childs);
-
-		if ($num_of_childs > 0)
-		{
-			$current->childs = array();
-			$count = 1;
-
-			foreach($childs as $key)
-			{
-				$newchild					= &$content_array[$key];
-				$newchild->num_same_level	= $num_of_childs;
-				$newchild->level			= $hierarchy_level + 1;
-				$newchild->hier				= $total_hierarchy."$count.";
-
-				if (($show == "menu" && $newchild->active && $newchild->show_in_menu) or ($show == "all")) {
-				
-					$current->childs[$count - 1] = &$newchild;
-					# array_push($current->childs, &$newchild);
-					
-					$newparams = array(
-						"start_element"		=>	$key,
-						"number_of_levels"	=>	$number_of_levels - 1,
-						"hierarchy_level"	=>	$hierarchy_level + 1,
-						"total_hierarchy"	=>	$newchild->hier,
-						"show"				=>	$show
-					);
-					construct_tree_from_list($content_array, $parents, $newparams);
-
-					$count++;
-				}
-			} #foreach
-		} #if numchilds
-	} # if number_of_levels
-} # function
-
-
-/**
- * Constructs a flat array from a tree array. Returns nothing
- *
- * @since 0.5
- */
-function flatten_tree_to_list($content_array, &$flatarray) {
-
-	if (is_array($content_array) && count($content_array) > 0)
-	{
-		foreach($content_array as $element)
-		{
-			array_push($flatarray, $element);
-			flatten_tree_to_list($element->childs, $flatarray);
-		}
-	}
-}
-
-/**
- * Returns a list of all currently registered content types
- *
- * @since 0.3
- */
-function get_page_types() {
-
-	global $gCms;
-
-	$db = $gCms->db;
-	$modules = $gCms->modules;
-	$config = $gCms->config;
-
-	$result['content'] = 'Content';
-	$result['link'] = 'Link';
-	$result['separator'] = 'Separator';
-	$result['sectionheader'] = 'Section Header';
-
-	$installedmodules = array();
-
-	$query = "SELECT * FROM ".cms_db_prefix()."modules";
-	$dbresult = $db->Execute($query);
-
-	if ($dbresult && $dbresult->RowCount() > 0) {
-
-		while ($row = $dbresult->FetchRow()) {
-			$installedmodules[$row['module_name']] = 1;
-		}
-
-		foreach ($modules as $key=>$value) {
-			if (isset($modules[$key]['content_module']) && isset($installedmodules[$key])) {
-				$result[$key] = $key;
-			}
-		}
-
-	}
-
-	return $result;
-
-}
-
-/**
- * Updates the page's hierarchy position
- *
- * @since 0.7
- */
-function set_page_hierarchy_position($pageid) {
-
-	global $gCms;
-	$db = $gCms->db;
-
-	$current_hierarchy_position = "";
-	$current_parent_id = $pageid;
-	$count = 0;
-
-	while ($current_parent_id > 0)
-	{
-		$query = "SELECT item_order, parent_id FROM ".cms_db_prefix()."pages WHERE page_id = ?";
-		$dbresult = $db->Execute($query, array($current_parent_id));
-		if ($dbresult && $dbresult->RowCount())
-		{
-			$row = $dbresult->FetchRow();
-			$current_hierarchy_position	= $row['item_order'] . "." . $current_hierarchy_position;
-			$current_parent_id = $row['parent_id'];
-			$count++;
-		}
-		else
-		{
-			$current_parent_id = 0;
-		}
-	}
-
-	if (strlen($current_hierarchy_position) > 0)
-	{
-		$current_hierarchy_position = substr($current_hierarchy_position, 0, strlen($current_hierarchy_position) - 1);
-	}
-
-	$query = "UPDATE ".cms_db_prefix()."pages SET hierarchy_position = ? WHERE page_id = ?";
-	$db->Execute($query, array($current_hierarchy_position, $pageid));
-}
-
-function set_all_pages_hierarchy_position()
-{
-	global $gCms;
-	$db = $gCms->db;
-
-	$query = "SELECT page_id FROM ".cms_db_prefix()."pages";
-	$dbresult = $db->Execute($query);
-
-	if ($dbresult && $dbresult->RowCount() > 0)
-	{
-		while ($row = $dbresult->FetchRow())
-		{
-			set_page_hierarchy_position($row['page_id']);
-		}
-	}
-}
-
 function html_blob_regex_callback($matches)
 {
+	global $gCms;
 	if (isset($matches[1]))
 	{
 		$oneblob = HtmlBlobOperations::LoadHtmlBlobByName($matches[1]);
 		if ($oneblob)
 		{
-			return $oneblob->content;
+			$text = $oneblob->content;
+
+			#Perform the content htmlblob callback
+			foreach($gCms->modules as $key=>$value)
+			{
+				if (isset($gCms->modules[$key]['content_htmlblob_function']) &&
+					$gCms->modules[$key]['Installed'] == true &&
+					$gCms->modules[$key]['Active'] == true)
+				{
+					call_user_func_array($gCms->modules[$key]['content_htmlblob_function'], array(&$gCms, &$text));
+				}
+			}
+
+			return $text;
 		}
 		else
 		{

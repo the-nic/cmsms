@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * This page is responsible for showing the interface to add a new CSS. There is
@@ -121,7 +123,7 @@ if ($access)
 			$new_css_id = $db->GenID(cms_db_prefix()."css_seq");
 
 			# we then generate the request
-			$query = "INSERT INTO ".cms_db_prefix()."css (css_id, css_name, css_text, create_date, modified_date) VALUES ('$new_css_id', ".$db->qstr($css_name).", ".$db->qstr($css_text).", ".$db->DBTimeStamp(time()).", ".$db->DBTimeStamp(time()).")";
+			$query = "INSERT INTO ".cms_db_prefix()."css (css_id, css_name, css_text, create_date, modified_date) VALUES ('$new_css_id', ".$db->qstr($css_name).", ".$db->qstr($css_text).", '".$db->DBTimeStamp(time())."', '".$db->DBTimeStamp(time())."')";
 
 			# and execute it
 			$result = $db->Execute($query);
@@ -180,7 +182,7 @@ else
 
 	<tr>
 		<td width="100"><?php echo lang('name')?>:</td>
-		<td><input type="text" name="css_name" maxlength="25" value="<?php echo $css_name?>"></td>
+		<td><input type="text" name="css_name" maxlength="25" value="<?php echo $css_name?>" /></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('content')?>:</td>
@@ -189,9 +191,9 @@ else
 	<tr>
 		<td>&nbsp;</td>
 		<td>
-			<input type="hidden" name="addcss" value="true">
-			<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
+			<input type="hidden" name="addcss" value="true" />
+			<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
 		</td>
 	</tr>
 

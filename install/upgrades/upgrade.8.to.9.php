@@ -16,7 +16,9 @@ $flds = "
 	menu_text C(255),
 	content_alias C(255),
 	show_in_menu I1,
+	markup C(25),
 	active I1,
+	cachable I1,
 	create_date T,
 	modified_date T
 ";
@@ -63,11 +65,9 @@ if ($result && $result->RowCount() > 0)
 	while ($row = $result->FetchRow())
 	{
 		$newid = $db->GenID(cms_db_prefix()."content_seq");
-		$this->mId = $newid;
-
 		$idmap[$row['page_id']] = $newid;
 
-		$contentquery = "INSERT INTO ".cms_db_prefix()."content (content_id, content_name, type, owner_id, parent_id, item_order, create_date, modified_date, active, default_content, template_id, content_alias, menu_text, show_in_menu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$contentquery = "INSERT INTO ".cms_db_prefix()."content (content_id, content_name, type, owner_id, parent_id, item_order, create_date, modified_date, active, default_content, template_id, content_alias, menu_text, show_in_menu, markup) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$contentresult = $db->Execute($contentquery, array(
 			$newid,
 			$row['page_title'],
@@ -82,7 +82,8 @@ if ($result && $result->RowCount() > 0)
 			$row['template_id'],
 			$row['page_alias'],
 			$row['menu_text'],
-			$row['show_in_menu']
+			$row['show_in_menu'],
+			'html'
 		));
 
 		$type = $row['page_type'];
@@ -93,7 +94,14 @@ if ($result && $result->RowCount() > 0)
 				$newcontent = @ContentManager::LoadContentFromId($newid);
 				if ($newcontent !== FALSE)
 				{
-					$newcontent->SetPropertyValue('content_en', $row['page_content']);
+					$oldcontent = $row['page_content'];
+					
+					#Fix for dhtmlmenu
+					$oldcontent = str_replace('{dhtmlmenu', "{cms_module module='phplayers'", $oldcontent);
+
+					$newcontent->mCachable = true;
+
+					$newcontent->SetPropertyValue('content_en', $oldcontent);
 					$newcontent->SetPropertyValue('head_tags', $row['head_tags']);
 					$newcontent->Save();
 				}
@@ -113,6 +121,9 @@ if ($result && $result->RowCount() > 0)
 	}
 
 	#Fix parent ids
+	$query = "UPDATE ".cms_db_prefix()."content SET parent_id = -1 WHERE parent_id = 0";
+	$result = $db->Execute($query);
+
 	$query = "SELECT content_id, parent_id from ".cms_db_prefix()."content";
 	$result = $db->Execute($query);
 
@@ -130,24 +141,91 @@ if ($result && $result->RowCount() > 0)
 			}
 		}
 	}
+
+	$query = "UPDATE ".cms_db_prefix()."content SET parent_id = -1 WHERE parent_id IS NULL";
+	$result = $db->Execute($query);
+
+	$query = "UPDATE ".cms_db_prefix()."content SET content_alias = '' WHERE content_alias IS NULL";
+	$result = $db->Execute($query);
 }
 
-echo "[done]</p>";
+echo '[done]</p>';
 
 @ob_flush();
 
-echo "<p>Updating hierarchy positions...";
+echo '<p>Adding module_deps table...';
+
+$dbdict = NewDataDictionary($db);
+$flds = "
+	parent_module C(25),
+	child_module C(25),
+	minimum_version C(25),
+	create_date T,
+	modified_date T
+";
+$taboptarray = array('mysql' => 'TYPE=MyISAM');
+$sqlarray = $dbdict->CreateTableSQL(cms_db_prefix()."module_deps", $flds, $taboptarray);
+$dbdict->ExecuteSQLArray($sqlarray);
+
+echo '[done]</p>';
+
+echo '<p>Updating hierarchy positions...';
 
 @ContentManager::SetAllHierarchyPositions();
 
-echo "[done]</p>";
+echo '[done]</p>';
 
-echo "<p>Updating schema version... ";
+echo '<p>Changing dhtmlmenu to phplayers module on templates...';
+
+$alltemplates = @TemplateOperations::LoadTemplates();
+foreach ($alltemplates as $onetemplate)
+{
+	#Fix for dhtmlmenu
+	$onetemplate->content = str_replace('{dhtmlmenu', "{cms_module module='phplayers'", $onetemplate->content); 
+	$onetemplate->Save();
+}
+
+echo '[done]</p>';
+
+echo '<p>"Installing" phplayers module (if necessary)... ';
+
+$query = "SELECT * from ".cms_db_prefix()."modules WHERE module_name = 'PHPLayers'";
+$result = $db->Execute($query);
+
+if ($result && $result->RowCount() < 1)
+{
+	$query = "INSERT INTO ".cms_db_prefix()."modules (module_name, status, version, active) VALUES ('PHPLayers', 'Installed', '1.0', 1)";
+	$result = $db->Execute($query);
+}
+
+echo '[done]</p>';
+
+echo '<p>Updating additional_users to new content ids...';
+
+$dbdict = NewDataDictionary($db);
+$sqlarray = $dbdict->AddColumnSQL(cms_db_prefix()."additional_users", "content_id I");
+$dbdict->ExecuteSQLArray($sqlarray);
+
+$query = "SELECT * from ".cms_db_prefix()."additional_users";
+$result = $db->Execute($query);
+
+if ($result && $result->RowCount() > 0)
+{
+	while ($row = $result->FetchRow())
+	{
+		$query2 = "UPDATE ".cms_db_prefix()."additional_users SET content_id = ? WHERE additional_users_id = ?";
+		$db->Execute($query2, array($idmap[$row['page_id']], $row['additional_users_id']));
+	}
+}
+
+echo '[done]</p>';
+
+echo '<p>Updating schema version... ';
 
 $query = "UPDATE ".cms_db_prefix()."version SET version = 9";
 $db->Execute($query);
 
-echo "[done]</p>";
+echo '[done]</p>';
 
 # vim:ts=4 sw=4 noet
 ?>

@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * Generic user class.  This can be used for any logged in user or user related function.
@@ -394,6 +396,30 @@ class UserOperations
 			{
 				$result = $row["count"];
 			}
+		}
+
+		return $result;
+	}
+
+	function GenerateDropdown($currentuserid = '')
+	{
+		$result = '';
+
+		$allusers = @UserOperations::LoadUsers();
+
+		if (count($allusers) > 0)
+		{
+			$result .= '<select name="ownerid">';
+			foreach ($allusers as $oneuser)
+			{
+				$result .= '<option value="'.$oneuser->id.'"';
+				if ($oneuser->id == $currentuserid)
+				{
+					$result .= ' selected="selected"';
+				}
+				$result .= '>'.$oneuser->username.'</option>';
+			}
+			$result .= '</select>';
 		}
 
 		return $result;

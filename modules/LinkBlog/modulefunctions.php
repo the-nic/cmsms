@@ -1,5 +1,7 @@
 <?php
-#CMS - CMS Made Simple
+#Linkblog - a module for CMS - CMS Made Simple
+#Copyright (c) 2004 by Greg Froese <heavy_g@users.sf.net>
+#
 #(c)2004 by Ted Kulp (wishy@users.sf.net)
 #This project's homepage is: http://cmsmadesimple.sf.net
 #
@@ -32,7 +34,8 @@ function linkblog_module_install($cms) {
 		linkblog_author C(255),
 		linkblog_type I,
 		create_date T,
-		modified_date T
+		modified_date T,
+		status C(10)
 	";
 	$taboptarray = array('mysql' => 'TYPE=MyISAM');
 	$sqlarray = $dict->CreateTableSQL(cms_db_prefix()."module_linkblog", $flds, $taboptarray);
@@ -80,6 +83,7 @@ function linkblog_module_install($cms) {
 	$dict->ExecuteSQLArray($sqlarray);
 	
 	$db->CreateSequence(cms_db_prefix()."module_linkblog_comment_seq");
+	cms_mapi_create_permission( $cms, 'Modify Linkblog', 'Modify Linkblog');
 }
 
 function linkblog_module_uninstall($cms) {
@@ -130,6 +134,9 @@ function linkblog_module_help($cms) {
 	<p>As this is just a tag module, it's inserted into your page or template by using the cms_module tag.  Example syntax would be: <br /><code>{cms_module module="LinkBlog" allow_search="true"}</code></p>
 	<h3>What parameters are there?</h3>
 	<p>allow_search - set allow_search="true" to show a search form - off by default</p>
+	<p>category - set category="NAME" where NAME is a category name.  Only links in that category will be visible.  This includes the links generated to previously posted links.</p>
+	<p>make_rss_button - creates an image link to the rss feed for the linkblog.  The title for the rss feed is set by a config.php option: $config["linkblog_url"]<br />
+The RSS feed title is set with $config["linkblog_rss_title"] in config.php. The default number of links returned in the RSS feed is 20, however, you can set the limit with $config["linkblog_rss_limit"] in config.php</p>
 	<h3>How do I style the LinkBlog pages?</h3>
 	<p>Here is some sample CSS you can throw in your template to make your results <i>slightly</i> prettier.<br />
 	<pre>
@@ -168,8 +175,7 @@ div.modulelinkblogentrycommentlink {
 
 	</pre></p>
 	<h3>How can I help?</h3>
-	<p>Well, first of all, thanks for asking ;).<br />
-	There is the need for an admin piece to manage the differnt types of links within LinkBlog.  Right now the types have to be manually updated in the database, which, as we all know, is not cool.</p>
+	<p>Come into #cms on irc.freenode.net and find out the latest and offer your services.</p>
 	<?php
 
 }

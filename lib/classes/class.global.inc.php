@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * Global class for easy access to all important variables.
@@ -77,6 +79,19 @@ class CmsObject {
 	 * Smarty object - holds reference to the current smarty object -- will not be set in the admin
 	 */
 	var $smarty;
+
+	/**
+	 * Internal error array - So functions/modules can store up debug info and spit it all out at once
+	 */
+	var $errors;
+
+	/**
+	 * Constructor
+	 */
+	function CmsObject()
+	{
+		$this->errors = array();
+	}
 }
 
 # vim:ts=4 sw=4 noet

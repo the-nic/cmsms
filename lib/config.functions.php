@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * Functions relating to the config hash and config files
@@ -64,7 +66,7 @@ function cms_config_load($loadLocal = true)
 	$config["use_smarty_php_tags"] = false;
 
 	#Where do previews get saved?
-	$config["previews_path"] = $config["root_path"] . "/smarty/cms/cache";
+	$config["previews_path"] = $config["root_path"] . "/tmp/cache";
 
 	#Where are uploaded files put?
 	$config["uploads_path"] = $config["root_path"] . "/uploads";

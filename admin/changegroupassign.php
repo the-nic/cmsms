@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
@@ -53,7 +55,7 @@ if ($access) {
 
 		foreach ($_POST as $key=>$value) {
 			if (strpos($key,"user-") == 0 && strpos($key,"user-") !== false) {
-				$query = "INSERT INTO ".cms_db_prefix()."user_groups (group_id, user_id, create_date, modified_date) VALUES (".$db->qstr($group_id).", ".$db->qstr(substr($key,5)).", ".$db->DBTimeStamp(time()).", ".$db->DBTimeStamp(time()).")";
+				$query = "INSERT INTO ".cms_db_prefix()."user_groups (group_id, user_id, create_date, modified_date) VALUES (".$db->qstr($group_id).", ".$db->qstr(substr($key,5)).", '".$db->DBTimeStamp(time())."', '".$db->DBTimeStamp(time())."')";
 				$result = $db->Execute($query);
 			}
 		}
@@ -113,15 +115,15 @@ else {
 
 		echo "<tr><td>";
 		echo "<input type=\"checkbox\"";
-		echo ($value == true?" checked":"");
-		echo " name=\"user-".$ids[$key]."\" value=\"1\">$key</td></tr>\n";
+		echo ($value == true?" checked=\"checked\"":"");
+		echo " name=\"user-".$ids[$key]."\" value=\"1\" />$key</td></tr>\n";
 	}
 
 ?>
 
-<tr><td><br><input type="hidden" name="group_id" value="<?php echo $group_id?>">
-<input type="submit" name="changeassign" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td></tr>
+<tr><td><br /><input type="hidden" name="group_id" value="<?php echo $group_id?>" />
+<input type="submit" name="changeassign" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" /></td></tr>
 </table>
 </div>
 

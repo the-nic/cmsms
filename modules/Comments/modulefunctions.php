@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 function comments_module_install($cms) {
 	//This function should install the database functions and do other basic init stuff for first time use.
@@ -134,7 +136,7 @@ function comments_module_executeuser($cms, $id, $return_id, $params) {
 		if ($validinfo) {
 			$db = $cms->db;
 			$new_id = $db->GenID(cms_db_prefix()."module_comments_seq");
-			$query = "INSERT INTO ".cms_db_prefix()."module_comments (comment_id, page_id, comment_author, comment_data, comment_date, create_date) VALUES ($new_id, $return_id, ".$db->qstr($author).", ".$db->qstr($content).",".$db->DBTimeStamp(time()).",".$db->DBTimeStamp(time()).")";
+			$query = "INSERT INTO ".cms_db_prefix()."module_comments (comment_id, page_id, comment_author, comment_data, comment_date, create_date) VALUES ($new_id, $return_id, ".$db->qstr($author).", ".$db->qstr($content).",'".$db->DBTimeStamp(time())."','".$db->DBTimeStamp(time())."')";
 			$dbresult = $db->Execute($query);
 			cms_mapi_redirect_user_by_pageid($return_id);
 			return;

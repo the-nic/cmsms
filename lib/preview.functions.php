@@ -15,8 +15,10 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
-require_once(dirname(dirname(__FILE__)).'/smarty/Smarty.class.php');
+require_once dirname(__FILE__).'/smarty/Smarty.class.php';
 
 class Smarty_Preview extends Smarty {
 
@@ -27,11 +29,11 @@ class Smarty_Preview extends Smarty {
 		global $gCms;
 		$this->configCMS = &$gCms->config;
 
-		$this->template_dir = $config["root_path"].'/lib/smarty/cms/templates/';
-		$this->compile_dir = $config["root_path"].'/lib/smarty/cms/templates_c/';
-		$this->config_dir = $config["root_path"].'/lib/smarty/cms/configs/';
-		$this->cache_dir = $config["root_path"].'/lib/smarty/cms/cache/';
-		$this->plugins_dir = array($config["root_path"].'/smarty/plugins/',$config["root_path"].'/plugins/');
+		$this->template_dir = $config["root_path"].'/tmp/templates/';
+		$this->compile_dir = $config["root_path"].'/tmp/templates_c/';
+		$this->config_dir = $config["root_path"].'/tmp/configs/';
+		$this->cache_dir = $config["root_path"].'/tmp/cache/';
+		$this->plugins_dir = array($config["root_path"].'/lib/smarty/plugins/',$config["root_path"].'/plugins/');
 
 		$this->compile_check = true;
 		$this->caching = false;
@@ -53,30 +55,106 @@ class Smarty_Preview extends Smarty {
 		global $gCms;
 		$config = $gCms->config;
 
-		$fname = $config["previews_path"] . "/" . $tpl_name;
+		$fname = '';
+		if (is_writable($config["previews_path"]))
+		{
+			$fname = $config["previews_path"] . "/" . $tpl_name;
+		}
+		else
+		{
+			$fname = dirname(dirname(__FILE__)) . "/tmp/cache/" . $tpl_name;
+		}
 		$handle = fopen($fname, "r");
 		$data = unserialize(fread($handle, filesize($fname)));
 		fclose($handle);
 		unlink($fname);
+
 		$tpl_source = $data["template"];
-		#header("Content-Language: " . $current_language);
-		header("Content-Type: text/html; charset=" . (isset($data['encoding']) && $data['encoding'] != ''?$data['encoding']:get_encoding()));
-		$stylesheet = "";
-		if (isset($data["stylesheet"])) {
-			#$csslink = $this->configCMS->root_url."/stylesheet.php?templateid=".$data["template_id"];
-			#$stylesheet .= "<link rel=\"stylesheet\" href=\"".$csslink."\" type=\"text/css\" />\n";
-			$stylesheet .= "<style type=\"text/css\">\n";
-			#$stylesheet .= "<!--\n";
-			#$stylesheet .= "	@import \"".$csslink."\";\n";
-			$stylesheet .= "{literal}".$data["stylesheet"]."{/literal}";
-			#$stylesheet .= "-->\n";
-			$stylesheet .= "</style>\n";
+
+		#Perform the content template callback
+		foreach($gCms->modules as $key=>$value)
+		{
+			if (isset($gCms->modules[$key]['content_template_function']) &&
+				$gCms->modules[$key]['Installed'] == true &&
+				$gCms->modules[$key]['Active'] == true)
+			{
+				call_user_func_array($gCms->modules[$key]['content_template_function'], array(&$gCms, &$tpl_source));
+			}
 		}
+
+		$gCms->variables['page'] = $data['content_id'];
+		$gCms->variables['page_id'] = $data['content_id'];
+		$gCms->variables['content_id'] = $data['content_id'];
+		$gCms->variables['page_name'] = $data['title'];
+		$gCms->variables['position'] = $data['hierarchy'];
+
+		header("Content-Type: text/html; charset=" . (isset($data['encoding']) && $data['encoding'] != ''?$data['encoding']:get_encoding()));
+
+		$stylesheet = '';
+
+		if (isset($data["stylesheet"]))
+		{
+			$stylesheet .= $data["stylesheet"];
+		}
+		
+		#Perform the content stylesheet callback
+		foreach($gCms->modules as $key=>$value)
+		{
+			if (isset($gCms->modules[$key]['content_stylesheet_function']) &&
+				$gCms->modules[$key]['Installed'] == true &&
+				$gCms->modules[$key]['Active'] == true)
+			{
+				call_user_func_array($gCms->modules[$key]['content_stylesheet_function'], array(&$gCms, &$stylesheet));
+			}
+		}
+
+		$stylesheet = "<style type=\"text/css\">{literal}\n".$stylesheet."{/literal}</style>\n";
+
 		$tpl_source = ereg_replace("\{stylesheet\}", $stylesheet, $tpl_source);
-		$tpl_source = ereg_replace("\{content\}", $data["content"], $tpl_source);
-		$tpl_source = ereg_replace("\{title\}", $data["title"], $tpl_source);
+
+		$content = $data["content"];
+
+		#Perform the content data callback
+		foreach($gCms->modules as $key=>$value)
+		{
+			if (isset($gCms->modules[$key]['content_data_function']) &&
+				$gCms->modules[$key]['Installed'] == true &&
+				$gCms->modules[$key]['Active'] == true)
+			{
+				call_user_func_array($gCms->modules[$key]['content_data_function'], array(&$gCms, &$content));
+			}
+		}
+
+		$tpl_source = ereg_replace("\{content\}", $content, $tpl_source);
+
+		$title = $data['title'];
+
+		#Perform the content title callback
+		foreach($gCms->modules as $key=>$value)
+		{
+			if (isset($gCms->modules[$key]['content_title_function']) &&
+				$gCms->modules[$key]['Installed'] == true &&
+				$gCms->modules[$key]['Active'] == true)
+			{
+				call_user_func_array($gCms->modules[$key]['content_title_function'], array(&$gCms, &$title));
+			}
+		}
+
+		$tpl_source = ereg_replace("\{title\}", $title, $tpl_source);
+
 		#Do html_blobs
 		$tpl_source = preg_replace_callback("|\{html_blob name=[\'\"]?(.*?)[\'\"]?\}|", "html_blob_regex_callback", $tpl_source);
+
+		#Perform the content prerender callback
+		foreach($gCms->modules as $key=>$value)
+		{
+			if (isset($gCms->modules[$key]['content_prerender_function']) &&
+				$gCms->modules[$key]['Installed'] == true &&
+				$gCms->modules[$key]['Active'] == true)
+			{
+				call_user_func_array($gCms->modules[$key]['content_prerender_function'], array(&$gCms, &$tpl_source));
+			}
+		}
 
 		return true;
 	}

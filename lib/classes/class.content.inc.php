@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * This file respect the PHP Coding Standards : http://alltasks.net/code/php_coding_standard.html
@@ -118,6 +120,13 @@ class ContentBase
 	 */
 	var $mAlias;
 
+	var $mOldAlias;
+
+	/**
+	 * Cachable?
+	 */
+	var $mCachable;
+
 	/**
 	 * Does this content have a preview function?
 	 */
@@ -132,6 +141,11 @@ class ContentBase
 	 * Is this page the default?
 	 */
 	var $mDefaultContent;
+	
+	/**
+	 * What type of markup is ths?  HTML is the default
+	 */
+	var $mMarkup;
 
 	/**
 	 * Creation date
@@ -144,6 +158,8 @@ class ContentBase
 	 * Date
 	 */
 	var $mModifiedDate;
+
+	var $mAdditionalEditors;
 
 	/************************************************************************/
 	/* Constructor related													*/
@@ -166,7 +182,8 @@ class ContentBase
 		$this->mId				= -1 ;
 		$this->mName			= "" ;
 		$this->mAlias			= "" ;
-		$this->mType			= get_class($this) ;
+		$this->mOldAlias		= "" ;
+		$this->mType			= strtolower(get_class($this)) ;
 		$this->mOwner			= -1 ;
 		$this->mProperties		= new ContentProperties();
 		$this->mParentId		= -1 ;
@@ -178,10 +195,12 @@ class ContentBase
 		$this->mActive			= false ;
 		$this->mDefaultContent	= false ;
 		$this->mShowInMenu		= false ;
+		$this->mCachable		= true;
 		$this->mMenuText		= "" ;
 		$this->mCreationDate	= "" ;
 		$this->mModifiedDate	= "" ;
 		$this->mPreview         = false ;
+		$this->mMarkup			= 'html' ;
 	}
 
 	/**
@@ -225,7 +244,7 @@ class ContentBase
 	 */
 	function Type()
 	{
-		return $this->mType;
+		return strtolower($this->mType);
 	}
 
 	/**
@@ -297,6 +316,29 @@ class ContentBase
 		return $this->mDefaultContent;
 	}
 
+	function Cachable()
+	{
+		return $this->mCachable;
+	}
+	
+	function Markup()
+	{
+		return $this->mMarkup;
+	}
+	
+	function SetAlias($alias)
+	{
+		global $gCms;
+
+		if ($gCms->config['auto_alias_content'] && $alias == '')
+		{
+			$alias = trim($this->mMenuText);
+			$alias = preg_replace("/\W+/", "-", $alias);
+		}
+
+		$this->mAlias = $alias;
+	}
+
 	/**
 	 * Returns the menu text for this content
 	 */
@@ -340,7 +382,7 @@ class ContentBase
 	{
 		global $gCms, $config, $sql_queries, $debug_errors;
 		$db = &$gCms->db;
-		
+
 		$result = false;
 
 		if (-1 < $id)
@@ -355,7 +397,8 @@ class ContentBase
 				$this->mId				= $row["content_id"];
 				$this->mName			= $row["content_name"];
 				$this->mAlias			= $row["content_alias"];
-				$this->mType			= $row["type"];
+				$this->mOldAlias		= $row["content_alias"];
+				$this->mType			= strtolower($row["type"]);
 				$this->mOwner			= $row["owner_id"];
 				#$this->mProperties		= new ContentProperties();
 				$this->mParentId		= $row["parent_id"];
@@ -365,9 +408,11 @@ class ContentBase
 				$this->mOldItemOrder	= $row["item_order"];
 				$this->mHierarchy		= $row["hierarchy"];
 				$this->mMenuText		= $row['menu_text'];
+				$this->mMarkup			= $row['markup'];
 				$this->mActive			= ($row["active"] == 1?true:false);
 				$this->mDefaultContent	= ($row["default_content"] == 1?true:false);
 				$this->mShowInMenu		= ($row["show_in_menu"] == 1?true:false);
+				$this->mCachable		= ($row["cachable"] == 1?true:false);
 				$this->mCreationDate	= $row["create_date"];
 				$this->mModifiedDate	= $row["modified_date"];
 
@@ -429,15 +474,16 @@ class ContentBase
 	function LoadFromData($data, $loadProperties = false)
 	{
 		global $config, $debug_errors;
-		
+
 		$result = true;
 
 		$this->mId				= $data["content_id"];
 		$this->mName			= $data["content_name"];
 		$this->mAlias			= $data["content_alias"];
-		$this->mType			= $data["type"];
+		$this->mOldAlias		= $data["content_alias"];
+		$this->mType			= strtolower($data["type"]);
 		$this->mOwner			= $data["owner_id"];
-		#$this->mProperties		= new ContentProperties(); 
+		#$this->mProperties		= new ContentProperties();
 		$this->mParentId		= $data["parent_id"];
 		$this->mOldParentId		= $data["parent_id"];
 		$this->mTemplateId		= $data["template_id"];
@@ -445,15 +491,17 @@ class ContentBase
 		$this->mOldItemOrder	= $data["item_order"];
 		$this->mHierarchy		= $data["hierarchy"];
 		$this->mMenuText		= $data['menu_text'];
+		$this->mMarkuop			= $data['markup'];
 		$this->mDefaultContent	= ($data["default_content"] == 1?true:false);
 		$this->mActive			= ($data["active"] == 1?true:false);
 		$this->mShowInMenu		= ($data["show_in_menu"] == 1?true:false);
+		$this->mCachable		= ($data["cachable"] == 1?true:false);
 		$this->mCreationDate	= $data["create_date"];
 		$this->mModifiedDate	= $data["modified_date"];
 
 		if ($loadProperties)
 		{
-			#$this->mProperties = ContentOperations::LoadPropertiesFromData($this->mType, $data);
+			#$this->mProperties = ContentOperations::LoadPropertiesFromData(strtolower($this->mType), $data);
 			$this->mProperties->Load($this->mId);
 
 			if (NULL == $this->mProperties)
@@ -506,7 +554,7 @@ class ContentBase
 	{
 		global $gCms, $config, $sql_queries, $debug_errors;
 		$db = &$gCms->db;
-		
+
 		$result = false;
 
 		#Figure out the item_order (if necessary)
@@ -529,21 +577,23 @@ class ContentBase
 			}
 		}
 
-		$query = "UPDATE ".cms_db_prefix()."content SET content_name = ?, owner_id = ?, type = ?, template_id = ?, parent_id = ?, active = ?, default_content = ?, show_in_menu = ?, menu_text = ?, content_alias = ?, modified_date = ?, item_order = ? WHERE content_id = ?";
+		$query = "UPDATE ".cms_db_prefix()."content SET content_name = ?, owner_id = ?, type = ?, template_id = ?, parent_id = ?, active = ?, default_content = ?, show_in_menu = ?, cachable = ?, menu_text = ?, content_alias = ?, modified_date = ?, item_order = ?, markup = ? WHERE content_id = ?";
 
 		$dbresult = $db->Execute($query, array(
 			$this->mName,
 			$this->mOwner,
-			$this->mType,
+			strtolower($this->mType),
 			$this->mTemplateId,
 			$this->mParentId,
 			($this->mActive==true?1:0),
 			($this->mDefaultContent==true?1:0),
 			($this->mShowInMenu==true?1:0),
+			($this->mCachable==true?1:0),
 			$this->mMenuText,
 			$this->mAlias,
 			$db->DBTimeStamp(time()),
 			$this->mItemOrder,
+			$this->mMarkup,
 			$this->mId
 			));
 
@@ -566,6 +616,19 @@ class ContentBase
 			$this->mOldItemOrder = $this->mItemOrder;
 		}
 
+		if (isset($this->mAdditionalEditors))
+		{
+			$query = "DELETE FROM ".cms_db_prefix()."additional_users WHERE content_id = ".$this->Id();
+			$db->Execute($query);
+
+			foreach ($this->mAdditionalEditors as $oneeditor)
+			{
+				$new_addt_id = $db->GenID(cms_db_prefix()."additional_users_seq");
+				$query = "INSERT INTO ".cms_db_prefix()."additional_users (additional_users_id, user_id, content_id) VALUES (?,?,?)";
+				$db->Execute($query, array($new_addt_id, $oneeditor, $this->Id()));
+			}
+		}
+
 		if (NULL != $this->mProperties)
 		{
 			# :TODO: There might be some error checking there
@@ -580,7 +643,7 @@ class ContentBase
 			}
 		}
 	}
-	
+
 	/**
 	 * Insert the content in the db
 	 */
@@ -591,7 +654,7 @@ class ContentBase
 	{
 		global $gCms, $config, $sql_queries, $debug_errors;
 		$db = &$gCms->db;
-		
+
 		$result = false;
 
 		#Figure out the item_order
@@ -617,13 +680,13 @@ class ContentBase
 		$newid = $db->GenID(cms_db_prefix()."content_seq");
 		$this->mId = $newid;
 
-		$query = "INSERT INTO ".$config["db_prefix"]."content (content_id, content_name, content_alias, type, owner_id, parent_id, template_id, item_order, hierarchy, active, default_content, show_in_menu, menu_text, create_date, modified_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		$query = "INSERT INTO ".$config["db_prefix"]."content (content_id, content_name, content_alias, type, owner_id, parent_id, template_id, item_order, hierarchy, active, default_content, show_in_menu, cachable, menu_text, markup, create_date, modified_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 		$dbresult = $db->Execute($query, array(
 			$newid,
 			$this->mName,
 			$this->mAlias,
-			$this->mType,
+			strtolower($this->mType),
 			$this->mOwner,
 			$this->mParentId,
 			$this->mTemplateId,
@@ -632,7 +695,9 @@ class ContentBase
 			($this->mActive==true?1:0),
 			($this->mDefaultContent==true?1:0),
 			($this->mShowInMenu==true?1:0),
+			($this->mCachable==true?1:0),
 			$this->mMenuText,
+			$this->mMarkup,
 			$db->DBTimeStamp(time()),
 			$db->DBTimeStamp(time())
 			));
@@ -645,7 +710,7 @@ class ContentBase
 				$debug_errors .= "<p>Error inserting content</p>\n";
 			}
 		}
-		
+
 		if (NULL != $this->mProperties)
 		{
 			# :TODO: There might be some error checking there
@@ -659,6 +724,15 @@ class ContentBase
 				$debug_errors .= "<p>Error inserting : the content has no properties</p>\n";
 			}
 		}
+		if (isset($this->mAdditionalEditors))
+		{
+			foreach ($this->mAdditionalEditors as $oneeditor)
+			{
+				$new_addt_id = $db->GenID(cms_db_prefix()."additional_users_seq");
+				$query = "INSERT INTO ".cms_db_prefix()."additional_users (additional_users_id, user_id, content_id) VALUES (?,?,?)";
+				$db->Execute($query, array($new_addt_id, $oneeditor, $this->Id()));
+			}
+		}
 	}
 
 	/**
@@ -669,14 +743,11 @@ class ContentBase
 	 * We do not check the Id because there can be no Id (new content)
 	 * That's up to Save to check this.
 	 *
-	 * @returns	TRUE if data is ok, and an array of invalid parameters else
+	 * @returns	FALSE if data is ok, and an array of invalid parameters else
 	 */
 	function ValidateData()
 	{
-		$result = true;
-		$errors = array();
-
-		return ($result) ? $result : $errors;
+		return FALSE;
 	}
 
 	/**
@@ -687,7 +758,7 @@ class ContentBase
 	{
 		global $gCms, $config, $sql_queries, $debug_errors;
 		$db = &$gCms->db;
-		
+
 		$result = false;
 
 		if (-1 > $this->mId)
@@ -789,7 +860,7 @@ class ContentBase
 	{
 		global $gCms, $config, $sql_queries, $debug_errors;
 		$db = &$gCms->db;
-		
+
 		$result = false;
 
 		$query = "SELECT content_id FROM ".cms_db_prefix()."content WHERE parent_id = ".$this->mId;
@@ -801,6 +872,34 @@ class ContentBase
 		}
 
 		return $result;
+	}
+
+	function GetAdditionalEditors()
+	{
+		if (!isset($this->mAdditionalEditors))
+		{
+			global $gCms;
+			$db = &$gCms->db;
+
+			$this->mAdditionalEditors = array();
+
+			$query = "SELECT user_id FROM ".cms_db_prefix()."additional_users WHERE content_id = ".$this->mId;
+			$dbresult = $db->Execute($query);
+
+			if ($dbresult && $dbresult->RowCount() > 0)
+			{
+				while ($row = $dbresult->FetchRow())
+				{
+					array_push($this->mAdditionalEditors, $row['user_id']);
+				}
+			}
+		}
+		return $this->mAdditionalEditors;
+	}
+
+	function SetAdditionalEditors($editorarray)
+	{
+		$this->mAdditionalEditors = $editorarray;
 	}
 }
 
@@ -822,16 +921,16 @@ class ContentProperties
 	 */
 	function SetInitialValues()
 	{
-		$this->mPropertyTypes = array(); 
-		$this->mPropertyValues = array(); 
+		$this->mPropertyTypes = array();
+		$this->mPropertyValues = array();
 	}
 
-	function Add($type, $name)
+	function Add($type, $name, $defaultvalue='')
 	{
-		if (!isset($this->mPropertyValues[$name]))
+		if (!array_key_exists($name, $this->mPropertyValues))
 		{
 			$this->mPropertyTypes[$name] = $type;
-			$this->mPropertyValues[$name] = "";
+			$this->mPropertyValues[$name] = $defaultvalue;
 		}
 	}
 
@@ -839,7 +938,7 @@ class ContentProperties
 	{
 		if (count($this->mPropertyValues) > 0)
 		{
-			if (isset($this->mPropertyValues[$name]))
+			if (array_key_exists($name, $this->mPropertyValues))
 			{
 				return $this->mPropertyValues[$name];
 			}
@@ -850,7 +949,7 @@ class ContentProperties
 	{
 		if (count($this->mPropertyValues) > 0)
 		{
-			if (isset($this->mPropertyValues[$name]))
+			if (array_key_exists($name, $this->mPropertyValues))
 			{
 				$this->mPropertyValues[$name] = $value;
 			}
@@ -956,7 +1055,8 @@ class ContentManager
 			#Make sure the type exists.  If so, instantiate and load
 			if (in_array($row['type'], @ContentManager::ListContentTypes()))
 			{
-				$contentobj = new $row['type'];
+				$classtype = strtolower($row['type']);
+				$contentobj = new $classtype; 
 				$contentobj->LoadFromData($row,true);
 				return $contentobj;
 			}
@@ -977,9 +1077,8 @@ class ContentManager
 		$db = &$gCms->db;
 
 		$dbresult = '';
-		$tpl_name = '';
 
-		if (is_numeric($tpl_name) && strpos($tpl_name,'.') === FALSE && strpos($tpl_name,',') === FALSE) //Fix for postgres
+		if (is_numeric($alias) && strpos($alias,'.') === FALSE && strpos($alias,',') === FALSE) //Fix for postgres
 		{
 			$query = "SELECT * FROM ".cms_db_prefix()."content WHERE content_id = ? OR content_alias = ?";
 			if ($only_active == true)
@@ -1005,7 +1104,8 @@ class ContentManager
 			#Make sure the type exists.  If so, instantiate and load
 			if (in_array($row['type'], @ContentManager::ListContentTypes()))
 			{
-				$contentobj = new $row['type'];
+				$classtype = strtolower($row['type']);
+				$contentobj = new $classtype;
 				$contentobj->LoadFromData($row,true);
 				return $contentobj;
 			}
@@ -1074,9 +1174,9 @@ class ContentManager
 
 		foreach (get_declared_classes() as $oneclass)
 		{
-			if (get_parent_class($oneclass) == 'contentbase')
+			if (strtolower(get_parent_class($oneclass)) == 'contentbase')
 			{
-				array_push($result, $oneclass);
+				array_push($result, strtolower($oneclass));
 			}
 		}
 
@@ -1196,10 +1296,39 @@ class ContentManager
 				}
 			}
 
-			$reuslt .= '</select>';
+			$result .= '</select>';
 		}
 
 		return $result;
+	}
+	
+	function CheckAliasError($alias)
+	{
+		global $gCms;
+		$db = &$gCms->db;
+
+		$error = FALSE;
+
+		if (preg_match('/^\d+$/', $alias))
+		{
+			$error = lang('aliasnotaninteger');
+		}
+		else if (!preg_match('/^[\-\_\w]+$/', $alias))
+		{
+			$error = lang('aliasmustbelettersandnumbers');
+		}
+		else
+		{
+			$query = "SELECT * FROM ".cms_db_prefix()."content WHERE content_alias = ?";
+			$dbresult = $db->Execute($query, array($alias));
+	
+			if ($dbresult && $dbresult->RowCount() > 0)
+			{
+				$error = lang('aliasalreadyused');
+			}
+		}
+
+		return $error;
 	}
 }
 

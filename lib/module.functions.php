@@ -1,4 +1,22 @@
 <?php
+#CMS - CMS Made Simple
+#(c)2004 by Ted Kulp (wishy@users.sf.net)
+#This project's homepage is: http://cmsmadesimple.sf.net
+#
+#This program is free software; you can redistribute it and/or modify
+#it under the terms of the GNU General Public License as published by
+#the Free Software Foundation; either version 2 of the License, or
+#(at your option) any later version.
+#
+#This program is distributed in the hope that it will be useful,
+#but WITHOUT ANY WARRANTY; without even the implied warranty of
+#MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#GNU General Public License for more details.
+#You should have received a copy of the GNU General Public License
+#along with this program; if not, write to the Free Software
+#Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 /**
  * Module related functions
@@ -115,6 +133,24 @@ function cms_mapi_register_plugin_module($name)
 	if (isset($cmsmodules[$name]))
 	{
 		$cmsmodules[$name]['plugin_module'] = true;
+	}
+}
+
+/**
+ * Register a module as a dependency.
+ *
+ * This function will register a dependency on another module for this
+ * one.  It checks for existence and proper versions.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_dependency($name, $depname, $minimum_version)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['dependency'][$depname] = $minimum_version;
 	}
 }
 
@@ -631,7 +667,7 @@ function cms_mapi_register_content_module_set_properties_function($name, $functi
 }
 
 /**
- * Registers a function to be called for a content SetProperties($params)
+ * Registers a function to be called for a content FillParams($params)
  * function.
  *
  * Passes the $params array to the function.
@@ -645,6 +681,24 @@ function cms_mapi_register_content_module_fill_params_function($name, $function)
 	if (isset($cmsmodules[$name]))
 	{
 		$cmsmodules[$name]['content_module_fill_params'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called for a content ValidateData()
+ * function.
+ *
+ * Passes the $params array to the function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_module_validate_data_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_module_validate_data'] = $function;
 	}
 }
 
@@ -702,6 +756,145 @@ function cms_mapi_register_content_module_get_url_function($name, $function)
 	}
 }
 
+/**********************************************************
+*Content Callbacks
+**********************************************************/
+
+/**
+ * Registers a function to be called with content before it is sent to
+ * smarty for processing.  These changes will possibly cache.
+ *
+ * Passes $cms and a string of content as parameters to the function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_prerender_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_prerender_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called with the template before it is
+ * has any tags replaced.  These changes will possibly cache.
+ *
+ * Passes $cms and a string of the template as parameters to the
+ * function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_template_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_template_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called with the stylesheet text before it
+ * is merged into the template.  These changes will possibly cache.
+ *
+ * Passes $cms and a string of the stylesheet as parameters to the
+ * function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_stylesheet_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_stylesheet_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called with the title text before it
+ * is merged into the template.  These changes will possibly cache.
+ *
+ * Passes $cms and a string of the title as parameters to the
+ * function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_title_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_title_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called with the content data before it
+ * is merged into the template.  These changes will possibly cache.
+ *
+ * Passes $cms and a string of the title as parameters to the
+ * function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_data_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_data_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called with the htmlblob text before it
+ * is merged into the template.  These changes will possibly cache.
+ *
+ * Passes $cms and a string of the htmlblob as parameters to the
+ * function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_htmlblob_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_htmlblob_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function to be called with content after it is sent to
+ * smarty for processing.  Changes will never cache.
+ *
+ * Passes $cms and a string of content as parameters to the function.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_content_postrender_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['content_postrender_function'] = $function;
+	}
+}
+
+/**********************************************************
+*WYSIWYG Callbacks
+**********************************************************/
+
 /**
  * Enables the WYSIWYG for this module on all textareas
  *
@@ -715,6 +908,157 @@ function cms_mapi_enable_wysiwyg($name)
 	{
 		$cmsmodules[$name]['enable_wysiwyg'] = true;
 	}
+}
+
+/**
+ * Registers this module as a WYSIWYG module
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_wysiwyg_module($name)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['wysiwyg_module'] = true;
+	}
+}
+
+/**
+ * Registers this module's WYSIWYG header function
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_wysiwyg_page_header_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['wysiwyg_header_function'] = $function;
+	}
+}
+
+/**
+ * Registers this module's WYSIWYG body function
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_wysiwyg_page_body_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['wysiwyg_body_function'] = $function;
+	}
+}
+
+/**
+ * Registers a function that will product output destined for that
+ * pages <form> tag.  Useful for javascript needed to be done on submit
+ * and such.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_wysiwyg_page_form_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['wysiwyg_form_function'] = $function;
+	}
+}
+
+/**
+ * This is a function that would be called before a form is submitted.  Generally, a dropdown
+ * box or something similar that would force a submit of the form via javascript should put this
+ * in their onchange line as well so that the WYSIWYG can do any cleanups before the actual form
+ * submission takes place.
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_wysiwyg_page_form_submit_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['wysiwyg_form_submit_function'] = $function;
+	}
+}
+
+/**
+ * Registers this module's WYSIWYG textbox function
+ *
+ * @since 0.8
+ */
+function cms_mapi_register_wysiwyg_page_textbox_function($name, $function)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$name]))
+	{
+		$cmsmodules[$name]['wysiwyg_textbox_function'] = $function;
+	}
+}
+
+/**********************************************************
+*Intra-Module Callbacks
+**********************************************************/
+
+function cms_mapi_check_for_module($name)
+{
+	$result = false;
+
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$module]) && $cmsmodules[$module]['Installed'] == true && $cmsmodules[$module]['Active'] == true)
+	{
+		$result = true;
+	}
+	return $result;
+}
+
+function cms_mapi_register_intermodule_function($module, $name, $function_pointer)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$module]))
+	{
+		$cmsmodules[$module]['intermodule_function'][$name] = $function_pointer;
+	}
+}
+
+function cms_mapi_call_intermodule_function($module, $name, $array)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$module]) && $cmsmodules[$module]['Installed'] == true && $cmsmodules[$module]['Active'] == true)
+	{
+		if (isset($cmsmodules[$module]['intermodule_function'][$name]))
+		{
+			return call_user_func_array($cmsmodules[$module]['intermodule_function'][$name], array($array));
+		}
+	}
+}
+
+function cms_mapi_check_intermodule_function_exists($module, $name)
+{
+	$result = false;
+
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (isset($cmsmodules[$module]) && $cmsmodules[$module]['Installed'] == true && $cmsmodules[$module]['Active'] == true)
+	{
+		if (isset($cmsmodules[$module]['intermodule_function'][$name]))
+		{
+			$result = true;
+		}
+	}
+	return $result;
 }
 
 /**
@@ -732,7 +1076,7 @@ function cms_mapi_create_permission($cms, $permission_name, $permission_text) {
 	if ($result && $result->RowCount() < 1) {
 
 		$new_id = $db->GenID(cms_db_prefix()."permissions_seq");
-		$query = "INSERT INTO ".cms_db_prefix()."permissions (permission_id, permission_name, permission_text, create_date, modified_date) VALUES ($new_id, ".$db->qstr($permission_name).",".$db->qstr($permission_text).",".$db->DBTimeStamp(time()).",".$db->DBTimeStamp(time()).")";
+		$query = "INSERT INTO ".cms_db_prefix()."permissions (permission_id, permission_name, permission_text, create_date, modified_date) VALUES ($new_id, ".$db->qstr($permission_name).",".$db->qstr($permission_text).",'".$db->DBTimeStamp(time())."','".$db->DBTimeStamp(time())."')";
 		$db->Execute($query);
 	}
 }
@@ -772,6 +1116,43 @@ function cms_mapi_remove_permission($cms, $permission_name) {
 		$query = "DELETE FROM ".cms_db_prefix()."permissions WHERE permission_id = $id";
 		$db->Execute($query);
 	}
+}
+
+/**
+ * Returns a module preference if it exists.
+ *
+ * @since 0.8
+ */
+function cms_mapi_get_preference($module, $preference_name, $defaultvalue='')
+{
+	return get_site_preference($module . "_mapi_pref_" . $preference_name, $defaultvalue);
+}
+
+/**
+ * Sets a module preference.
+ *
+ * @since 0.8
+ */
+function cms_mapi_set_preference($module, $preference_name, $value)
+{
+	return set_site_preference($module . "_mapi_pref_" . $preference_name, $value);
+}
+
+/**
+ * Adds a message to be displayed on next invocation the Plugin Management page.  These
+ * messages are stored in the Session.
+ *
+ * @since 0.8
+ */
+function cms_mapi_add_message($message)
+{
+	global $gCms;
+	$cmsmodules = &$gCms->modules;
+	if (!isset($_SESSION['modules_messages']))
+	{
+		$_SESSION['modules_messages'] = array();
+	}
+	array_push($_SESSION['modules_messages'], $message); 
 }
 
 /**
@@ -837,9 +1218,15 @@ function cms_mapi_create_admin_link($module, $id, $params, $text, $warn_message=
  *
  * @since 0.4
  */
-function cms_mapi_create_user_form_start($module, $id, $return_id, $method="post", $form_extra="")
+function cms_mapi_create_user_form_start($module, $id, $return_id, $method="post", $form_extra="", $enctype='')
 {
-	return "<form name=\"".$id."_moduleform\" method=\"$method\" action=\"moduleinterface.php\"" .$form_extra." ><input type=\"hidden\" name=\"module\" value=\"$module\" /><input type=\"hidden\" name=\"return_id\" value=\"$return_id\" /><input type=\"hidden\" name=\"id\" value=\"$id\" />\n";
+	$text = "<form name=\"".$id."_moduleform\" method=\"$method\" action=\"moduleinterface.php\"" .$form_extra;
+	if ($enctype != '')
+	{
+		$text .= ' enctype="'.$enctype.'"';
+	}
+	$text .= "><input type=\"hidden\" name=\"module\" value=\"$module\" /><input type=\"hidden\" name=\"return_id\" value=\"$return_id\" /><input type=\"hidden\" name=\"id\" value=\"$id\" />\n";
+	return $text;
 }
 
 /**
@@ -860,9 +1247,15 @@ function cms_mapi_create_user_form_end()
  *
  * @since 0.4
  */
-function cms_mapi_create_admin_form_start($module, $id, $method="post")
+function cms_mapi_create_admin_form_start($module, $id, $method="post", $enctype='')
 {
-	return "<form name=\"".$id."moduleform\" method=\"$method\" action=\"moduleinterface.php\"><input type=\"hidden\" name=\"module\" value=\"$module\" />\n";
+	$text = "<form name=\"".$id."moduleform\" method=\"$method\" action=\"moduleinterface.php\"";
+	if ($enctype != '')
+	{
+		$text .= ' enctype="'.$enctype.'"';
+	}
+	$text .= "><input type=\"hidden\" name=\"module\" value=\"$module\" />\n";
+	return $text;
 }
 
 /**
@@ -898,6 +1291,24 @@ function cms_mapi_create_content_link_by_page_id($page_id, $link_text)
 	return "<a href=\"".$config["root_url"]."/index.php?page=$page_id\">$link_text</a>\n";
 }
 
+function cms_mapi_check_for_dependents($parent)
+{
+	global $gCms;
+	$db = $gCms->db;
+	
+	$result = false;
+	
+	$query = "SELECT * FROM ".cms_db_prefix()."module_deps WHERE parent_module = ?";
+	$dbresult = $db->Execute($query, array($parent));
+	
+	if ($dbresult && $dbresult->RowCount() > 0)
+	{
+		$result = true;
+	}
+	
+	return $result;
+}
+
 function cms_mapi_create_module_content_class($key)
 {
 	global $gCms;
@@ -907,7 +1318,7 @@ function cms_mapi_create_module_content_class($key)
 	{
 		$classtext = '';
 
-		$classtext .= 'class ' . $key . 'Module extends ContentBase { ';
+		$classtext .= 'class ' . $key . ' extends ContentBase { ';
 
 		if (isset($allmodules[$key]['content_module_set_properties']))
 		{
@@ -915,15 +1326,33 @@ function cms_mapi_create_module_content_class($key)
 		}
 		if (isset($allmodules[$key]['content_module_fill_params']))
 		{
-			$classtext .= 'function FillParams() { ' . $allmodules[$key]['content_module_fill_params'] . '($this, $params); } ';
+			$classtext .= 'function FillParams($params) { ' . $allmodules[$key]['content_module_fill_params'] . '($this, $params); } ';
+		}
+		if (isset($allmodules[$key]['content_module_validate_data']))
+		{
+			$classtext .= 'function ValidateData() { ' . $allmodules[$key]['content_module_validate_data'] . '($this); } ';
 		}
 		if (isset($allmodules[$key]['content_module_show']))
 		{
-			$classtext .= 'function Show() { return ' . $allmodules[$key]['content_module_show'] . '($this); } ';
+			#This does some tricks to make sure that all output is captured
+			$classtext .= 'function Show() {';
+			$classtext .= '@ob_start();';
+			$classtext .= 'echo ' . $allmodules[$key]['content_module_show'] . '($this);';
+			$classtext .= '$result = @ob_get_contents();';
+			$classtext .= '@ob_end_clean();';
+			$classtext .= 'return $result;';
+			$classtext .= '}';
 		}
 		if (isset($allmodules[$key]['content_module_edit']))
 		{
-			$classtext .= 'function Edit() { return ' . $allmodules[$key]['content_module_edit'] . '($this); } ';
+			#Same here...
+			$classtext .= 'function Edit() {';
+			$classtext .= '@ob_start();';
+			$classtext .= 'echo ' . $allmodules[$key]['content_module_edit'] . '($this);';
+			$classtext .= '$result = @ob_get_contents();';
+			$classtext .= '@ob_end_clean();';
+			$classtext .= 'return $result;';
+			$classtext .= '}';
 		}
 		if (isset($allmodules[$key]['content_module_get_url']))
 		{
@@ -937,6 +1366,61 @@ function cms_mapi_create_module_content_class($key)
 		$allmodules[$key]['content_module_created'] = true;
 	}
 }
+
+/**
+ * Creates a string containing links to all the pages.
+ * @param page - the current page to display
+ * @param totalrows - the amount of items being listed
+ * @param limit - the amount of items to list per page
+ * @return a string containing links to all the pages (ex. next 1,2 prev)
+ */
+function cms_mapi_admin_pagination($module, $id, $page, $totalrows, $limit)
+{
+    $link="<a href=\"moduleinterface.php?module=$module&".$id."page=";
+    $page_string = "";
+    $from = ($page * $limit) - $limit;
+    $numofpages = floor($totalrows / $limit);
+    if( $numofpages * $limit < $totalrows )
+    {
+      $numofpages++;
+    }
+
+    if ($numofpages > 1)
+    {
+        if($page != 1)
+        {
+            $pageprev = $page-1;
+            $page_string .= $link.$pageprev."\">".lang('previous')."</a>&nbsp;";
+        }
+        else
+        {
+            $page_string .= lang('previous')." ";
+        }
+        for($i = 1; $i <= $numofpages; $i++)
+        {
+            if($i == $page)
+            {
+                 $page_string .= $i."&nbsp;";
+            }
+            else
+            {
+                 $page_string .= $link.$i."\">$i</a>&nbsp;";
+            }
+        }
+        if(($totalrows - ($limit * $page)) > 0)
+        {
+            $pagenext = $page+1;
+            $page_string .= $link.$pagenext."\">".lang('next')."</a>";
+        }
+        else
+        {
+            $page_string .= lang('next')." ";
+        }
+    }
+    return $page_string;
+ }
+
+ 
 
 require_once(dirname(dirname(__FILE__)).'/lib/smarty/Smarty.class.php');
 
@@ -953,7 +1437,7 @@ class Smarty_ModuleInterface extends Smarty {
 		$this->compile_dir = $config["root_path"].'/tmp/templates_c/';
 		$this->config_dir = $config["root_path"].'/tmp/configs/';
 		$this->cache_dir = $config["root_path"].'/tmp/cache/';
-		$this->plugins_dir = array($config["root_path"].'/smarty/plugins/',$config["root_path"].'/plugins/');
+		$this->plugins_dir = array($config["root_path"].'/lib/smarty/plugins/',$config["root_path"].'/plugins/');
 
 		$this->compile_check = true;
 		$this->caching = false;
@@ -1007,8 +1491,8 @@ class Smarty_ModuleInterface extends Smarty {
 		$db = $gCms->db;
 		$cmsmodules = $gCms->modules;
 
-		$query = "SELECT UNIX_TIMESTAMP(p.modified_date) as modified_date, t.template_id, t.stylesheet, t.template_content FROM ".cms_db_prefix()."pages p INNER JOIN ".cms_db_prefix()."templates t ON p.template_id = t.template_id WHERE p.page_id = '$tpl_name'";
-		$result = $db->Execute($query);
+		$query = "SELECT t.template_id, t.stylesheet, t.template_content, p.hierarchy, p.content_id FROM ".cms_db_prefix()."content p INNER JOIN ".cms_db_prefix()."templates t ON p.template_id = t.template_id WHERE p.content_id = ?";
+		$result = $db->Execute($query, array($tpl_name));
 
 		if ($result && $result->RowCount()) {
 
@@ -1017,9 +1501,40 @@ class Smarty_ModuleInterface extends Smarty {
 				$line = $result->FetchRow();
 
 				$tpl_source = $line['template_content'];
-				$content = $line['page_content'];
-				$title = $line['page_title'];
+
+				#Perform the content template callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['content_template_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['content_template_function'], array(&$gCms, &$tpl_source));
+					}
+				}
+
+				#$content = $line['page_content'];
+				$title = $line['title'];
+
+				#Perform the content title callback
+				foreach($gCms->modules as $key=>$value)
+				{
+					if (isset($gCms->modules[$key]['content_title_function']) &&
+						$gCms->modules[$key]['Installed'] == true &&
+						$gCms->modules[$key]['Active'] == true)
+					{
+						call_user_func_array($gCms->modules[$key]['content_title_function'], array(&$gCms, &$title));
+					}
+				}
+
 				$template_id = $line['template_id'];
+
+				$gCms->variables['content_id'] = $line['content_id'];
+				$gCms->variables['page'] = $line['content_id'];
+				$gCms->variables['page_id'] = $line['content_id'];
+
+				$gCms->variables['page_name'] = $tpl_name;
+				$gCms->variables['position'] = $line['hierarchy'];
 
 				$stylesheet = '<link rel="stylesheet" type="text/css" href="stylesheet.php?templateid='.$template_id.'" />';
 
@@ -1044,15 +1559,39 @@ class Smarty_ModuleInterface extends Smarty {
 				@ob_end_clean();
 				if ($smarty_obj->showtemplate == true)
 				{
+					#Perform the content data callback
+					foreach($gCms->modules as $key=>$value)
+					{
+						if (isset($gCms->modules[$key]['content_data_function']) &&
+							$gCms->modules[$key]['Installed'] == true &&
+							$gCms->modules[$key]['Active'] == true)
+						{
+							call_user_func_array($gCms->modules[$key]['content_data_function'], array(&$gCms, &$modoutput));
+						}
+					}
+
 					$tpl_source = ereg_replace("\{content\}", $modoutput, $tpl_source);
-					#Do html_blobs
-					$tpl_source = preg_replace_callback("|\{html_blob name=[\'\"]?(.*?)[\'\"]?\}|", "html_blob_regex_callback", $tpl_source);
 				}
 				else
 				{
 					$tpl_source = $modoutput;
 				}
 			}
+
+			#Do html_blobs
+			$tpl_source = preg_replace_callback("|\{html_blob name=[\'\"]?(.*?)[\'\"]?\}|", "html_blob_regex_callback", $tpl_source);
+
+			#Perform the content prerender callback
+			foreach($gCms->modules as $key=>$value)
+			{
+				if (isset($gCms->modules[$key]['content_prerender_function']) &&
+					$gCms->modules[$key]['Installed'] == true &&
+					$gCms->modules[$key]['Active'] == true)
+				{
+					call_user_func_array($gCms->modules[$key]['content_prerender_function'], array(&$gCms, &$tpl_source));
+				}
+			}
+
 			return true;
 		}
 		else {

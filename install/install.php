@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-$config = "config.php";
+$config = dirname(dirname(__FILE__))."/config.php";
 if (!file_exists($config)) {
     $file = @fopen($config, "w");
     if ($file != 0) {
@@ -358,7 +358,7 @@ function showPageFour() {
 	$newconfig['query_var'] = $_POST['querystr'];
 	$newconfig['use_bb_code'] = false;
 	$newconfig['use_smarty_php_tags'] = false;
-	$newconfig['previews_path'] = $newconfig['root_path'] . "/smarty/cms/cache";
+	$newconfig['previews_path'] = $newconfig['root_path'] . "/tmp/cache";
 	$newconfig["uploads_path"] = $newconfig['root_path'] . "/uploads";
 	$newconfig["uploads_url"] = $newconfig['root_url'] ."/uploads";	
 	$newconfig["image_uploads_path"] = $newconfig['root_path'] . "/uploads/images";
@@ -391,7 +391,7 @@ function showPageFour() {
     $content .= '$this->query_var = "'.$_POST['querystr'].'";'."\n";
     $content .= '$this->use_bb_code = '.$_POST['bbcode'].';'."\n";
 	$content .= '$this->use_smarty_php_tags = false;'."\n";
-	$content .= '$this->previews_path = $this->root_path . "/smarty/cms/cache";'."\n";
+	$content .= '$this->previews_path = $this->root_path . "/tmp/cache";'."\n";
     $content .= "\n?>\n";
 	*/
 
@@ -401,6 +401,14 @@ function showPageFour() {
         echo "Error: Cannot write to $config.<BR />\n";
         exit;
     } ## if
+
+	if (file_exists(dirname(dirname(__FILE__))."/tmp/cache/SITEDOWN"))
+	{
+		if (!unlink(dirname(dirname(__FILE__))."/tmp/cache/SITEDOWN"))
+		{
+			echo "Error: Could not remove the tmp/cache/SITEDOWN file.  Please remove manually.";
+		}
+	}
  
 	$link = str_replace(" ", "%20", $_POST['docroot']);
     echo "<H4>Congratulations, you are all setup.</H4><H4>Here is your <A HREF=\"".$link."\">CMS site</A></H4>\n";

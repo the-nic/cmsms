@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
@@ -94,7 +96,7 @@ if ($access) {
 		}
 
 		if ($validinfo) {
-			$query = "UPDATE ".cms_db_prefix()."userplugins SET userplugin_name = ".$db->qstr($plugin_name).", code = ".$db->qstr($code).", modified_date = ".$db->DBTimeStamp(time())." WHERE userplugin_id = ".$userplugin_id;
+			$query = "UPDATE ".cms_db_prefix()."userplugins SET userplugin_name = ".$db->qstr($plugin_name).", code = ".$db->qstr($code).", modified_date = '".$db->DBTimeStamp(time())."' WHERE userplugin_id = ".$userplugin_id;
 			$result = $db->Execute($query);
 			if ($result) {
 				audit($userplugin_id, $plugin_name, 'Edited User Defined Tag');
@@ -140,7 +142,7 @@ else {
 
 	<tr>
 		<td width="60">*<?php echo lang('name')?>:</td>
-		<td><input type="text" name="plugin_name" maxlength="255" value="<?php echo $plugin_name?>" class="standard"></td>
+		<td><input type="text" name="plugin_name" maxlength="255" value="<?php echo $plugin_name?>" class="standard" /></td>
 	</tr>
 	<tr>
 		<td>*<?php echo lang('code')?></td>
@@ -148,9 +150,9 @@ else {
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
-		<td><input type="hidden" name="userplugin_id" value="<?php echo $userplugin_id?>"><input type="hidden" name="origpluginname" value="<?php echo $orig_plugin_name?>"><input type="hidden" name="editplugin" value="true">
-		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'"></td>
+		<td><input type="hidden" name="userplugin_id" value="<?php echo $userplugin_id?>" /><input type="hidden" name="origpluginname" value="<?php echo $orig_plugin_name?>" /><input type="hidden" name="editplugin" value="true" />
+		<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+		<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" /></td>
 	</tr>
 
 </table>

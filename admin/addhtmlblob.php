@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 $CMS_ADMIN_PAGE=1;
 
@@ -125,9 +127,12 @@ if ($result && $result->RowCount() > 0) {
 	$addt_users = "<option>&nbsp;</option>";
 }
 
-if (!$access) {
+if (!$access)
+{
 	print "<h3>".lang('noaccessto', array(lang('addhtmlblob')))."</h3>";
-} else {
+}
+else
+{
 	if ($error != "")
 		echo "<ul class=\"error\">".$error."</ul>";
 ?>
@@ -142,22 +147,22 @@ if (!$access) {
 
 	<tr>
 		<td width="150">*<?php echo lang('name')?>:</td>
-		<td><input type="text" name="htmlblob" maxlength="255" value="<?php echo $htmlblob?>" class="standard"></td>
+		<td><input type="text" name="htmlblob" maxlength="255" value="<?php echo $htmlblob?>" class="standard" /></td>
 	</tr>
 	<tr>
 		<td>*<?php echo lang('content')?>:</td>
-		<td><?php echo textarea_highlight((isset($use_javasyntax)?$use_javasyntax:false), $content, "content", "syntaxHighlight", "HTML (Complex)", "content"); ?></td>
+		<td><?php echo create_textarea(true, $content, 'content', 'syntaxHighlight', 'content');?></td>
 	</tr>
 	<tr>
 		<td><?php echo lang('additionaleditors')?>:</td>
-		<td><select name="additional_editors[]" multiple size="3"><?php echo $addt_users?></select></td>
+		<td><select name="additional_editors[]" multiple="multiple" size="3"><?php echo $addt_users?></select></td>
 	</tr>
 	<tr>
 		<td>&nbsp;</td>
 		<td>
-			<input type="hidden" name="addhtmlblob" value="true">
-			<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
-			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'">
+			<input type="hidden" name="addhtmlblob" value="true" />
+			<input type="submit" value="<?php echo lang('submit')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
+			<input type="submit" name="cancel" value="<?php echo lang('cancel')?>" class="button" onmouseover="this.className='buttonHover'" onmouseout="this.className='button'" />
 		</td>
 	</tr>
 

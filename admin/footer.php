@@ -1,20 +1,76 @@
 
 </div>
 
-<DIV ID="footer" CLASS="footer">
+<div id="footer" class="footer">
 
-</DIV>
+</div>
 
-<DIV ID="footer1"></DIV>
-<DIV ID="footer2"><A HREF="http://www.cmsmadesimple.org">CMS made simple</A> is Free Software released under the GNU/GPL License</DIV>
+<div id="footer1"></div>
+<div id="footer2"><a href="http://www.cmsmadesimple.org">CMS made simple</a> is Free Software released under the GNU/GPL License</div>
 
 <?php
-if ($config["debug"] == true){
-	echo '<div ID="debugfooter">';
+if ($config["debug"] == true)
+{
+	echo '<div id="debugfooter">';
 	global $sql_queries;
 	echo "<div>".$sql_queries."</div>\n";
+	foreach ($gCms->errors as $error)
+	{
+		echo $error;
+	}
 	echo '</div>';
 }
 ?>
-</BODY>
-</HTML>
+</body>
+</html>
+
+<?php
+
+#Pull the stuff out of the buffer...
+$htmlresult = @ob_get_contents();
+@ob_end_clean();
+
+#Do any header replacements (this is for WYSIWYG stuff)
+$footertext = '';
+$formtext = '';
+$bodytext = '';
+
+$userid = get_userid();
+$wysiwyg = get_preference($userid, 'wysiwyg');
+
+if (isset($wysiwyg) && $wysiwyg != '')
+{
+	if (isset($gCms->modules[$wysiwyg]) && $gCms->modules[$wysiwyg]['Installed'] == true &&
+		$gCms->modules[$wysiwyg]['Active'] == true && isset($gCms->modules[$wysiwyg]['wysiwyg_module']))
+	{
+		if (isset($gCms->modules[$wysiwyg]['wysiwyg_body_function']))
+		{
+			@ob_start();
+			call_user_func_array($gCms->modules[$wysiwyg]['wysiwyg_body_function'], array(&$gCms));
+			$bodytext .= @ob_get_contents();
+			@ob_end_clean();
+		}
+		if (isset($gCms->modules[$wysiwyg]['wysiwyg_header_function']))
+		{
+			@ob_start();
+			call_user_func_array($gCms->modules[$wysiwyg]['wysiwyg_header_function'], array(&$gCms));
+			$footertext .= @ob_get_contents();
+			@ob_end_clean();
+		}
+		if (isset($gCms->modules[$wysiwyg]['wysiwyg_form_function']))
+		{
+			@ob_start();
+			call_user_func_array($gCms->modules[$wysiwyg]['wysiwyg_form_function'], array(&$gCms));
+			$formtext .= @ob_get_contents();
+			@ob_end_clean();
+		}
+	}
+}
+
+$htmlresult = str_replace('<!-- THIS IS WHERE HEADER STUFF SHOULD GO -->', $footertext, $htmlresult);
+$htmlresult = str_replace('##FORMSUBMITSTUFFGOESHERE##', $formtext, $htmlresult);
+$htmlresult = str_replace('##BODYSUBMITSTUFFGOESHERE##', ' '.$bodytext, $htmlresult);
+
+echo $htmlresult;
+
+?>

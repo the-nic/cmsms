@@ -215,4 +215,13 @@ $lang['admin']['slogan'] = 'So <span style="color: #FE0404">einfach</span>,als w
 $lang['admin']['clearcache'] = 'Clear Cache'; //needs translation
 $lang['admin']['clear'] = 'Clear'; //needs translation
 $lang['admin']['cachecleared'] = 'Cache Cleared'; //needs translation
+$lang['admin']['apply'] = 'Apply'; //needs translation
+$lang['admin']['none'] = 'None'; //needs translation
+$lang['admin']['wysiwygtouse'] = 'Select WYSIWYG to use'; //needs translation
+$lang['admin']['cachable'] = 'Cachable'; //needs translation
+$lang['admin']['hasdependents'] = 'Has Dependents'; //needs translation
+$lang['admin']['missingdependency'] = 'Missing Dependency'; //needs translation
+$lang['admin']['minimumversion'] = 'Minimum Version'; //needs translation
+$lang['admin']['depsformodule'] = 'Dependencies for %s Module'; //needs translation
+$lang['admin']['installed'] = 'Installed'; //needs translation
 ?>

@@ -15,6 +15,8 @@
 #You should have received a copy of the GNU General Public License
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+#$Id$
 
 //Set the module name -- should be the name of the class
 $module_name = "News";
@@ -28,7 +30,11 @@ cms_mapi_register_module($module_name, "Robert Campbell <rob@techcom.dyndns.org"
 
 //Register module to work as a content type
 cms_mapi_register_content_module($module_name);
+cms_mapi_register_content_module_set_properties_function($module_name, 'news_module_content_set_properties');
 cms_mapi_register_content_module_edit_function($module_name, 'news_module_content_edit');
+cms_mapi_register_content_module_fill_params_function($module_name, 'news_module_content_fill_params');
+cms_mapi_register_content_module_get_url_function($module_name, 'news_module_content_get_url');
+cms_mapi_register_content_module_show_function($module_name, 'news_module_content_show');
 
 //Register module to work as a plugin (cms_module)
 cms_mapi_register_plugin_module($module_name);

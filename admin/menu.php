@@ -1,22 +1,89 @@
-<DIV ID="navcontainer">
+<div id="navcontainer">
 
-<DIV ID="welcome">
-<?php echo lang('welcomemsg', array($_SESSION["cms_admin_username"]))?>
-</DIV>
+<div id="welcome">
+<?php if (isset($_SESSION['cms_admin_username'])) echo lang('welcomemsg', array($_SESSION['cms_admin_username']))?>
+</div>
 
-<A HREF="listcontent.php"><?php echo lang('contentmanagement')?></A>
-<A HREF="listtemplates.php"><?php echo lang('templatemanagement')?></A>
-<?php if (get_site_preference('useadvancedcss') == "1") { ?>
-<A HREF="listcss.php"><?php echo lang('cssmanagement')?></A>
-<?php } ?>
-<A HREF="listhtmlblobs.php"><?php echo lang('blobmanagement')?></A>
-<A HREF="listusers.php"><?php echo lang('usermanagement')?></A>
-<A HREF="listgroups.php"><?php echo lang('groupmanagement')?></A>
-<A HREF="files.php"><?php echo lang('filemanagement')?></A>
-<A HREF="plugins.php"><?php echo lang('pluginmanagement')?></A>
-<A HREF="siteprefs.php"><?php echo lang('siteprefs')?></A>
-<A HREF="adminlog.php"><?php echo lang('adminlog')?></A>
-<A HREF="<?php
+<div>
+
+<?php
+
+$userid = get_userid();
+
+?>
+
+<a href="listcontent.php"><?php echo lang('contentmanagement')?></a>
+
+<?php
+
+if (check_permission($userid, 'Add Template') || check_permission($userid, 'Remove Template') || check_permission($userid, 'Modify Template'))
+{
+
+?>
+<a href="listtemplates.php"><?php echo lang('templatemanagement')?></a>
+<?php
+
+}
+
+if (get_site_preference('useadvancedcss') == "1")
+{
+	if (check_permission($userid, 'Add CSS') || check_permission($userid, 'Remove CSS') || check_permission($userid, 'Modify CSS'))
+	{
+
+?>
+<a href="listcss.php"><?php echo lang('cssmanagement')?></a>
+<?php
+
+	}
+}
+
+if (check_permission($userid, 'Add Html Blobs') || check_permission($userid, 'Remove Html Blobs') || check_permission($userid, 'Modify Html Blobs'))
+{
+
+?>
+<a href="listhtmlblobs.php"><?php echo lang('blobmanagement')?></a>
+<?php
+
+}
+
+?>
+<a href="listusers.php"><?php echo lang('usermanagement')?></a>
+<?php
+
+if (check_permission($userid, 'Add Group') || check_permission($userid, 'Remove Group') || check_permission($userid, 'Modify Group') || check_permission($userid, 'Modify Group Assignments') || check_permission($userid, 'Modify Permissions'))
+{
+
+?>
+<a href="listgroups.php"><?php echo lang('groupmanagement')?></a>
+<?php
+
+}
+
+if (check_permission($userid, 'Modify Files'))
+{
+
+?>
+<a href="files.php"><?php echo lang('filemanagement')?></a>
+<?php
+
+}
+
+?>
+<a href="plugins.php"><?php echo lang('pluginmanagement')?></a>
+<?php
+
+if (check_permission($userid, 'Modify Site Preferences'))
+{
+
+?>
+<a href="siteprefs.php"><?php echo lang('siteprefs')?></a>
+<?php
+
+}
+
+?>
+<a href="adminlog.php"><?php echo lang('adminlog')?></a>
+<a href="<?php
 
 if (isset($config['assume_mod_rewrite']) && $config['assume_mod_rewrite'] == true)
 {
@@ -44,9 +111,9 @@ else
 	echo "../index.php";
 }
 
-?>" TARGET="_blank"><?php echo lang('showsite')?></A>
-<A HREF="editprefs.php"><?php echo lang('userprefs')?></A>
-<A HREF="logout.php"><?php echo lang('logout')?></A>
+?>" target="_blank"><?php echo lang('showsite')?></a>
+<a href="editprefs.php"><?php echo lang('userprefs')?></a>
+<a href="logout.php"><?php echo lang('logout')?></a>
 
 <?php
 
@@ -70,5 +137,9 @@ else
 	}
 
 ?>
-<BR>
-</DIV> 
+
+</div>
+
+<br />
+
+</div> 

@@ -1,5 +1,39 @@
-Version 0.8 -- Subversion
+Version 0.8.2 "Taunoa" -- Subversion 
 -----------------
+
+* Added wysiwyg body tag callback for making htmlarea work
+* Fixed htaccess.txt to point to a better url
+* Fixed hiding/showing of Help boxes
+* Fixed link content type so that urls are encoded properly for xhtml
+* Fixed handling of attached CSS to WYSIWYGs
+* Fixed stylesheet hook to actually send CSS
+* Fixed phplayers menu to put CSS in with template CSS so it's easily
+cascaded
+* Lots of other WYSIWYG related bugfixes
+
+Version 0.8.1 "Papeete" -- Sat Jan 01 2005 
+-----------------
+
+* Fixed bugs with upgrading
+* Fixed html blobs
+* Fixed bug with preview path
+
+Version 0.8 "Tahiti" -- Sat Jan 01 2005 
+-----------------
+
+* Added Norwegian translation (Roger 'Stigma' Knutsen)
+* Added FCKeditor capability via module (not included)
+* Added TinyMCE capability via module (included)
+* Added versionname plugin
+* Added many many module API callbacks
+* Admin and default website are totally xhtml 1.0 transitional compliant
+* Admin menu now only shows items that the user could have access to
+* Cleaned up root directory by moving things to modules and the lib
+directory
+* Moved HTMLArea to a module (not included)
+* Moved dhtmlmenu plugin to PHPLayers module in order to fix xhtml issues
+* Rewrote all content handling from scratch for better expandibility
+* Updated Traditional Chinese translation (gobido)
 
 Version 0.7.3 -- Tue Nov 23 2004
 -----------------
