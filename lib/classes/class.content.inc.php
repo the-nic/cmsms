@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.content.inc.php 2155 2005-11-10 23:47:54Z wishy $
 
 /**
  * This file respect the PHP Coding Standards : http://alltasks.net/code/php_coding_standard.html

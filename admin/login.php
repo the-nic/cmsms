@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: login.php 2065 2005-10-22 14:54:23Z wishy $
 
 $CMS_ADMIN_PAGE=1;
 

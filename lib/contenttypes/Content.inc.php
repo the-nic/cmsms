@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: Content.inc.php 2192 2005-11-18 15:23:15Z wishy $
 
 class content extends ContentBase
 {

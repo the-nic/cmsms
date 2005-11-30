@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: content.functions.php 2201 2005-11-22 18:07:40Z wishy $
 
 /**
  * Handles content related functions

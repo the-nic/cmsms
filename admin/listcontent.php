@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: listcontent.php 2206 2005-11-23 02:14:00Z wishy $
 
 $CMS_ADMIN_PAGE=1;
 

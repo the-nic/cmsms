@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: deletecss.php 2011 2005-10-04 01:43:34Z wishy $
 
 /**
  * This page is used to delete CSS. It doesn't show any HTML and only does

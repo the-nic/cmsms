@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: plugins.php 1691 2005-05-17 22:51:48Z sjg $
 
 $CMS_ADMIN_PAGE=1;
 $LOAD_ALL_MODULES=1;

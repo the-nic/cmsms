@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: index.php 1606 2005-04-26 00:08:17Z sjg $
 
 $CMS_ADMIN_PAGE=1;
 $CMS_TOP_MENU='main';

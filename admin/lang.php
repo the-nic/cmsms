@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: lang.php 2045 2005-10-17 16:26:56Z wishy $
 
 #Nice decent default
 $current_language = "en_US";

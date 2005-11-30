@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: editcss.php 2011 2005-10-04 01:43:34Z wishy $
 
 /**
  * This page is both the interface of the CSS editing, and used for actually

@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.stylesheet.inc.php 2114 2005-11-04 21:51:13Z wishy $
 
 /**
  * Generic stylesheet class. This can be used for any logged in stylesheet or stylesheet related function.

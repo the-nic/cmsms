@@ -31,7 +31,7 @@
 // |          Vincent Oostindie <vincent@sunlight.tmfweb.nl>              |
 // +----------------------------------------------------------------------+
 //
-// $Id: Transform.php 26 2004-03-31 02:35:21Z Wei Zhuo $
+// $Id: Transform.php 2114 2005-11-04 21:51:13Z wishy $
 //
 // Image Transformation interface
 //

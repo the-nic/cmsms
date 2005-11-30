@@ -2,7 +2,7 @@
 /**
  * The PHP Image Editor user interface.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: editor.php 2218 2005-11-28 23:04:47Z sjg $
  * @package ImageManager
  */
 

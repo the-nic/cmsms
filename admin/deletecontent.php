@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: deletecontent.php 1501 2005-04-02 00:30:14Z sjg $
 
 $CMS_ADMIN_PAGE=1;
 

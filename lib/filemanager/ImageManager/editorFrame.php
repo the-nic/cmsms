@@ -3,7 +3,7 @@
 /**
  * The frame that contains the image to be edited.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: editorFrame.php 2218 2005-11-28 23:04:47Z sjg $
  * @package ImageManager
  */
 require_once(dirname(dirname(dirname(dirname(__FILE__)))) . '/include.php');
