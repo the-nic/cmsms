@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: class.module.inc.php 2279 2005-12-04 17:40:25Z wishy $
+#$Id: class.module.inc.php 2287 2005-12-04 20:32:15Z wishy $
 
 /**
  * "Static" module functions for internal use and module development.  CMSModule
@@ -1755,14 +1755,14 @@ class CMSModule extends ModuleOperations
 		if ((is_array($this->langhash) && count(array_keys($this->langhash)) == 0) || !isset($this->langhash) || !is_array($this->langhash))
 		{
 			$dir = $gCms->config['root_path'];
-			if (is_file("$dir/modules/".$this->GetName()."/lang/$ourlang.php"))
-			{
-				include("$dir/modules/".$this->GetName()."/lang/$ourlang.php");
-				$this->langhash = &$lang;
-			}
-			else if (is_file("$dir/modules/".$this->GetName()."/lang/$ourlang/$ourlang.php"))
+			if (is_file("$dir/modules/".$this->GetName()."/lang/$ourlang/$ourlang.php"))
 			{
 				include("$dir/modules/".$this->GetName()."/lang/$ourlang/$ourlang.php");
+				$this->langhash = &$lang;
+			}
+			else if (is_file("$dir/modules/".$this->GetName()."/lang/$ourlang.php"))
+			{
+				include("$dir/modules/".$this->GetName()."/lang/$ourlang.php");
 				$this->langhash = &$lang;
 			}
 			else if (is_file("$dir/modules/".$this->GetName()."/lang/".$this->DefaultLanguage().".php"))
