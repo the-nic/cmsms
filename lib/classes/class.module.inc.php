@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: class.module.inc.php 2272 2005-12-03 20:34:05Z wishy $
+#$Id: class.module.inc.php 2279 2005-12-04 17:40:25Z wishy $
 
 /**
  * "Static" module functions for internal use and module development.  CMSModule
@@ -117,7 +117,7 @@ class ModuleOperations extends Smarty
 										{
 											$newmodule->Upgrade($dbversion, $newmodule->GetVersion());
 											$query = "UPDATE ".cms_db_prefix()."modules SET version = ? WHERE module_name = ?";
-											$result = $db->Execute($query, array($newmodule->GetVersion(), $name));
+											$db->Execute($query, array($newmodule->GetVersion(), $name));
 											$dbversion = $newmodule->GetVersion();
 										}
 

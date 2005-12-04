@@ -276,14 +276,14 @@ class FCKeditorX extends CMSModule
     }
      
     function initialize(){
-      	obj = document.getElementById('FCKX<? echo $name ?>');
+      	obj = document.getElementById('FCKX<?php echo $name ?>');
     	  obj.form.onsubmit = PreparaHTMLtoSave
     }
   
 
       document.onclick=initialize
     
-    <?
+    <?php
     echo '</script>';
 		
 		
@@ -519,7 +519,7 @@ class FCKeditorX extends CMSModule
 <td>Select skin</td>
 <td>:</td>
 <td><select name="<?php echo $id?>skin" style="width:100%;">
-<?
+<?php
 for($i=0;$i<$num_skins;$i++) {
   echo '<option value="';
   echo $skins_available[$i];

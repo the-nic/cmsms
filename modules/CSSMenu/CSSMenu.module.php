@@ -65,7 +65,7 @@ class CSSMenu extends CMSModule
 	
 	function Install()
 	{
-		if (!StylesheetOperations::CheckExistingStylesheetName('Default CSSMenu Horiz'))
+		if (!StylesheetOperations::CheckExistingStylesheetName('Default CSSMenu Horizontal'))
 		{
 			@ob_start();
 			@readfile(dirname(__FILE__).'/CSSMenuHorizontal.css');
@@ -74,13 +74,13 @@ class CSSMenu extends CMSModule
 			
 			$sheet = new Stylesheet();
 			$sheet->id = -1;
-			$sheet->name = 'Default CSSMenu Horiz';
+			$sheet->name = 'Default CSSMenu Horizontal';
 			$sheet->value = $value;
 			$sheet->media_type = '';
 			$sheet->Save();
 		}
 		
-		if (!StylesheetOperations::CheckExistingStylesheetName('Default CSSMenu Vert'))
+		if (!StylesheetOperations::CheckExistingStylesheetName('Default CSSMenu Vertical'))
 		{
 			@ob_start();
 			@readfile(dirname(__FILE__).'/CSSMenuVertical.css');
@@ -89,7 +89,7 @@ class CSSMenu extends CMSModule
 
 			$sheet = new Stylesheet();
 			$sheet->id = -1;
-			$sheet->name = 'Default CSSMenu Vert';
+			$sheet->name = 'Default CSSMenu Vertical';
 			$sheet->value = $value;
 			$sheet->media_type = '';
 			$sheet->Save();
@@ -142,8 +142,7 @@ class CSSMenu extends CMSModule
 		if (strpos($content, '<!-- Displaying CSSMenu Module -->') !== FALSE)
 		{
 			$config = $this->cms->config;
-			$text = "<!--[if IE]>\n<script type=\"text/javascript\" src=\"".$config['root_url']."/modules/CSSMenu/CSSMenu.js\"></script>\n";
-			$text .= "<style type=\"text/css\">@import url(\"" . $config['root_url'] . "/modules/CSSMenu/IEhack.css\");</style>\n<![endif]-->";
+			$text = "<!--[if IE]>\n<script type=\"text/javascript\" src=\"".$config['root_url']."/modules/CSSMenu/CSSMenu.js\"></script>\n<![endif]-->";
 		
 			if (function_exists('str_ireplace'))
 			{
