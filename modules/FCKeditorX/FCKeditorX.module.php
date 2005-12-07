@@ -287,14 +287,14 @@ if ($ok){
     }
      
     function initialize(){
-      	obj = document.getElementById('FCKX<? echo $name ?>');
+      	obj = document.getElementById('FCKX<?php echo $name ?>');
     	  obj.form.onsubmit = PreparaHTMLtoSave
     }
   
 
       document.onclick=initialize
     
-    <?
+    <?php
     echo '</script>';
 		
 		
@@ -531,14 +531,14 @@ if ($ok){
 <table style="border: 1px solid #F9F2DE;">
 <tr>
 <th style="background-color:#F9F2DE;" colspan="3" align="right">
-<img src="<?php echo $this->cms->config["root_url"]; ?>/modules/FCKeditorX/logotop.gif" width="238" height="41">
+<img src="<?php echo $this->cms->config["file:///C|/Documents%20and%20Settings/Daniel%20Westergren/Mina%20dokument/Mina%20webbplatser/cmsmadesimple-0.11.1/modules/FCKeditorX/root_url"]; ?>/modules/FCKeditorX/logotop.gif" width="238" height="41">
 </th>
 </tr>
 <tr>
 <td>Select skin</td>
 <td>:</td>
 <td><select name="<?php echo $id?>skin" >
-<?
+<?php
 for($i=0;$i<$num_skins;$i++) {
   echo '<option value="';
   echo $skins_available[$i];
