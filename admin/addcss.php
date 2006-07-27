@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: addcss.php 3165 2006-07-26 20:29:31Z tsw $
+#$Id: addcss.php 3169 2006-07-27 01:20:56Z elijahlofgren $
 
 /**
  * This page is responsible for showing the interface to add a new CSS. There is
@@ -221,8 +221,10 @@ else
         $types = "";
         $types .= "<fieldset style=\"width:60em;\">\n";
         $types .= "<legend>Media type</legend>\n";
+	$i = 0;
         foreach ($existingtypes as $onetype)
           {
+	    $i++;
             $types .= '<input name="media_type['.$i.']" type="checkbox" value="'.$onetype.'"';
 
             if (is_array($media_type)) {
