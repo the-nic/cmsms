@@ -1,4 +1,31 @@
 <?php
+$lang['uploadscategory'] = 'Felt&ouml;lt&eacute;s kateg&oacute;ria';
+$lang['title_available_templates'] = 'El&eacute;rető sablonok';
+$lang['resettodefault'] = 'Alap&eacute;rtelmezett &eacute;rt&eacute;kek vissza&aacute;ll&iacute;t&aacute;sa';
+$lang['title_detail_template'] = 'R&eacute;szletes sablon szerkesztő';
+$lang['title_summary_template'] = '&Ouml;sszefoglal&oacute; sablon szerkesztő';
+$lang['prompt_templatename'] = 'Sablon neve';
+$lang['prompt_template'] = 'Sablon forr&aacute;sa';
+$lang['title_summary_sysdefault'] = 'Alap&eacute;rtelmezett &ouml;sszefoglal&oacute; sablon';
+$lang['title_detail_sysdefault'] = 'Alap&eacute;rtelmezett r&eacute;szletes sablon';
+$lang['info_sysdefault'] = '<em>(az alkalmazott sablon,a mikor &uacute;j sablon ker&uuml;l kiv&aacute;laszt&aacute;sra)</em>';
+$lang['template'] = 'Sablon';
+$lang['prompt_name'] = 'N&eacute;v';
+$lang['prompt_default'] = 'Alap&eacute;rtelmezett';
+$lang['prompt_newtemplate'] = 'Create A New Template';
+$lang['help_pagelimit'] = 'Maximum number of items to display (per page).  If this parameter is not supplied all matching items will be displayed.  If it is, and there are more items available than specified in the pararamter, text and links will be supplied to allow scrolling through the results';
+$lang['prompt_page'] = 'Oldal';
+$lang['firstpage'] = '<<';
+$lang['prevpage'] = '<';
+$lang['nextpage'] = '>';
+$lang['lastpage'] = '>>';
+$lang['prompt_of'] = 'ennyiből:';
+$lang['prompt_pagelimit'] = 'Oldal limit';
+$lang['prompt_sorting'] = 'Rendez&eacute;si szempont';
+$lang['title_filter'] = 'Szűrők';
+$lang['published'] = 'Publik&aacute;lt';
+$lang['draft'] = 'Piszkozat';
+$lang['expired'] = 'Lej&aacute;rt';
 $lang['author'] = 'Szerző';
 $lang['sysdefaults'] = 'Alap&eacute;rtelmezett &eacute;rt&eacute;kek vissza&aacute;ll&iacute;t&aacute;sa';
 $lang['restoretodefaultsmsg'] = 'Ez a művelet vissza&aacute;ll&iacute;tja a sablon tartalm&aacute;t az alap&eacute;rtelmezett &eacute;rt&eacute;kekre. Biztosan folytatni akarja?';
@@ -197,6 +224,7 @@ $lang['help'] = '	<h3>What does this do?</h3>
 	<p>In order to edit the global news preferences, the user must belong to a group with the &#039;Modify Site Preferences&#039; permission.</p>
 	<h3>How do I use it?</h3>
 	<p>The easiest way to use it is in conjunction with the cms_module tag.  This will insert the module into your template or page anywhere you wish, and display news items.  The code would look something like: <code>{cms_module module=&quot;news&quot; number=&quot;5&quot; category=&quot;beer&quot;}</code></p>';
-$lang['utmz'] = '156861353.1166283932.1.1.utmccn=(direct)|utmcsr=(direct)|utmcmd=(none)';
-$lang['utma'] = '156861353.137419957.1166283932.1166283932.1166283932.1';
+$lang['utma'] = '156861353.1745742775.1167462096.1181363092.1181753758.26';
+$lang['utmz'] = '156861353.1176323191.18.2.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php/topic,7004.0.html|utmcmd=referral';
+$lang['utmc'] = '156861353';
 ?>

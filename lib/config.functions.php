@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: config.functions.php 3936 2007-05-10 15:01:54Z tsw $
+#$Id: config.functions.php 3998 2007-06-09 20:17:00Z wishy $
 
 /**
  * Functions relating to the config hash and config files
@@ -307,6 +307,8 @@ function cms_config_save($config)
 			fwrite($handle, cms_config_text($config));
 			fwrite($handle, "\n?>");
 			fclose($handle);
+			
+			cms_config_upgrade();
 		}
 	}
 }

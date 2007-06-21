@@ -33,13 +33,13 @@ $lang['friendlyname'] = 'CMSMailer Modul';
 $lang['postinstall'] = 'A CMSMailer modul telep&iacute;t&eacute;se megt&ouml;rt&eacute;nt';
 $lang['postuninstall'] = 'A CMSMailer modul elt&aacute;vol&iacute;t&aacute;sa megt&ouml;rt&eacute;nt... sajn&aacute;ljuk, hogy elm&eacute;sz.';
 $lang['uninstalled'] = 'A modul elt&aacute;vol&iacute;t&aacute;sa megt&ouml;rt&eacute;nt.';
-$lang['installed'] = 'Module version %s installed.';
+$lang['installed'] = 'A modul %s verzi&oacute;ja telep&iacute;tve van.';
 $lang['accessdenied'] = 'A hozz&aacute;f&eacute;r&eacute;s megtagadva. K&eacute;rem, ellenőrizze a jogosults&aacute;gokat.';
 $lang['error'] = 'Hiba!';
-$lang['upgraded'] = 'Module upgraded to version %s.';
-$lang['title_mod_prefs'] = 'Module Preferences';
-$lang['title_mod_admin'] = 'Module Admin Panel';
-$lang['title_admin_panel'] = 'CMSMailer Module';
+$lang['upgraded'] = 'A modult friss&iacute;tett&uuml;k erre a verzi&oacute;ra: %s.';
+$lang['title_mod_prefs'] = 'Modul preferenci&aacute;k';
+$lang['title_mod_admin'] = 'Modul Admin Panel';
+$lang['title_admin_panel'] = 'CMSMailer Modul';
 $lang['moddescription'] = 'Ez egy egyszerű burkol&oacute; a PHPMailer k&ouml;r&eacute;. Azzal f&uuml;ggv&eacute;nyről-f&uuml;ggv&eacute;nyre megegyező API-val rendelkezik, plusz egy egyszerű interface-szel n&eacute;h&aacute;ny default-hoz.';
 $lang['welcome_text'] = '<p>Isten hozott a CMSMailer admin szekci&oacute;j&aacute;ban.';
 $lang['changelog'] = '<ul>
@@ -312,6 +312,8 @@ of the license for the full disclaimer.</p>
 <p>Copyright &copy; 2005, Robert Campbell <a href=&#039;mailto:calguy1000@hotmail.com&#039;><calguy1000@hotmail.com></a>. All Rights Are Reserved.</p>
 <p>This module has been released under the <a href=&#039;http://www.gnu.org/licenses/licenses.html#GPL&#039;>GNU Public License</a>. You must agree to this license before using the module.</p>
 ';
-$lang['utma'] = '156861353.1172690191.1153773477.1153773477.1154157608.2';
-$lang['utmz'] = '156861353.1153773477.1.1.utmccn=(direct)|utmcsr=(direct)|utmcmd=(none)';
+$lang['utma'] = '156861353.1745742775.1167462096.1181363092.1181753758.26';
+$lang['utmz'] = '156861353.1176323191.18.2.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php/topic,7004.0.html|utmcmd=referral';
+$lang['utmb'] = '156861353';
+$lang['utmc'] = '156861353';
 ?>

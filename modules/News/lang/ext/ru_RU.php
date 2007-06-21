@@ -135,7 +135,7 @@ $lang['startdate'] = 'Дата начала';
 $lang['startoffset'] = 'Начать вывод новостей с n-ой';
 $lang['startrequiresend'] = 'Ввод даты начала требует ввода даты окончания';
 $lang['submit'] = 'Отправить';
-$lang['summary'] = 'Сводка';
+$lang['summary'] = 'Сводка новостей';
 $lang['summarytemplate'] = 'Шаблон для сводки';
 $lang['summarytemplateupdated'] = 'Шаблон для сводки был успешно обновлен.';
 $lang['title'] = 'Заголовок';
@@ -218,7 +218,7 @@ $lang['helpsortasc'] = 'Сортировать статьи по возраст�
 $lang['helpdetailpage'] = 'Страница для отображения полного текста новостного сообщения. Это может быть либо идентификатор страницы, либо алиас. Используется для отображения полного текста новостного сообщения с помощью шаблона, отличного от используемого в краткой сводке.';
 $lang['helpdateformat'] = 'Формат даты отправки новостной статьи. Базируется на функции <a href="http://php.net/strftime" target="_blank">strftime</a> и может быть использован в шаблоне как $entry->formatpostdate. По умолчанию %x, т.е. формат даты по умолчанию для локали сервера.';
 $lang['helpshowarchive'] = 'Показывать только статьи с истекшим сроком.';
-$lang['helpbrowsecat'] = 'Shows a browseable category list.';
+$lang['helpbrowsecat'] = 'Показывает список категорий.';
 $lang['help'] = '<h3>What does this do?</h3>
 	<p>News is a module for displaying news events on your page, similar to a blog style, except with more features!.  When the module is installed, a News admin page is added to administration menu that will allow you to select or add a news category.  Once a news category is created or selected, a list of news items for that category will be displayed.  From here, you can add, edit or delete news items for that category.</p>
 	<h3>Template variables</h3>
@@ -233,5 +233,6 @@ $lang['help'] = '<h3>What does this do?</h3>
 	<h3>How do I use it?</h3>
 	<p>The easiest way to use it is with the {news} wrapper tag (wraps the module in a tag, to simplify the syntax).  This will insert the module into your template or page anywhere you wish, and display news items.  The code would look something like: <code>{news number=\'5\'}</code></p>';
 $lang['utmz'] = '156861353.1180468314.53.35.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php/topic,6763.15.html|utmcmd=referral';
-$lang['utma'] = '156861353.1218847644.1167895455.1180546119.1180885304.55';
+$lang['utma'] = '156861353.1218847644.1167895455.1180885304.1181325173.56';
+$lang['utmc'] = '156861353';
 ?>

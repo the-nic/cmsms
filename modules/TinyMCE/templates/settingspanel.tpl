@@ -6,16 +6,16 @@
 			<th style="background-color: #546D9E" colspan="3" align="center">   {$logoimg}   </th>
 		</tr>
 		<tr>
+			<td>{$allowtables_text}</td>
+			<td>:</td>
+			<td>{$allowtables_input}   </td>
+		</tr>
+		
+		<tr>
 			<td>{$striptags_text}</td>
 			<td>:</td>
 			<td>{$striptags_input}   </td>
 		</tr>
-		<tr>
-			<td>{$usecompression_text}</td>
-			<td>:</td>
-			<td>{$usecompression_input}   </td>
-		</tr>
-
 
 		<tr>
 			<td>{$editor_width_text}</td>

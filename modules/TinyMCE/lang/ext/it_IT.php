@@ -7,14 +7,12 @@ $lang['source_formatting_text'] = 'Applica la formattazione del sorgente al HTML
 $lang['onlyxhtmlelements_text'] = 'Permette solo elementi XHTML';
 $lang['dropdownblockformats_text'] = 'Formati nel menu a tendina';
 $lang['newlinestyle_text'] = 'Stile di un Invio';
-$lang['pstyle'] = '<p> style';
-$lang['brstyle'] = '<br /> style';
+$lang['pstyle'] = 'stile <p>';
+$lang['brstyle'] = 'stile <br />';
 $lang['replace_cms_selflink_text'] = 'Sostituisce {cms_selflink page=&#039;x&#039;} con il corrispondente link durante la modifica.';
 $lang['enable_thumbs_text'] = 'Abilita anteprima miniature (thumbnail) nello sfoglio delle immagini.<br />(Nota: Potreste dover settare la maschera di creazione file a 002 (invece della predefinita 022)<br /> affinch&egrave; le miniature funzionino (vedere in Amministrazione sito -> Configurazioni Globali).';
 $lang['show_path_text'] = 'Mostra il percorso dell&#039;elemento sotto all&#039;editor.';
-$lang['plugins_tab'] = 'Plugins/Barra strumenti';
-$lang['plugins_help'] = 'Scegliete i plugin che volete attivare. <br />Se la documentazione &egrave; installata, cliccate sul nome del plugin per aprire la pagina di aiuto.';
-$lang['plugins_text'] = 'Plugins';
+$lang['toolbar_tab'] = 'Toolbar';
 $lang['toolbar_help'] = 'Queste opzioni dovrebbero contenere una lista di nomi di pulsanti/controlli separati da un punto e virgola, da inserire nella barra degli strumenti.';
 $lang['toolbar_text'] = 'Barra degli Strumenti';
 $lang['language_text'] = 'Scelta linguaggio:';
@@ -47,7 +45,7 @@ $lang['submit'] = 'Inserisci';
 $lang['update'] = 'Aggiorna';
 $lang['settings'] = 'Impostazioni';
 $lang['settingssaved'] = 'Le impostazioni sono state salvate';
-$lang['pluginssaved'] = 'Plugins salvati';
+$lang['toolbarsaved'] = 'Toolbar salvata';
 $lang['stylessaved'] = 'Stili salvati';
 $lang['testareatext'] = 'Area di test, nessun contenuto verr&agrave; modificato facendo prove qui...';
 $lang['help'] = '	<h3>Che cosa fa?</h3>
@@ -55,13 +53,18 @@ $lang['help'] = '	<h3>Che cosa fa?</h3>
 	<h3>Come usarlo?</h3>
 	<p>Installalo, poi vai a Preferenze Utente e configura TinyMCE per essere il tuo wysiwyg.</p>
 	<p>Setta il permesso corretto di TinyMCE per i vari gruppi.</p>';
-$lang['changelog'] = '	<ul>
+$lang['changelog'] = '		<ul>
+    <li>
+		<p>Version: 2.2.0</p>
+		<p>Split TinyMCE into 2 modules, one for inclusion in distribution and one for more advanced use. This is the Basic version.</p>
+		</li>
     <li>
 		<p>Version: 2.0.6</p>
 		<p>Made it possible to add something extra to the configuration</p>
 		<p>Added paste as plain text plugin</p>
 		<p>Added an option to show a button turning the wysiwyg-functionality on/off</p>
 		<p>General speed improvements</p>
+		<p>Updated to Tiny 2.1.1, TinyCompressed 1.1.0 and SpellChecker 1.0.4</p>
 		</li>
 		<li>
 		<p>Version: 2.0.5</p>
@@ -123,6 +126,6 @@ $lang['changelog'] = '	<ul>
 		<p>Added localization of testarea-text</p>
 		</li>
 		</ul>';
-$lang['utmz'] = '156861353.1179846341.7.5.utmccn=(referral)|utmcsr=blog.cmsmadesimple.org|utmcct=/|utmcmd=referral';
-$lang['utma'] = '156861353.469508265.1170435596.1179754428.1179846341.7';
+$lang['utmz'] = '156861353.1180687304.6.6.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php|utmcmd=referral';
+$lang['utma'] = '156861353.916584110.1152549583.1180428366.1180687304.6';
 ?>

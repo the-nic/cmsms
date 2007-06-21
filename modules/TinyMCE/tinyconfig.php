@@ -122,23 +122,11 @@ $basepath = $gCms->config["root_url"].'/modules/TinyMCE/tinymce/jscripts/tiny_mc
 		
 			mode : "exact",
 			elements : "<?php
-			/*$elements = '';
-			foreach ($gCms->variables['tinymce_textareas'] as $oneelement)
-			{
-				$elements .= $oneelement . ', ';
-			}
-			if (strlen($elements))
-			{
-				$elements = substr($elements, 0, strlen($elements) -2);
-			}
-			echo $elements;*/
 			echo $tiny->GetPreference("live_textareas");
 			$tiny->RemovePreference("live_textareas")
 			?>",
-			<?php
-//			if (isset($gCms->variables['tinymce_templateid']))
-      if ($tiny->GetPreference("live_templateid")!="") {
-//				$css = $gCms->variables['tinymce_templateid'];        
+			<?php	
+      if ($tiny->GetPreference("live_templateid")!="") {        
 				$css = $gCms->config['root_url'] . "/modules/TinyMCE/content_css.php?mediatype=screen&templateid=" . $tiny->GetPreference("live_templateid");
   			echo '
       content_css : "' . $css . "\",\n";
@@ -150,16 +138,29 @@ $basepath = $gCms->config["root_url"].'/modules/TinyMCE/tinymce/jscripts/tiny_mc
 			entity_encoding : "raw", //performance update 
 			button_tile_map : true, //performance update
 			cleanup_callback : "CMSmsCustomCleanup",
-      themes : "advanced",
+      theme : "advanced",
+      
 			theme_advanced_toolbar_location : "top",
 			theme_advanced_layout_manager : "SimpleLayout",
 			fix_list_elements : "true",
-			verify_html : "<?php echo $tiny->GetPreference('verify_html',"true") ?>",
+			verify_html : "true",
 			verify_css_classes : "false",
-			plugins : "<?php echo $tiny->GetPreference('plugins') ?>",
+			<?php
+			$plugins="cmsmslink,fullscreen,simplebrowser";
+			if ($tiny->GetPreference("allow_tables","0")=="1") {
+			  $plugins.=",table";
+			}
+			?>
+			plugins : "<?php echo $plugins?>",
 			theme_advanced_buttons1 : "<?php echo $tiny->GetPreference('toolbar1') ?>",
 			theme_advanced_buttons2 : "<?php echo $tiny->GetPreference('toolbar2') ?>",
-			theme_advanced_buttons3 : "<?php echo $tiny->GetPreference('toolbar3') ?>",
+			<?php
+			$toolbar3="";
+			if ($tiny->GetPreference("allow_tables","0")=="1") {
+			  $toolbar3="tablecontrols";
+			}
+			?>
+			theme_advanced_buttons3: "<?php echo $toolbar3?>",
 			document_base_url : "<?php echo $gCms->config['root_url']?>/",
 			relative_urls : "true",
 			language: "<?php echo $tiny->GetPreference("live_language","en"); ?>",

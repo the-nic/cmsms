@@ -150,7 +150,8 @@ class Search extends CMSModule
   {
     return '{$startform}
 
-{$label}:&nbsp;{$inputbox}<input name="submit" value="{$submittext}" type="submit" />{$hidden}
+{$label}:&nbsp;{$inputbox}<input name="submit" value="{$submittext}" type="submit" />
+{if isset($hidden)}{$hidden}{/if}
 
 {$endform}';
   }

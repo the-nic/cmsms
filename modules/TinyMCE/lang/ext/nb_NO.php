@@ -12,9 +12,7 @@ $lang['brstyle'] = '< br / > stil';
 $lang['replace_cms_selflink_text'] = 'Erstatt {cms_selflink page=&#039;x&#039;} med den korresponderende link under redigering.';
 $lang['enable_thumbs_text'] = 'Muliggj&oslash;r thumbnail forh&aring;ndsvisning i bilde s&oslash;keren.<br />(Merk: Du m&aring; muligens sette fil-opprettelses masken til 002 (istedet for det som er standard 022)<br /> for &aring; f&aring; thumbnails til &aring; virke (gj&oslash;r dette i Nettsted Admin -> Globale Innstillinger).';
 $lang['show_path_text'] = 'Vis stien til et element nederst i redigereren.';
-$lang['plugins_tab'] = 'Plugins/Verkt&oslash;ylinje';
-$lang['plugins_help'] = 'Velg plugins som du &oslash;nsker &aring; aktivere. <br />Klikk p&aring; et plugin navn for &aring; &aring;pne hjelpe siden (krever at dokumentasjonen er installert).';
-$lang['plugins_text'] = 'Innstikksmoduler';
+$lang['toolbar_tab'] = 'Verkt&oslash;ylinje';
 $lang['toolbar_help'] = 'Disse valgene skal inneholde en kommaseparert liste med navn p&aring; knapper som skal vises i verkt&oslash;ylinjen.';
 $lang['toolbar_text'] = 'Verkt&oslash;ylinje';
 $lang['language_text'] = 'Velg spr&aring;k:';
@@ -41,9 +39,9 @@ $lang['accessdenied'] = 'Ikke tilgang. Sjekk om du har rettigheter til dette.';
 $lang['error'] = 'Feil!';
 $lang['submit'] = 'Send';
 $lang['update'] = 'Oppdater';
-$lang['settings'] = 'Instillinger';
+$lang['settings'] = 'Innstillinger';
 $lang['settingssaved'] = 'Innstillinger lagret';
-$lang['pluginssaved'] = 'Plugins ble lagret';
+$lang['toolbarsaved'] = 'Verkt&oslash;ylinjen ble lagret';
 $lang['stylessaved'] = 'Stiler ble lagret';
 $lang['testareatext'] = 'Test omr&aring;de, ingen innhold vill bli ber&oslash;rt n&aring;r du roter her...';
 $lang['help'] = '	<h3>Hva gj&oslash;r denne modulen?</h3>
@@ -53,11 +51,16 @@ $lang['help'] = '	<h3>Hva gj&oslash;r denne modulen?</h3>
 <p>Sett s&aring; de n&oslash;dvendige tillatelser for grupper som skal f&aring; endre innstillinger i TinyMCE.</p>';
 $lang['changelog'] = '		<ul>
     <li>
+		<p>Version: 2.2.0</p>
+		<p>Split TinyMCE into 2 modules, one for inclusion in distribution and one for more advanced use. This is the Basic version.</p>
+		</li>
+    <li>
 		<p>Version: 2.0.6</p>
 		<p>Made it possible to add something extra to the configuration</p>
 		<p>Added paste as plain text plugin</p>
 		<p>Added an option to show a button turning the wysiwyg-functionality on/off</p>
 		<p>General speed improvements</p>
+		<p>Updated to Tiny 2.1.1, TinyCompressed 1.1.0 and SpellChecker 1.0.4</p>
 		</li>
 		<li>
 		<p>Version: 2.0.5</p>
@@ -119,4 +122,8 @@ $lang['changelog'] = '		<ul>
 		<p>Added localization of testarea-text</p>
 		</li>
 		</ul>';
+$lang['utma'] = '156861353.1005976546.1181941632.1182189427.1182284638.11';
+$lang['utmz'] = '156861353.1181941632.1.1.utmccn=(direct)|utmcsr=(direct)|utmcmd=(none)';
+$lang['utmc'] = '156861353';
+$lang['utmb'] = '156861353';
 ?>

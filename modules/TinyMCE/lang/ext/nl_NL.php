@@ -10,7 +10,7 @@ $lang['newlinestyle_text'] = 'Nieuwe regel opmaak';
 $lang['pstyle'] = '<p> stijl';
 $lang['brstyle'] = '<br /> stijl';
 $lang['replace_cms_selflink_text'] = 'Vervang {cms_selflink page=&#039;x&#039;} met de corresponderende link tijdens het bewerken.';
-$lang['enable_thumbs_text'] = 'Enable thumbnail previews in the image browser.<br />(Note: You may have to set file creation mask to 002 (instead of the default 022)<br /> to get the thumbnails working (do this in Site Admin -> Global Settings).';
+$lang['enable_thumbs_text'] = 'Sta thumbnail previews in de image browser toe.<br />(Opmerking: Mogelijk moet u het bestandscreatiemasker op 002 instellen (i.p.v. de standaard  022)<br /> om de thumbnails te kunne zien (die dit in Websitebeheer -> Algemene Instellingen).';
 $lang['show_path_text'] = 'Toon het pad van het element onderaan in de editor.';
 $lang['plugins_tab'] = 'Plugins/Werkbalk';
 $lang['plugins_help'] = 'Kies de plugins die geactiveerd moeten worden. <br />Als de documentatie ge&iuml;nstalleerd is, klik op een plugin naam om de help pagina&#039;s te openen..';
@@ -26,7 +26,7 @@ $lang['bodycss_text'] = 'Body tag CSS';
 $lang['bodycss_help'] = 'leeg laten of &quot;DEFAULT&quot; instellen om de pagina CSS te gebruiken';
 $lang['xconfig_tab'] = 'Extra instelling';
 $lang['xconfig_name'] = 'Extra instellingen';
-$lang['xconfig_help'] = 'Here you can specify any statements which should be added to the TinyMCE configuration-settings, configuration of plugins, for instance. See plugins-help for possible parameters.<br/>Remember to end each statement with a comma!';
+$lang['xconfig_help'] = 'Hier kunt u commando&#039;s opgeven die bijvoorbeeld aan de TinyMCE configuratieinstellingen of plugins-configuratie toegevoegd moeten worden. Zie de plugins-help voor mogelijke parameters.<br/>Vergeet niet ieder commando te be&euml;indigen met een komma!';
 $lang['savexconfig'] = 'Sla extra instellingen op';
 $lang['xconfigsaved'] = 'Extra instellingen zijn opgeslagen';
 $lang['showtogglebutton_text'] = 'Laat de knop wysiwyg aan/uit zien';
@@ -120,5 +120,8 @@ $lang['changelog'] = '<ul>
 		<p>Added localization of testarea-text</p>
 		</li>
 		</ul>';
-$lang['utma'] = '156861353.262824941.1164454221.1168205360.1168285980.6';
+$lang['utma'] = '156861353.1204003931.1173993091.1180965716.1181492078.37';
+$lang['utmz'] = '156861353.1176024242.22.3.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php|utmcmd=referral';
+$lang['utmb'] = '156861353';
+$lang['utmc'] = '156861353';
 ?>

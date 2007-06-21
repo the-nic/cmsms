@@ -41,7 +41,7 @@ $lang['help'] = '	<h3>Was macht das Modul?</h3>
 			<li>Nun sollte das &quot;Test-Template&quot; in Ihrer Liste der Template-Datenbank erscheinen.</li>
 		</ol>
 	</p>
-	<p>Jetzt k&ouml;nnen Sie das Template einfach an die Bed&uuml;rfnisse Ihrer Webseite anpassen. F&uuml;gen Sie die entsprechenden Klassen und IDs ein, damit das Men&uuml; exakt wie gew&uuml;nscht aussieht. Anschlie&szlig;end k&ouml;nnen Sie das Template mit {menu&#039; template=&#039;Test Template&#039;} in Ihre Seite einf&uuml;gen. Falls Sie eine Template-Datei verwenden m&ouml;chten, muss dem Template die Endung .tpl hinzugef&uuml;gt werden.</p>
+	<p>Jetzt k&ouml;nnen Sie das Template einfach an die Bed&uuml;rfnisse Ihrer Webseite anpassen. F&uuml;gen Sie die entsprechenden Klassen und IDs ein, damit das Men&uuml; exakt wie gew&uuml;nscht aussieht. Anschlie&szlig;end k&ouml;nnen Sie das Template mit {menu template=&#039;Test Template&#039;} in Ihre Seite einf&uuml;gen. Falls Sie eine Template-Datei verwenden m&ouml;chten, muss dem Template die Endung .tpl hinzugef&uuml;gt werden.</p>
 	<p>Die im Template zu verwendeten Parameter f&uuml;r das $node-Objects lauten wie folgt:
 		<ul>
 			<li>$node->id -- Inhalts-ID</li>
@@ -68,6 +68,6 @@ $lang['notemplatefiles'] = 'Keine Template-Datei in %s';
 $lang['notemplatename'] = 'Es wurde kein Template-Name vergeben.';
 $lang['templatecontent'] = 'Template-Inhalt';
 $lang['templatenameexists'] = 'Ein Template mit diesem Namen existiert bereits.';
-$lang['utma'] = '156861353.717462736.1147511856.1178693219.1178871153.144';
-$lang['utmz'] = '156861353.1178871153.144.89.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php/topic,11977.msg59973.html|utmcmd=referral';
+$lang['utmz'] = '156861353.1181629769.148.90.utmccn=(referral)|utmcsr=blog.cmsmadesimple.org|utmcct=/2007/06/11/cms-made-simple-107-released/|utmcmd=referral';
+$lang['utma'] = '156861353.717462736.1147511856.1180423217.1181629769.148';
 ?>

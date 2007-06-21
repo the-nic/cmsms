@@ -7,7 +7,10 @@ $lang['source_formatting_text'] = 'Apply source formatting to the output HTML';
 $lang['onlyxhtmlelements_text'] = 'Only allow XHTML-compliant elements';
 $lang['dropdownblockformats_text']= 'Blockformats in dropdown-menu';
 
+
+$lang['allowtables'] = 'Allow table operations';
 $lang['newlinestyle_text'] = 'Newline-style';
+
 $lang['pstyle']="<p> style";
 $lang['brstyle']="<br /> style";
 
@@ -15,9 +18,7 @@ $lang['replace_cms_selflink_text'] = 'Replace {cms_selflink page=\'x\'} with the
 $lang['enable_thumbs_text'] = 'Enable thumbnail previews in the image browser.<br />(Note: You may have to set file creation mask to 002 (instead of the default 022)<br /> to get the thumbnails working (do this in Site Admin -> Global Settings).';
 $lang['show_path_text'] = 'Show the path of the element at the bottom of the editor.';
 
-$lang['plugins_tab'] = 'Plugins/Toolbar';
-$lang['plugins_help'] = 'Choose the plugins you want to activate. <br />If the documentation is installed, click on an plugin name to open the help pages.';
-$lang['plugins_text'] = 'Plugins';
+$lang['toolbar_tab'] = 'Toolbar';
 
 $lang['toolbar_help'] = 'These options should contain a comma separated list of button/control names to insert into the toolbar.';
 $lang['toolbar_text'] = 'Toolbar';
@@ -58,7 +59,7 @@ $lang['update'] = 'Update';
 $lang['settings'] = 'Settings';
 $lang["settingssaved"]="Settings was saved";
 
-$lang["pluginssaved"]="Plugins was saved";
+$lang["toolbarsaved"]="Toolbar was saved";
 
 $lang["stylessaved"]="Styles was saved";
 
@@ -74,6 +75,11 @@ EOF;
 
 $lang['changelog'] = <<<EOF
 		<ul>
+    <li>
+		<p>Version: 2.2.0</p>
+		<p>Split TinyMCE into 2 modules, one for inclusion in distribution and one for more advanced use. This is the Basic version.</p>
+		<p>Made table operations an option</p>
+		</li>
     <li>
 		<p>Version: 2.0.6</p>
 		<p>Made it possible to add something extra to the configuration</p>

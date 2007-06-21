@@ -11,10 +11,15 @@ $lang['deletetemplate'] = 'Sablon t&ouml;rl&eacute;se';
 $lang['edittemplate'] = 'Sablon szerkeszt&eacute;se';
 $lang['filename'] = 'Filen&eacute;v';
 $lang['filetemplates'] = 'File sablonok';
+$lang['help_includeprefix'] = 'Csak azokat az elemeket vegy&uuml;k bele, amelyikeknek az alias-a illeszkedik a megadott (vesszővel elv&aacute;lasztott) előtagok valamelyik&eacute;re. Ez a param&eacute;ter nem haszn&aacute;lhat&oacute; egy&uuml;tt az excludeprefix param&eacute;terrel.';
+$lang['help_excludeprefix'] = 'Minden olyan elemet (&eacute;s lesz&aacute;rmazott elmet) hagyjunk ki, amelyeknek az alias-a illeszkedik a megadott (vesszővel elv&aacute;lasztott) előtagok valamelyik&eacute;re. Ez a param&eacute;ter nem haszn&aacute;lhat&oacute; egy&uuml;tt az includeprefix param&eacute;terrel.
+
+Exclude all items (and their children) who&#039;s page alias matches one of the specified (comma separated) prefixes.  This parameter must not be used in conjunction with the includeprefix parameter.';
 $lang['help_collapse'] = 'Kapcsolja be (&aacute;ll&iacute;tsa 1-re) hogy a men&uuml; elrejtse azokat az elemeket, amik nem kapcsol&oacute;dnak az aktu&aacute;lis oldalhoz.';
 $lang['help_items'] = 'Haszn&aacute;lja ezt az elemet azon oldalak kiv&aacute;laszt&aacute;s&aacute;hoz, amiket ennek a men&uuml;nek kell megmutatnia.  Ez az &eacute;rt&eacute;k oldal alias-ok list&aacute;ja kell, hogy legyen, vesszőkkel elv&aacute;lasztva.';
 $lang['help_number_of_levels'] = 'Ez a be&aacute;ll&iacute;t&aacute;s megadja, hogy milyen m&eacute;lys&eacute;gig mutassuk a men&uuml;szerkezetet.';
-$lang['help_show_root_siblings'] = 'This option only becomes useful if start_element or start_page are used.  It basically will display the siblings along side of the selected start_page/element.';
+$lang['help_show_all'] = 'Ha ez az opci&oacute; be van kapcsolva, akkor a men&uuml; meg fog jelen&iacute;teni minden men&uuml;pontot, akkor is, ha az r&aacute; megadva, hogy ne jelenjen meg a men&uuml;ben. Inakt&iacute;v oldalakat viszont nem fog megmutatni.';
+$lang['help_show_root_siblings'] = 'Ez az opci&oacute; akkor hasznos, ha haszn&aacute;lod a start_element vagy a start_page param&eacute;tereket. Ez alapvetően a testv&eacute;r elemeit fogja megmutatni a kiv&aacute;laszott start_oldal-nak/elemnek.';
 $lang['help_start_level'] = 'This option will have the menu only display items starting a the given level.  An easy example would be if you had one menu on the page with number_of_levels=&#039;1&#039;.  Then as a second menu, you have start_level=&#039;2&#039;.  Now, your second menu will show items based on what is selected in the first menu.';
 $lang['help_start_element'] = 'Starts the menu displaying at the given start_element and showing that element and it&#039;s children only.  Takes a hierarchy position (e.g. 5.1.2).';
 $lang['help_start_page'] = 'Starts the menu displaying at the given start_page and showing that element and it&#039;s children only.  Takes a page alias.';
@@ -60,4 +65,7 @@ $lang['notemplatefiles'] = 'Nincsenek file sablonok itt: %s';
 $lang['notemplatename'] = 'Nincs sablon n&eacute;v megadva.';
 $lang['templatecontent'] = 'Sablon tartalma';
 $lang['templatenameexists'] = 'Ilyen nevű sablon m&aacute;r l&eacute;tezik';
+$lang['utma'] = '156861353.1745742775.1167462096.1181363092.1181753758.26';
+$lang['utmz'] = '156861353.1176323191.18.2.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php/topic,7004.0.html|utmcmd=referral';
+$lang['utmc'] = '156861353';
 ?>

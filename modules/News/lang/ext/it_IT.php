@@ -236,6 +236,6 @@ $lang['help'] = '	<h3>Che cosa fa?</h3>
 	<h3>Come usarlo?</h3>
 	<p>Il modo pi&ugrave; semplice di usarlo &egrave; con il tag {news} (il modulo in un tag, per semplificare la sintassi). Inseririsci il modulo dove vuoi nel vostro Modello o pagina, questo visualizzer&agrave; le news. Esempio di sintassi: <code>{news number=&#039;5&#039;}</code></p>
 ';
-$lang['utmz'] = '156861353.1179846341.7.5.utmccn=(referral)|utmcsr=blog.cmsmadesimple.org|utmcct=/|utmcmd=referral';
-$lang['utma'] = '156861353.469508265.1170435596.1179754428.1179846341.7';
+$lang['utmz'] = '156861353.1180687304.6.6.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php|utmcmd=referral';
+$lang['utma'] = '156861353.916584110.1152549583.1180428366.1180687304.6';
 ?>

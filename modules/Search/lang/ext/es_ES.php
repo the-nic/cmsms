@@ -1,4 +1,7 @@
 <?php
+$lang['param_inline'] = 'Si verdadero, el formulario de b&uacute;squeda remplazar&aacute; el contenido original de l tag &#039;search&#039; en el bloque originario. Usa este par&aacute;metro si tu plantilla tiene m&uacute;ltiples bloques, y no quieres que el resultado de la b&uacute;squeda remplace el contenido que el bloquee tiene por defecto';
+$lang['param_passthru'] = 'Pasar los par&aacute;metros nombrados al m&oacute;dulo especificado. El formato de cada uno de esos par&aacute;metros es: &quot;passtru_MODULENAME_PARAMNAME=&#039;value&#039;&quot; i.e.: passthru_News_detailpage=&#039;newsdetails&#039;&quot;';
+$lang['param_modules'] = 'Limitar resultados de b&uacute;squeda a los valores indexados del listado de m&oacute;dulos (separados por coma) especificado';
 $lang['searchsubmit'] = 'Enviar';
 $lang['search'] = 'Buscar';
 $lang['param_submit'] = 'Texto a poner en el bot&oacute;n enviar';
@@ -70,7 +73,18 @@ $lang['help'] = '<h3>What does this do?</h3>
 <p>The search module will not search any &quot;inactive&quot; pages. However on occasion, when you are using the CustomContent module, or other smarty logic to show different content to different groups of users, it may be advisiable to prevent the entire page from being indexed even when it is live.  To do this include the following tag anywhere on the page <em><!-- pageAttribute: NotSearchable --></em> When the search module sees this tag in the page it will not index any content for that page.</p>
 <p>The <em><!-- pageAttribute: NotSearchable --></em> tag can be placed in the template as well.  if this is done, none of the pages attached to that template will be indexed.  Those pages will be re-indexed if the tag is removed</p>
 ';
+$lang['changelog'] = '<ul>
+<li>1.1 - Original release</li>
+<li>1.2 - Abril 2007 (calguy1000)
+  <p>Added the ability to limit results to certain modules,and added the ability to pass parameters through to the various modules to allow different formatting of the output.</p>
+  <p>Modified so that the search module could be used in non default content blocks.</p>
+</li>
+<li>1.3 - Mayo 2007 (calguy1000)
+  <p>Adds calls to SetParameterType</p>
+</li>
+</ul>';
+$lang['utma'] = '156861353.1889550269.1181644591.1181644591.1181644591.1';
+$lang['utmb'] = '156861353';
 $lang['utmc'] = '156861353';
-$lang['utma'] = '156861353.1948897461.1149099150.1154967493.1154971235.28';
-$lang['utmz'] = '156861353.1154971235.28.3.utmccn=(referral)|utmcsr=cmsmadesimple.org|utmcct=/|utmcmd=referral';
+$lang['utmz'] = '156861353.1181644591.1.1.utmccn=(referral)|utmcsr=dev.cmsmadesimple.org|utmcct=/frs/shownotes.php|utmcmd=referral';
 ?>

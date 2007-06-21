@@ -73,7 +73,7 @@ class CMSMailer extends CMSModule
    ---------------------------------------------------------*/
   function GetVersion()
   {
-    return '1.73.10';
+    return '1.73.11';
   }
 
 

@@ -7,10 +7,10 @@ $this->SetPreference('striptags', 'true' );
 else
 $this->SetPreference('striptags', 'false' );
 
-if (isset($params['usecompression']))
-$this->SetPreference('usecompression', 1 );
+if (isset($params['allowtables']))
+$this->SetPreference('allow_tables', '1' );
 else
-$this->SetPreference('usecompression', 0 );
+$this->SetPreference('allow_tables', '0' );
 
 if (isset($params['editor_width_auto']))
 $this->SetPreference('editor_width_auto', 1 );

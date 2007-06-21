@@ -35,7 +35,7 @@ class TinyMCE extends CMSModule {
 	}
 
 	function GetVersion()	{
-		return '2.1.1-svn';
+		return '2.2-svn';
 	}
 
 	function IsWYSIWYG() {
@@ -53,7 +53,7 @@ class TinyMCE extends CMSModule {
 		$this->SetPreference('bodycss', 'default');
 
 		$this->SetPreference('striptags', 'false');
-		$this->SetPreference('usecompression', '1' );
+		
 		$this->SetPreference('source_formatting', '0' );
 		$this->SetPreference('onlyxhtmlelements', '0' );
 		$this->SetPreference('newlinestyle', 'p' );
@@ -61,13 +61,14 @@ class TinyMCE extends CMSModule {
 		$this->SetPreference('editor_height_auto', '1' );
 		$this->SetPreference('show_path', '1' );
 		$this->SetPreference('replace_cms_selflink', '0' );
+		$this->SetPreference('allow_tables', '0' );
 
 		//	$this->SetPreference('language', 'en' );
 
 		$this->SetPreference('plugins', 'advhr,advimage,advlink,cmsmslink,emotions,iespell,insertdatetime,contextmenu,flash,fullscreen,searchreplace,simplebrowser,table,zoom' );
-		$this->SetPreference('toolbar1', 'bold,italic,underline,strikethrough,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,styleselect,formatselect,fontselect,fontsizeselect' );
-		$this->SetPreference('toolbar2', 'cut,copy,paste,separator,search,replace,separator,bullist,numlist,separator,outdent,indent,separator,undo,redo,separator,cmsmslink,link,unlink,anchor,image,cleanup,help,code,separator,insertdate,inserttime,separator,forecolor,backcolor' );
-		$this->SetPreference('toolbar3', 'tablecontrols,separator,hr,removeformat,visualaid,separator,sub,sup,separator,charmap,emotions,iespell,flash,advhr,separator,fullscreen' );
+		$this->SetPreference('toolbar1', 'cut,paste,copy,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,styleselect,formatselect,fontselect,fontsizeselect' );
+		$this->SetPreference('toolbar2', 'bold,italic,underline,strikethrough,separator,seperator,bullist,numlist,separator,outdent,indent,separator,undo,redo,separator,cmsmslink,link,unlink,anchor,image,cleanup,separator,forecolor,backcolor,separator,code,fullscreen,help' );
+		
 
 		$this->SetPreference('css_styles', '' );
 		$this->SetPreference('dropdownblockelements', 'p,div,h1,h2,h3,h4,h5,h6,div,blockquote,dt,dd,code,samp' );
@@ -164,24 +165,11 @@ function toggleEditor(id) {
 	  $this->SetPreference("live_language",$this->GetLanguageId());
 	  $basepath = $gCms->config["root_url"].'/modules/TinyMCE/tinymce/jscripts/tiny_mce/';
 	  $output="";
-	  //		if (array_key_exists('tinymce_textareas', $gCms->variables)) {
+	
 	  if ($this->GetPreference('live_textareas')!="") {
-	    if( $this->GetPreference('usecompression', 0) == 1 ) {
-	      $tiny_mce_loader='tiny_mce_gzip.js';
-	    } else {
-	      $tiny_mce_loader='tiny_mce.js';
-	    }
-	    $output='
-		  <script type="text/javascript" src="'.$gCms->config['root_url'].'/modules/TinyMCE/tinymce/jscripts/tiny_mce/'.$tiny_mce_loader.'"></script>
-    ';
-	    if ( $this->GetPreference('usecompression', 0) == 1 ) {
-	      $output.='
-        <script type="text/javascript" src="'.$gCms->config['root_url'].'/modules/TinyMCE/tinyconfig_gz.php"></script>
-        ';		
 
-	    }
-
-	    $output.='
+      $output='
+		  <script type="text/javascript" src="'.$gCms->config['root_url'].'/modules/TinyMCE/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
       <script type="text/javascript" src="'.$gCms->config['root_url'].'/modules/TinyMCE/tinyconfig.php"></script>
       ';		
 	  }
@@ -211,23 +199,11 @@ function toggleEditor(id) {
 	}
 
 
-	// The following functions are NOT PART OF THE MODULE API
-
-	function DisplayErrorPage($id, &$params, $returnid, $message='')
-	{
-		$this->smarty->assign('title_error', $this->Lang('error'));
-		if ($message != '') {
-			$this->smarty->assign_by_ref('message', $message);
-		}
-
-		// Display the populated template
-		echo $this->ProcessTemplate('error.tpl');
-	}
-
 	function DisplaySettings($id, &$params, $returnid, $message='')
 	{
 		$striptags = $this->GetPreference('striptags');
-		$usecompression = intval($this->GetPreference('usecompression'));
+		$allow_tables = $this->GetPreference('allow_tables');
+		
 		$source_formatting = intval($this->GetPreference('source_formatting'));
 		$onlyxhtmlelements  = intval($this->GetPreference('onlyxhtmlelements',0));
 		$dropdownblockformats = $this->GetPreference('dropdownblockformats','p,div,h1,h2,h3,h4,h5,h6,div,blockquote,dt,dd,code,samp');
@@ -252,13 +228,10 @@ function toggleEditor(id) {
 		$this->smarty->assign('logoimg', '<a href="http://tinymce.moxiecode.com" target="_blank"><img src="'.$this->cms->config["root_url"].'/modules/TinyMCE/powered_by_tinymce_v2.png" border="0" width="88" height="32" alt="Powered by TinyMCE" /></a>');
 
 		$this->smarty->assign('striptags_text', $this->Lang('stripbackgroundtags'));
-		$this->smarty->assign('striptags_input',
-		$this->CreateInputCheckbox($id, 'striptags', 'true', $striptags ));
-
-		$this->smarty->assign('usecompression_text', $this->Lang('usecompression_text'));
-		$this->smarty->assign('usecompression_input',
-		$this->CreateInputCheckbox($id, 'usecompression', 1, $usecompression ));
-
+		$this->smarty->assign('striptags_input', $this->CreateInputCheckbox($id, 'striptags', 'true', $striptags ));
+		
+		$this->smarty->assign('allowtables_text', $this->Lang('allowtables'));
+		$this->smarty->assign('allowtables_input', $this->CreateInputCheckbox($id, 'allowtables', '1', $allow_tables ));
 
 		$this->smarty->assign("auto_text", $this->Lang("auto"));
 		$this->smarty->assign("or_text", $this->Lang("or"));
@@ -310,48 +283,18 @@ function toggleEditor(id) {
 		return $this->ProcessTemplate('settingspanel.tpl');
 	}
 
-	function DisplayPlugins($id, &$params, $returnid, $message='')
+	function DisplayToolbar($id, &$params, $returnid, $message='')
 	{
-		$plugins = $this->GetPreference('plugins');
+		
 		$toolbar1 = $this->GetPreference('toolbar1');
 		$toolbar2 = $this->GetPreference('toolbar2');
-		$toolbar3 = $this->GetPreference('toolbar3');
 
-		$this->smarty->assign('startform', $this->CreateFormStart($id, 'saveplugins', $returnid));
+
+		$this->smarty->assign('startform', $this->CreateFormStart($id, 'savetoolbar', $returnid));
 		$this->smarty->assign('endform', $this->CreateFormEnd());
 
 		$this->smarty->assign('logoimg', '<a href="http://tinymce.moxiecode.com" target="_blank"><img src="'.$this->cms->config["root_url"].'/modules/TinyMCE/powered_by_tinymce_v2.png" border="0" width="88" height="32" alt="Powered by TinyMCE" /></a>');
 
-		$plugins_available = Array();
-		$d = dir(dirname(__FILE__).'/tinymce/jscripts/tiny_mce/plugins');
-
-		$exclude = array( '.', '..', '_template', 'readme.txt', 'cleanup', 'autosave' );
-
-		while ($entry = $d->read()) {
-			if ($entry[0]==".") continue;
-			if ( !in_array($entry, $exclude) ) {
-				if( eregi($entry, $plugins) )
-				$val = 1;
-				else
-				$val = 0;
-				$doc_file = "../modules/TinyMCE/tinymce/docs/plugin_$entry.html";
-				if(is_readable($doc_file)) {
-					$name = "<a href=\"$doc_file\" target=\"_blank\">$entry</a>";
-				} else {
-					$name = $entry;
-				}
-
-				$plugins_available[]=array('id' => $entry,
-				'name' => $name,
-				'value' => $this->CreateInputCheckbox($id, $entry, 1, $val ));
-			}
-		}
-		$d->close();
-		sort($plugins_available);
-
-		$this->smarty->assign('plugins_help', $this->Lang('plugins_help'));
-		$this->smarty->assign('plugins_text', $this->Lang('plugins_text'));
-		$this->smarty->assign('plugins_list', $plugins_available );
 
 		$this->smarty->assign('toolbar_help', $this->Lang('toolbar_help'));
 		$this->smarty->assign('toolbar_text', $this->Lang('toolbar_text'));
@@ -361,20 +304,16 @@ function toggleEditor(id) {
 		$this->smarty->assign('toolbar2_input',
 		$this->CreateInputText($id, 'toolbar2', $toolbar2, 60, 255 ));
 
-		$this->smarty->assign('toolbar3_input',
-		$this->CreateInputText($id, 'toolbar3', $toolbar3, 60, 255 ));
 
 		$this->smarty->assign('submit', $this->CreateInputSubmit($id, "submit", $this->Lang("update")));
 
-		return $this->ProcessTemplate('pluginspanel.tpl');
+		return $this->ProcessTemplate('toolbarpanel.tpl');
 	}
 
 	function DisplayStyles($id, &$params, $returnid, $message='')
 	{
 	  $css_styles = $this->GetPreference('css_styles','');
-	  $table_styles = $this->GetPreference('table_styles','');
-	  $table_row_styles = $this->GetPreference('table_row_styles','');
-	  $table_cell_styles = $this->GetPreference('table_cell_styles','');
+
 
 	  $this->smarty->assign('startform', $this->CreateFormStart($id, 'savestyles', $returnid));
 	  $this->smarty->assign('endform', $this->CreateFormEnd());
@@ -387,40 +326,18 @@ function toggleEditor(id) {
 	  $this->smarty->assign('css_styles_input',
 	  $this->CreateInputText($id, 'css_styles', $css_styles, 60, 255 ));
 
-	  $this->smarty->assign('table_styles_text', $this->Lang('table_styles_text'));
-	  $this->smarty->assign('table_styles_input',
-	  $this->CreateInputText($id, 'table_styles', $table_styles, 60, 255 ));
-
-	  $this->smarty->assign('table_row_styles_text', $this->Lang('table_row_styles_text'));
-	  $this->smarty->assign('table_row_styles_input',
-	  $this->CreateInputText($id, 'table_row_styles', $table_row_styles, 60, 255 ));
-
-	  $this->smarty->assign('table_cell_styles_text', $this->Lang('table_cell_styles_text'));
-	  $this->smarty->assign('table_cell_styles_input',
-	  $this->CreateInputText($id, 'table_cell_styles', $table_cell_styles, 60, 255 ));
-
 	  $this->smarty->assign('submit', $this->CreateInputSubmit($id, "submit", $this->Lang("update")));
 
 	  return $this->ProcessTemplate('stylespanel.tpl');
-	}
-	
-	function DisplayExtraConfig($id, $params, $returnid, $message) {
-	  $this->smarty->assign('startform', $this->CreateFormStart($id, 'savexconfig', $returnid));
-	  $this->smarty->assign('endform', $this->CreateFormEnd());
-	  $this->smarty->assign('xconfig_name', $this->Lang('xconfig_name'));
-	  $this->smarty->assign('xconfig_help', $this->Lang('xconfig_help'));
-	  $this->smarty->assign('xconfig_input', $this->CreateTextArea(false,$id,$this->GetPreference("extraconfig"),"extraconfig"));
-	  $this->smarty->assign('submit', $this->CreateInputSubmit($id, "submit", $this->Lang("savexconfig")));
-	  return $this->ProcessTemplate('xconfigpanel.tpl');
 	}
 
 	function DisplayAdminPanel($id, &$params, $returnid, $message='')
 	{
 		echo $this->StartTabHeaders();
 		echo $this->SetTabHeader("settings",$this->Lang("settings"), ($params["tab"] == "settings")?true:false);
-		echo $this->SetTabHeader("plugins",$this->Lang("plugins_tab"), ($params["tab"] == "plugins")?true:false);
+		echo $this->SetTabHeader("toolbar",$this->Lang("toolbar_tab"), ($params["tab"] == "toolbar")?true:false);
 		echo $this->SetTabHeader("styles",$this->Lang("styles_tab"), ($params["tab"] == "styles")?true:false);
-		echo $this->SetTabHeader("xconfig",$this->Lang("xconfig_tab"), ($params["tab"] == "xconfig")?true:false);
+		
 		echo $this->EndTabHeaders();
 
 		echo $this->StartTabContent();
@@ -430,19 +347,14 @@ function toggleEditor(id) {
 		echo $this->EndTab();
 
 
-		echo $this->StartTab("plugins");
-		echo $this->DisplayPlugins($id, $params, $returnid, $message);
+		echo $this->StartTab("toolbar");
+		echo $this->DisplayToolbar($id, $params, $returnid, $message);
 		echo $this->EndTab();
 
 		echo $this->StartTab("styles");
 		echo $this->DisplayStyles($id, $params, $returnid, $message);
 		echo $this->EndTab();
 		
-		echo $this->StartTab("xconfig");
-		echo $this->DisplayExtraConfig($id, $params, $returnid, $message);
-		echo $this->EndTab();
-
-
 		echo $this->EndTabContent();
 
 		echo $this->CreateFormStart($id);

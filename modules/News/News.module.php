@@ -77,6 +77,7 @@ class News extends CMSModule
 		$this->SetParameterType('showarchive',CLEAN_INT);
 		$this->CreateParameter('sortasc', 'true', $this->lang('helpsortasc'));
 		$this->SetParameterType('sortasc',CLEAN_STRING); // should be int, or boolean
+		$this->SetParameterType('sortby',CLEAN_STRING);
 		$this->CreateParameter('sortby', 'news_date', $this->lang('helpsortby'));
 		$this->SetParameterType('detailpage',CLEAN_STRING);
 		$this->CreateParameter('detailpage', 'pagealias', $this->lang('helpdetailpage'));
