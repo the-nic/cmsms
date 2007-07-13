@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: siteprefs.php 3943 2007-05-10 20:45:03Z calguy1000 $
+#$Id: siteprefs.php 4042 2007-07-13 12:36:55Z wishy $
 
 $CMS_ADMIN_PAGE=1;
 $CMS_TOP_MENU='admin';
@@ -50,10 +50,10 @@ $message = "";
 $disablesafemodewarning = 0;
 if (isset($_POST["disablesafemodewarning"])) $disablesafemodewarning = 1;
 
-$allowparamcheckwarnings = 1;
-if (!isset($_POST["allowparamcheckwarnings"])) 
+$allowparamcheckwarnings = 0;
+if (isset($_POST["allowparamcheckwarnings"])) 
   {
-    $allowparamcheckwarnings = 0;
+    $allowparamcheckwarnings = 1;
   }
 
 $enablecustom404 = "0";
@@ -210,7 +210,7 @@ else if (isset($_POST["editsiteprefs"]))
   $metadata = get_site_preference('metadata', '');
   $sitename = get_site_preference('sitename', 'CMSMS Site');
   $disablesafemodewarning = get_site_preference('disablesafemodewarning',0);
-  $allowparamcheckwarnings = get_site_preference('allowparamcheckwarnings',1);
+  $allowparamcheckwarnings = get_site_preference('allowparamcheckwarnings',0);
  }
 
 

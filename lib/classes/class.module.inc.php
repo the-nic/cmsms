@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
 #
-#$Id: class.module.inc.php 3979 2007-05-25 17:19:31Z calguy1000 $
+#$Id: class.module.inc.php 4042 2007-07-13 12:36:55Z wishy $
 
 /**
  * Base module class.
@@ -1495,7 +1495,7 @@ class CMSModule
 	  if( $returnid != '' )
 	    {
 	      if( !$this->restrict_unknown_params && 
-		  get_site_preference('allowparamcheckwarnings',1))
+		  get_site_preference('allowparamcheckwarnings',0))
 		{
 		  trigger_error('WARNING: '.$this->GetName().' is not properly cleaning input params.',E_USER_WARNING);
 		}
