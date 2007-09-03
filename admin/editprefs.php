@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: editprefs.php 3967 2007-05-13 16:27:11Z tsw $
 
 $CMS_ADMIN_PAGE=1;
 

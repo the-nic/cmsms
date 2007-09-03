@@ -2,7 +2,7 @@
 /**
  * Show a list of images in a long horizontal table.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: images.php 3862 2007-04-16 19:29:00Z silmarillion $
  * @package ImageManager
  */
 

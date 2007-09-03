@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: editcontent.php 3994 2007-06-06 20:01:56Z tgmayfield $
 
 $CMS_ADMIN_PAGE=1;
 

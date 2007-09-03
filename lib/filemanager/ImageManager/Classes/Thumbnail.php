@@ -2,7 +2,7 @@
 /**
  * Create thumbnails.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: Thumbnail.php 3862 2007-04-16 19:29:00Z silmarillion $
  * @package ImageManager
  */
 
@@ -12,7 +12,7 @@ require_once(dirname(__FILE__).'/Transform.php');
 /**
  * Thumbnail creation
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: Thumbnail.php 3862 2007-04-16 19:29:00Z silmarillion $
  * @package ImageManager
  * @subpackage Images
  */

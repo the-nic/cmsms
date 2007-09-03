@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: listmodules.php 4110 2007-08-29 03:59:22Z calguy1000 $
 
 $CMS_ADMIN_PAGE=1;
 $LOAD_ALL_MODULES=1;

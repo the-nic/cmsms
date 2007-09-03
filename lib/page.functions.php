@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: page.functions.php 4038 2007-07-10 12:27:36Z wishy $
 
 /**
  * Page related functions.  Generally these are functions not necessarily

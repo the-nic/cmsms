@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: siteprefs.php 4088 2007-08-25 16:10:54Z silmarillion $
 
 $CMS_ADMIN_PAGE=1;
 $CMS_TOP_MENU='admin';

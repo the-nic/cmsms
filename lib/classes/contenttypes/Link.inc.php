@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: Link.inc.php 4089 2007-08-25 18:54:00Z tsw $
 
 class Link extends ContentBase
 {

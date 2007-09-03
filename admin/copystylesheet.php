@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: copystylesheet.php 3365 2006-08-22 16:58:26Z wishy $
 
 $CMS_ADMIN_PAGE=1;
 

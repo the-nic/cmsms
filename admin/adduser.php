@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: adduser.php 3890 2007-04-28 16:06:07Z tsw $
 
 $CMS_ADMIN_PAGE=1;
 

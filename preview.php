@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: preview.php 3729 2007-01-05 03:59:25Z wishy $
 
 require_once(dirname(__FILE__)."/include.php");
 #require_once(dirname(__FILE__)."/lib/preview.functions.php");

@@ -2,7 +2,7 @@
 /**
  * Image Manager configuration file.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: config.inc.php 3403 2006-08-28 14:42:36Z dittmann $
  * @package ImageManager
  *
  * Updated by Thijs (thijs@contemplated) to work with CMS made easy

@@ -31,7 +31,7 @@
 // |          Vincent Oostindie <vincent@sunlight.tmfweb.nl>              |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: Transform.php 3862 2007-04-16 19:29:00Z silmarillion $
 //
 // Image Transformation interface
 //

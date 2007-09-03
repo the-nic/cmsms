@@ -2,7 +2,7 @@
 /**
  * File Utilities.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: Files.php 3862 2007-04-16 19:29:00Z silmarillion $
  * @package ImageManager
  */
 
@@ -14,7 +14,7 @@ define('FILE_COPY_OK', 103);
 /**
  * File Utilities
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: Files.php 3862 2007-04-16 19:29:00Z silmarillion $
  * @package ImageManager
  * @subpackage files
  */
