@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: edithtmlblob.php 4692 2008-06-18 00:55:58Z nuno $
 
 $CMS_ADMIN_PAGE=1;
 

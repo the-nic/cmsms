@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.pageinfo.inc.php 3864 2007-04-18 18:43:01Z calguy1000 $
 
 /**
  * Page Info -- Represents a "page" which consists of different variables virtually

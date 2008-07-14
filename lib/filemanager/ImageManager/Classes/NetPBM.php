@@ -24,7 +24,7 @@
 // | Authors: Peter Bowyer <peter@mapledesign.co.uk>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: NetPBM.php 4169 2007-09-21 06:28:49Z silmarillion $
 //
 // Image Transformation interface using command line NetPBM
 

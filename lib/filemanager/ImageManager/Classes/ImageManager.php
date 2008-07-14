@@ -2,7 +2,7 @@
 /**
  * ImageManager, list images, directories, and thumbnails.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: ImageManager.php 4488 2008-05-14 22:53:57Z calguy1000 $
  * @package ImageManager
  */
 
@@ -11,7 +11,7 @@ require_once(dirname(__FILE__).'/Files.php');
 /**
  * ImageManager Class.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: ImageManager.php 4488 2008-05-14 22:53:57Z calguy1000 $
  */
 class ImageManager 
 {

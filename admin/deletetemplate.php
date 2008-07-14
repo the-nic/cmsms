@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: deletetemplate.php 4085 2007-08-23 17:45:27Z calguy1000 $
 
 $CMS_ADMIN_PAGE=1;
 

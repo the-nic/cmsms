@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: config.functions.php 4777 2008-06-27 15:52:50Z calguy1000 $
 
 /**
  * Functions relating to the config hash and config files

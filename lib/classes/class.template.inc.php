@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.template.inc.php 3362 2006-08-22 09:55:33Z wishy $
 
 /**
  * Generic template class. This can be used for any template or template related function.

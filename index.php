@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: index.php 4790 2008-06-30 21:00:54Z calguy1000 $
 
 $orig_memory = (function_exists('memory_get_usage')?memory_get_usage():0);
 $dirname = dirname(__FILE__);

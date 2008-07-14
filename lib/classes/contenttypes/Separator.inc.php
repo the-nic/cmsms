@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: Separator.inc.php 4527 2008-05-25 14:54:29Z calguy1000 $
 
 class Separator extends ContentBase
 {

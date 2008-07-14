@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: SectionHeader.inc.php 4810 2008-07-07 17:45:31Z calguy1000 $
 
 class SectionHeader extends ContentBase
 {

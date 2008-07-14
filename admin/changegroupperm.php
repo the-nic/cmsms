@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: changegroupperm.php 4773 2008-06-26 20:47:58Z sjg $
 
 $CMS_ADMIN_PAGE=1;
 

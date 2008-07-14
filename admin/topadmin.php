@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: topadmin.php 3021 2006-07-03 14:40:50Z elijahlofgren $
 
 $CMS_ADMIN_PAGE=1;
 

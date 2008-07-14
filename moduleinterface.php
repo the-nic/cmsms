@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: moduleinterface.php 4163 2007-09-19 02:08:41Z silmarillion $
 
 
 include_once(dirname(__FILE__) . '/index.php');

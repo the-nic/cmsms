@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: adduserplugin.php 3902 2007-05-01 22:28:57Z silmarillion $
 
 $CMS_ADMIN_PAGE=1;
 

@@ -15,7 +15,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.global.inc.php 4541 2008-05-29 18:16:46Z calguy1000 $
 
 /**
  * Global class for easy access to all important variables.

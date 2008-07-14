@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: addtemplateassoc.php 4664 2008-06-16 19:23:55Z calguy1000 $
 
 /**
  * The goal of this page is to create a CSS association. So firts, what is a css

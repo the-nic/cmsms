@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.admintheme.inc.php 4846 2008-07-13 17:02:34Z calguy1000 $
 
 /**
  * Class for Admin Theme

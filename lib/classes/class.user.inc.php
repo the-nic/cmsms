@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.user.inc.php 3345 2006-08-21 12:42:08Z wishy $
 
 /**
  * Generic user class.  This can be used for any logged in user or user related function.

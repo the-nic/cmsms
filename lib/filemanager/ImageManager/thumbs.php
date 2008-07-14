@@ -4,7 +4,7 @@
  * Creates thumbnails given by thumbs.php?img=/relative/path/to/image.jpg
  * relative to the base_dir given in config.inc.php
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: thumbs.php 4169 2007-09-21 06:28:49Z silmarillion $
  * @package ImageManager
  */
 

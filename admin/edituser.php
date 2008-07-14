@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: edituser.php 4815 2008-07-07 21:29:17Z nuno $
 
 $CMS_ADMIN_PAGE=1;
 

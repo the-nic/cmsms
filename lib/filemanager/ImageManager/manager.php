@@ -2,7 +2,7 @@
 /**
  * The main GUI for the ImageManager.
  * @author $Author: Wei Zhuo $
- * @version $Id$
+ * @version $Id: manager.php 4169 2007-09-21 06:28:49Z silmarillion $
  * @package ImageManager
  */
 

@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: addcss.php 4631 2008-06-14 18:03:26Z nuno $
 
 /**
  * This page is responsible for showing the interface to add a new CSS. There is

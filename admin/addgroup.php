@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: addgroup.php 2922 2006-06-15 03:32:59Z wishy $
 
 $CMS_ADMIN_PAGE=1;
 

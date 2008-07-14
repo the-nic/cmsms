@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
 #
-#$Id$
+#$Id: class.module.inc.php 4831 2008-07-09 15:27:31Z calguy1000 $
 
 /**
  * Base module class.

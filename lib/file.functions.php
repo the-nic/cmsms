@@ -18,7 +18,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: file.functions.php 3062 2006-07-13 03:10:33Z calguy1000 $
 
 /**
  * File related functions. Used within the file manager and possibly

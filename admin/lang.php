@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: lang.php 4711 2008-06-20 18:06:46Z alby $
 
 #Nice decent default
 $current_language = isset($frontendlang) ? $frontendlang : 'en_US';

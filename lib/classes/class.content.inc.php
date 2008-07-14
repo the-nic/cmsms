@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: class.content.inc.php 4595 2008-06-10 19:44:05Z calguy1000 $
 
 /**
  * Generic content class.

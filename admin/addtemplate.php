@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: addtemplate.php 4467 2008-05-07 23:38:05Z calguy1000 $
 
 $CMS_ADMIN_PAGE=1;
 

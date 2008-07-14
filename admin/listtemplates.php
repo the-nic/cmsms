@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id$
+#$Id: listtemplates.php 4751 2008-06-24 00:40:45Z nuno $
 
 $CMS_ADMIN_PAGE=1;
 
