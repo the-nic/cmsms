@@ -14,6 +14,7 @@ $lang['forcedrootblockhelp'] = 'Tvinger det returnerede indhold til i det mindst
 $lang['filepickerstyle'] = 'Filv&aelig;lger-stil';
 $lang['filepickersize'] = 'Filv&aelig;lger st&oslash;rrelse';
 $lang['allowuploadtext'] = 'Tillad upload og mappe-oprettelse i Filv&aelig;lger';
+$lang['cannotreadconfig'] = 'Kan ikke l&aelig;se tinyconfig.php direkte, s&aring; TinyMCE vil formentlig ikke virke. Du skal kontrollere rettigheder p&aring; denne fil og mappen den ligger i, disse b&oslash;r tillade l&aelig;sning, men kun skrivning for ejeren.';
 $lang['filenameonly'] = 'Vis filnavne';
 $lang['thumbnailsonly'] = 'Vis billedeeksempler';
 $lang['filenameandthumbnails'] = 'Vis b&aring;de filnavne og billedeksempler';
@@ -78,7 +79,7 @@ $lang['cmsmslinker'] = 'Inds&aelig;t link til cmsms-side';
 $lang['backend_toolbars'] = 'Backend v&aelig;rkt&oslash;jslinie';
 $lang['frontend_toolbars'] = 'Frontend v&aelig;rkt&oslash;jslinie';
 $lang['plugins_tab'] = 'Udvidelser';
-$lang['plugins_help'] = 'V&aelig;lg de udvidelser du &oslash;nsker at aktivere Dokumentation kan findes  <a href=&quot;http://wiki.moxiecode.com/index.php/TinyMCE:Plugins&quot; target=&quot;_blank&quot;>her</a>';
+$lang['plugins_help'] = 'V&aelig;lg de udvidelser du &oslash;nsker at aktivere Dokumentation kan findes  <a href="http://wiki.moxiecode.com/index.php/TinyMCE:Plugins" target="_blank">her</a>';
 $lang['plugins_text'] = 'Udvidelser';
 $lang['saveplugins'] = 'Gem udvidelser';
 $lang['pluginssaved'] = 'Udvidelser gemt';
@@ -107,6 +108,12 @@ $lang['help'] = '	<h3>Hvad g&oslash;r dette modul?</h3>
 	<h3>Hvordan bruger jeg det??</h3>
 	<p>Install&eacute;r det, g&aring; til bruger indstillinger og v&aelig;lg TinyMCE som det &oslash;nskede WYSIWYG-system.</p>';
 $lang['changelog'] = '		<ul>
+<li>
+		<p>Version: 2.4.3</p>
+		<p>Implemented another trick to prevent stylesheet content from being cached</p>
+		<p>Now orders the stylesheet after assoc_order instead of date</p>
+		</li>
+
 		<li>
 		<p>Version: 2.4.2</p>
 		<p>Fixed only showing images even if link to all filetypes should ba possible</p>
@@ -293,8 +300,8 @@ $lang['changelog'] = '		<ul>
 		</li>
 		</ul>
 ';
-$lang['utma'] = '156861353.4417020892876844500.1213252672.1213252672.1213344190.2';
-$lang['utmz'] = '156861353.1213252672.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)';
+$lang['utma'] = '156861353.292497676.1205805073.1216575682.1216576880.56';
+$lang['utmz'] = '156861353.1216575682.55.11.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php';
 $lang['utmb'] = '156861353';
 $lang['utmc'] = '156861353';
 ?>

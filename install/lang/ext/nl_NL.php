@@ -1,4 +1,7 @@
 <?php
+$lang['info_create_dir_and_file'] = 'The HTTP Process owner cannot create a file inside a directory that it owns. This probably means that safe mode is enabled in some way.  Many functions inside CMS made simple will not operate properly without this ability. Continuing is not possible.';
+$lang['test_create_dir_and_file'] = 'Checking if the httpd process can create a file inside of a directory it created.';
+$lang['cms_site'] = 'CMS Site ';
 $lang['or_greater'] = 'Of groter';
 $lang['sitename'] = 'Website naam';
 $lang['warning_safe_mode'] = '<strong><em>WAARSCHUWING:</em></strong> PHP Safe is geactiveerd.  This will cause difficulty with files uploaded via the web browser interface, including images, theme and module XML packages.  You are advised to contact your site administrator to see about disabling safe mode.';
@@ -99,7 +102,7 @@ $lang['version'] = 'Versie';
 $lang['install_title'] = 'CMS Installatie (step %s)';
 $lang['install_system'] = 'Installeer Systeem';
 $lang['install_thanks'] = 'Bedankt voor het installeren van het CMS';
-$lang['install_please_read'] = 'Lees de <a href=&quot;http://wiki.cmsmadesimple.org/index.php/User_Handbook/Installation/Troubleshooting&quot; > Installation Troubleshooting </ a> pagina in het CMS Made Simple Documentatie Wiki.';
+$lang['install_please_read'] = 'Lees de <a href="http://wiki.cmsmadesimple.org/index.php/User_Handbook/Installation/Troubleshooting" > Installation Troubleshooting </ a> pagina in het CMS Made Simple Documentatie Wiki.';
 $lang['install_checking'] = 'Controleer toestemming en PHP instellingen';
 $lang['install_test'] = 'Test ';
 $lang['install_result'] = 'Resultaten';
@@ -125,7 +128,7 @@ $lang['install_admin_umask'] = 'Test umask server';
 $lang['install_test_umask'] = 'Please click Test button for check  ..............................';
 $lang['test_umask_text'] = 'umask (abbreviated from user file creation mode mask) is a function in POSIX environments which affects the default file system mode for newly created files and directories of the current process. It controls which of the file permissions will not be set for any newly created file.';
 $lang['test_check_umask'] = 'Result test on file created in';
-$lang['test_umask_not_given'] = 'Umask not given';
+$lang['test_umask_not_given'] = 'Umask niet opgegeven';
 $lang['test_check_umask_failed'] = 'Test umask failed';
 $lang['test_username_not_given'] = 'Gebruikersnaam niet opgegeven!';
 $lang['test_username_illegal'] = 'Gebruikersnaam bevat verkeerde tekens!';
@@ -225,7 +228,7 @@ $lang['install_admin_install_modules'] = 'Bezig met installeren van modules...';
 $lang['install_admin_index_search'] = 'Index Search...';
 $lang['install_admin_clear_cache'] = 'Verwijder site cache ';
 $lang['install_admin_emailing'] = 'E-mail mijn admin account informatie...';
-$lang['install_admin_congratulations'] = 'Gefeliciteerd, installatie gelukt - hier is je <a href=&quot;%s&quot;>CMS website</a>';
+$lang['install_admin_congratulations'] = 'Gefeliciteerd, installatie gelukt - hier is je <a href="%s">CMS website</a>';
 $lang['could_not_connect_db'] = 'Could not connect to the database. Verify that username and password are correct, and that the user has access to the given database.';
 $lang['cannot_write_config'] = 'Error: Cannot write to %s.';
 $lang['install_additional_modules'] = 'Install additional modules';
@@ -237,8 +240,8 @@ username: %s
 password: %s
 
 Log into the site admin here: %s';
-$lang['utma'] = '156861353.2701273087756094500.1215874457.1215874457.1215958644.2';
-$lang['utmc'] = '156861353';
-$lang['utmz'] = '156861353.1215874457.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)';
+$lang['utma'] = '156861353.864372235.1214590704.1216335394.1216575044.8';
+$lang['utmz'] = '156861353.1216335394.7.2.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php';
 $lang['utmb'] = '156861353';
+$lang['utmc'] = '156861353';
 ?>

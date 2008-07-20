@@ -1,4 +1,20 @@
 <?php
+$lang['admin']['checksum_passed'] = 'All checksums match those in the uploaded file';
+$lang['admin']['error_retrieving_file_list'] = 'Fout bij ophalen bestandslijst';
+$lang['admin']['files_checksum_failed'] = 'Niet mogelijk checksum te maken voor bestanden';
+$lang['admin']['failure'] = 'Fout';
+$lang['admin']['help_function_process_pagedata'] = '<h3>What does this do?</h3>
+<p>This plugin will process the data in the &quot;pagedata&quot; block of content pages through smarty.  It allows you to specify page specific data to smarty without changing the template for each page.</p>
+<h3>How do I use it?</h3>
+<ol>
+  <li>Insert smarty assign variables and other smarty logic into the pagedata field of some of your content pages.</li>
+  <li>Insert the <code>{process_pagedata}</code> tag into the very top of your page template.</li>
+</ol>
+<br/>
+<h3>What parameters does it take?</h3>
+<p>None at this time</p>';
+$lang['admin']['page_metadata'] = 'Page Specific Metadata';
+$lang['admin']['pagedata_codeblock'] = 'Smarty data or logic that is specific to this page';
 $lang['admin']['error_uploadproblem'] = 'Er heeft zich een fout opgedaan tijdens het uploaden';
 $lang['admin']['error_nofileuploaded'] = 'Geen bestand geupload';
 $lang['admin']['files_failed'] = 'Files failed md5sum check';
@@ -17,7 +33,7 @@ $lang['admin']['start_upgrade_process'] = 'Start Upgrade proces';
 $lang['admin']['warning_upgrade'] = '<em><strong>Let op:</strong></em> het CMS dient te worden geupgrade.';
 $lang['admin']['warning_upgrade_info1'] = 'Je hebt database versie %s. Je dient te upgraden naar databaseversie %s';
 $lang['admin']['warning_upgrade_info2'] = 'Selecteer de volgende link: %s.';
-$lang['admin']['warning_mail_settings'] = 'Your mail settings have not been configured.  This could interfere with the ability of your website to send email mssages.  You should go to <a href=&quot;moduleinterface.php?module=CMSMailer&quot;>Extensions >> CMSMailer</a> and configure the mail settings with the information provided by your host.';
+$lang['admin']['warning_mail_settings'] = 'Your mail settings have not been configured.  This could interfere with the ability of your website to send email mssages.  You should go to <a href="moduleinterface.php?module=CMSMailer">Extensions >> CMSMailer</a> and configure the mail settings with the information provided by your host.';
 $lang['admin']['view_page'] = 'Bekijk deze pagina in een nieuw venster';
 $lang['admin']['off'] = 'Uit';
 $lang['admin']['on'] = 'Aan';
@@ -70,7 +86,7 @@ $lang['admin']['help_function_current_date'] = '	<h3>What does this do?</h3>
 	<p>Just insert the tag into your template/page like: <code>{current_date format=&quot;%A %d-%b-%y %T %Z&quot;}</code></p>
 	<h3>What parameters does it take?</h3>
 	<ul>
-		<li><em>(optional)</em>format - Date/Time format using parameters from php&#039;s strftime function.  See <a href=&quot;http://php.net/strftime&quot; target=&quot;_blank&quot;>here</a> for a parameter list and information.</li>
+		<li><em>(optional)</em>format - Date/Time format using parameters from php&#039;s strftime function.  See <a href="http://php.net/strftime" target="_blank">here</a> for a parameter list and information.</li>
 		<li><em>(optional)</em>ucword - If true return uppercase the first character of each word.</li>
 	</ul>
 	</p>';
@@ -130,7 +146,7 @@ $lang['admin']['help_function_stylesheet'] = '	<h3>What does this do?</h3>
 	</p>';
 $lang['admin']['help_function_stopexpandcollapse'] = '	<h3>What does this do?</h3>
 	<p>Enables content to be expandable and collapsable. Like the following:<br />
-	<a href=&quot;#expand1&quot; onClick=&quot;expandcontent(&#039;expand1&#039;)&quot; style=&quot;cursor:hand; cursor:pointer&quot;>Click here for more info</a><span id=&quot;expand1&quot; class=&quot;expand&quot;><a name=&quot;help&quot;></a> - Here is all the info you will ever need...</a></span></p>
+	<a href="#expand1" onClick="expandcontent(&#039;expand1&#039;)" style="cursor:hand; cursor:pointer">Click here for more info</a><span id=&quot;expand1&quot; class=&quot;expand&quot;><a name="help"></a> - Here is all the info you will ever need...</a></span></p>
 
 	<h3>How do I use it?</h3>
 	<p>Just insert the tag into your template/page like:<br />
@@ -154,7 +170,7 @@ $lang['admin']['help_function_stopexpandcollapse'] = '	<h3>What does this do?</h
 	</p>';
 $lang['admin']['help_function_startexpandcollapse'] = '	<h3>What does this do?</h3>
 	<p>Enables content to be expandable and collapsable. Like the following:<br />
-	<a href=&quot;#expand1&quot; onClick=&quot;expandcontent(&#039;expand1&#039;)&quot; style=&quot;cursor:hand; cursor:pointer&quot;>Click here for more info</a><span id=&quot;expand1&quot; class=&quot;expand&quot;><a name=&quot;help&quot;></a> - Here is all the info you will ever need...</a></span></p>
+	<a href="#expand1" onClick="expandcontent(&#039;expand1&#039;)" style="cursor:hand; cursor:pointer">Click here for more info</a><span id=&quot;expand1&quot; class=&quot;expand&quot;><a name="help"></a> - Here is all the info you will ever need...</a></span></p>
 
 	<h3>How do I use it?</h3>
 	<p>Just insert the tag into your template/page like: <code>{startExpandCollapse id=&quot;name&quot; title=&quot;Click Here&quot;}</code>. Also, you must use the {stopExpandCollapse} at the end of the collapseable content. Here is an example:<br />
@@ -196,7 +212,7 @@ $lang['admin']['help_function_sitemap'] = '    <h3>Notice</h3>
         </ul>
         </p>';
 $lang['admin']['help_function_adsense'] = '	<h3>What does this do?</h3>
-	<p>Google adsense is a popular advertising program for websites.  This tag will take the basic parameters that would be provided by the adsense program and puts them in a easy to use tag that makes your templates look much cleaner.  See <a href=&quot;http://www.google.com/adsense&quot; target=&quot;_blank&quot;>here</a> for more details on adsense.</p>
+	<p>Google adsense is a popular advertising program for websites.  This tag will take the basic parameters that would be provided by the adsense program and puts them in a easy to use tag that makes your templates look much cleaner.  See <a href="http://www.google.com/adsense" target="_blank">here</a> for more details on adsense.</p>
 	<h3>How do I use it?</h3>
 	<p>First, sign up for a google adsense account and get the parameters for your ad.  Then just use the tag in your page/template like so: <code>{adsense ad_client=&quot;pub-random#&quot; ad_width=&quot;120&quot; ad_height=&quot;600&quot; ad_format=&quot;120x600_as&quot;}</code>
 	<h3>What parameters does it take?</h3>
@@ -221,11 +237,11 @@ $lang['admin']['help_function_sitename'] = '        <h3>What does this do?</h3>
         <h3>What parameters does it take?</h3>
 	<p><em>(optional)</em> assign (string) - Assign the results to a smarty variable with that name.</p>';
 $lang['admin']['help_function_search'] = '	<h3>What does this do?</h3>
-	<p>This is actually just a wrapper tag for the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=Search&quot;>Search module</a> to make the tag syntax easier. 
+	<p>This is actually just a wrapper tag for the <a href="listmodules.php?action=showmodulehelp&amp;module=Search">Search module</a> to make the tag syntax easier. 
 	Instead of having to use <code>{cms_module module=&#039;Search&#039;}</code> you can now just use <code>{search}</code> to insert the module in a template.
 	</p>
 	<h3>How do I use it?</h3>
-	<p>Just put <code>{search}</code> in a template where you want the search input box to appear. For help about the Search module, please refer to the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=Search&quot;>Search module help</a>.';
+	<p>Just put <code>{search}</code> in a template where you want the search input box to appear. For help about the Search module, please refer to the <a href="listmodules.php?action=showmodulehelp&amp;module=Search">Search module help</a>.';
 $lang['admin']['help_function_root_url'] = '	<h3>What does this do?</h3>
 	<p>Prints the root url location for the site.</p>
 	<h3>How do I use it?</h3>
@@ -256,11 +272,11 @@ $lang['admin']['help_function_recently_updated'] = '	<h3>What does this do?</h3>
 	<p>or combined:</p>
 	<pre>{recently_updated number=&#039;15&#039; showtitle=&#039;false&#039; leadin=&#039;Last Change: &#039; css_class=&#039;my_changes&#039; dateformat=&#039;D M j G:i:s T Y&#039;}</pre>';
 $lang['admin']['help_function_print'] = '	<h3>What does this do?</h3>
-	<p>This is actually just a wrapper tag for the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=Printing&quot;>Printing module</a> to make the tag syntax easier. 
+	<p>This is actually just a wrapper tag for the <a href="listmodules.php?action=showmodulehelp&amp;module=Printing">Printing module</a> to make the tag syntax easier. 
 	Instead of having to use <code>{cms_module module=&#039;Printing&#039;}</code> you can now just use <code>{print}</code> to insert the module on pages and templates.
 	</p>
 	<h3>How do I use it?</h3>
-	<p>Just put <code>{print}</code> on a page or in a template. For help about the Printing module, what parameters it takes etc., please refer to the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=Printing&quot;>Printing module help</a>.';
+	<p>Just put <code>{print}</code> on a page or in a template. For help about the Printing module, what parameters it takes etc., please refer to the <a href="listmodules.php?action=showmodulehelp&amp;module=Printing">Printing module help</a>.';
 $lang['admin']['help_function_oldprint'] = '	<h3>What does this do?</h3>
 	<p>Creates a link to only the content of the page.</p>
 	<h3>How do I use it?</h3>
@@ -290,18 +306,18 @@ $lang['admin']['login_info_params'] = '<ol>
   <li>Windows popup active to the following address:</li> 
 </ol>';
 $lang['admin']['help_function_news'] = '	<h3>What does this do?</h3>
-	<p>This is actually just a wrapper tag for the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=News&quot;>News module</a> to make the tag syntax easier. 
+	<p>This is actually just a wrapper tag for the <a href="listmodules.php?action=showmodulehelp&amp;module=News">News module</a> to make the tag syntax easier. 
 	Instead of having to use <code>{cms_module module=&#039;News&#039;}</code> you can now just use <code>{news}</code> to insert the module on pages and templates.
 	</p>
 	<h3>How do I use it?</h3>
-	<p>Just put <code>{news}</code> on a page or in a template. For help about the News module, what parameters it takes etc., please refer to the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=News&quot;>News module help</a>.';
+	<p>Just put <code>{news}</code> on a page or in a template. For help about the News module, what parameters it takes etc., please refer to the <a href="listmodules.php?action=showmodulehelp&amp;module=News">News module help</a>.';
 $lang['admin']['help_function_modified_date'] = '        <h3>What does this do?</h3>
         <p>Prints the date and time the page was last modified.  If no format is given, it will default to a format similar to &#039;Jan 01, 2004&#039;.</p>
         <h3>How do I use it?</h3>
         <p>Just insert the tag into your template/page like: <code>{modified_date format=&quot;%A %d-%b-%y %T %Z&quot;}</code></p>
         <h3>What parameters does it take?</h3>
         <ul>
-                <li><em>(optional)</em>format - Date/Time format using parameters from php&#039;s strftime function.  See <a href=&quot;http://php.net/strftime&quot; target=&quot;_blank&quot;>here</a> for a parameter list and information.</li>
+                <li><em>(optional)</em>format - Date/Time format using parameters from php&#039;s strftime function.  See <a href="http://php.net/strftime" target="_blank">here</a> for a parameter list and information.</li>
         </ul>';
 $lang['admin']['help_function_metadata'] = '	<h3>What does this do?</h3>
 	<p>Displays the metadata for this page. Both global metdata from the global settings page and metadata for each page will be shown.</p>
@@ -318,11 +334,11 @@ $lang['admin']['help_function_menu_text'] = '	<h3>What does this do?</h3>
 	<h3>What parameters does it take?</h3>
 	<p>None at this time.</p>';
 $lang['admin']['help_function_menu'] = '	<h3>What does this do?</h3>
-	<p>This is actually just a wrapper tag for the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=MenuManager&quot;>Menu Manager module</a> to make the tag syntax easier. 
+	<p>This is actually just a wrapper tag for the <a href="listmodules.php?action=showmodulehelp&amp;module=MenuManager">Menu Manager module</a> to make the tag syntax easier. 
 	Instead of having to use <code>{cms_module module=&#039;MenuManager&#039;}</code> you can now just use <code>{menu}</code> to insert the module on pages and templates.
 	</p>
 	<h3>How do I use it?</h3>
-	<p>Just put <code>{menu}</code> on a page or in a template. For help about the Menu Manager module, what parameters it takes etc., please refer to the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=MenuManager&quot;>Menu Manager module help</a>.';
+	<p>Just put <code>{menu}</code> on a page or in a template. For help about the Menu Manager module, what parameters it takes etc., please refer to the <a href="listmodules.php?action=showmodulehelp&amp;module=MenuManager">Menu Manager module help</a>.';
 $lang['admin']['help_function_last_modified_by'] = '        <h3>What does this do?</h3>
         <p>Prints last person that edited this page.  If no format is given, it will default to a ID number of user .</p>
         <h3>How do I use it?</h3>
@@ -540,7 +556,7 @@ $lang['admin']['help_function_google_search'] = '	<h3>What does this do?</h3>
 	<h3>How do I use it?</h3>
 	<p>Just insert the tag into your template/page like: <code>{google_search}</code><br>
 	<br>
-	Note: Google needs to have your website indexed for this to work. You can submit your website to google <a href=&quot;http://www.google.com/addurl.html&quot;>here</a>.</p>
+	Note: Google needs to have your website indexed for this to work. You can submit your website to google <a href="http://www.google.com/addurl.html">here</a>.</p>
 	<h3>What if I want to change the look of the textbox or button?</h3>
 	<p>The look of the textbox and button can be changed via css. The textbox is given an id of textSearch and the button is given an id of buttonSearch.</p>
 
@@ -600,7 +616,7 @@ $lang['admin']['help_function_created_date'] = '        <h3>What does this do?</
         <p>Just insert the tag into your template/page like: <code>{created_date format=&quot;%A %d-%b-%y %T %Z&quot;}</code></p>
         <h3>What parameters does it take?</h3>
         <ul>
-                <li><em>(optional)</em>format - Date/Time format using parameters from php&#039;s strftime function.  See <a href=&quot;http://php.net/strftime&quot; target=&quot;_blank&quot;>here</a> for a parameter list and information.</li>
+                <li><em>(optional)</em>format - Date/Time format using parameters from php&#039;s strftime function.  See <a href="http://php.net/strftime" target="_blank">here</a> for a parameter list and information.</li>
         </ul>';
 $lang['admin']['help_function_content'] = '	<h3>What does this do?</h3>
 	<p>This is where the content for your page will be displayed.  It&#039;s inserted into the template and changed based on the current page being displayed.</p>
@@ -714,7 +730,7 @@ $lang['admin']['help_function_cms_selflink'] = '		<h3>What does this do?</h3>
 		<li><em>(optional)</em> <tt>label_side left/right</tt> - Side of link to place the label (defaults to &quot;left&quot;).</li>
 		<li><em>(optional)</em> <tt>title</tt> - Text to use in the title attribute.  If none is given, then the title of the page will be used for the title.</li>
 		<li><em>(optional)</em> <tt>rellink 1/0</tt> - Make a relational link for accessible navigation.  Only works if the dir parameter is set and should only go in the head section of a template.</li>
-		<li><em>(optional)</em> <tt>href</tt> - If href is used only the href value is generated (no other parameters possible). <strong>Example:</strong> <a href=&quot;{cms_selflink href=&quot;alias&quot;}&quot;><img src=&quot;&quot;></a></li>
+		<li><em>(optional)</em> <tt>href</tt> - If href is used only the href value is generated (no other parameters possible). <strong>Example:</strong> <a href="{cms_selflink href="alias"}"><img src=&quot;&quot;></a></li>
 		<li><em>(optional)</em> <tt>image</tt> - A url of an image to use in the link. <strong>Example:</strong> {cms_selflink dir=&quot;next&quot; image=&quot;next.png&quot; text=&quot;Next&quot;}</li>
 		<li><em>(optional)</em> <tt>alt</tt> - Alternative text to be used with image (alt=&quot;&quot; will be used if no alt parameter is given).</li>
 		<li><em>(optional)</em> <tt>imageonly</tt> - If using an image, whether to suppress display of text links. If you want no text in the link at all, also set lang=0 to suppress the label. <B>Example:</B> {cms_selflink dir=&quot;next&quot; image=&quot;next.png&quot; text=&quot;Next&quot; imageonly=1}</li>
@@ -738,7 +754,7 @@ $lang['admin']['help_function_cms_module'] = '	<h3>What does this do?</h3>
 		<li>module - Name of the module to insert.  This is not case sensitive.</li>
 	</ul>
 	</p> ';
-$lang['admin']['about_function_breadcrumbs'] = '<p>Author: Marcus Deglos <<a href=&quot;mailto:md@zioncore.com&quot;>md@zioncore.com</a>></p>
+$lang['admin']['about_function_breadcrumbs'] = '<p>Author: Marcus Deglos <<a href="mailto:md@zioncore.com">md@zioncore.com</a>></p>
 <p>Version: 1.7</p>
 <p>
 Change History:<br/>
@@ -793,9 +809,9 @@ $lang['admin']['help_function_anchor'] = '	<h3>What does this do?</h3>
 	</ul>
 	</p> ';
 $lang['admin']['help_function_site_mapper'] = '<h3>What does this do?</h3>
-  <p>This is actually just a wrapper tag for the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=MenuManager&quot;>Menu Manager module</a> to make the tag syntax easier, and to simplify creating a sitemap.</p>
+  <p>This is actually just a wrapper tag for the <a href="listmodules.php?action=showmodulehelp&amp;module=MenuManager">Menu Manager module</a> to make the tag syntax easier, and to simplify creating a sitemap.</p>
 <h3>How do I use it?</h3>
-  <p>Just put <code>{site_mapper}</code> on a page or in a template. For help about the Menu Manager module, what parameters it takes etc., please refer to the <a href=&quot;listmodules.php?action=showmodulehelp&amp;module=MenuManager&quot;>Menu Manager module help</a>.</p>
+  <p>Just put <code>{site_mapper}</code> on a page or in a template. For help about the Menu Manager module, what parameters it takes etc., please refer to the <a href="listmodules.php?action=showmodulehelp&amp;module=MenuManager">Menu Manager module help</a>.</p>
   <p>By default, if no template option is specified the minimal_menu.tpl file will be used.</p>
   <p>Any parameters used in the tag are available in the menumanager template as <code>{$menuparams.paramname}</code></p> ';
 $lang['admin']['help_function_redirect_url'] = '<h3>What does this do?</h3>
@@ -1638,8 +1654,8 @@ $lang['admin']['unknown'] = 'Niet bekend';
 $lang['admin']['download'] = 'Download ';
 $lang['admin']['frontendwysiwygtouse'] = 'Frontend WYSIWYG';
 $lang['admin']['all_groups'] = 'Alle Groepen';
-$lang['admin']['utma'] = '156861353.327651920156550330.1213957090.1216222697.1216463492.17';
-$lang['admin']['utmz'] = '156861353.1216222697.16.9.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/';
+$lang['admin']['utma'] = '156861353.864372235.1214590704.1216575044.1216578327.9';
+$lang['admin']['utmz'] = '156861353.1216335394.7.2.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php';
 $lang['admin']['utmb'] = '156861353';
 $lang['admin']['utmc'] = '156861353';
 ?>

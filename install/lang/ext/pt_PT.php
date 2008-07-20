@@ -1,4 +1,7 @@
 <?php
+$lang['info_create_dir_and_file'] = 'The HTTP Process owner cannot create a file inside a directory that it owns. This probably means that safe mode is enabled in some way.  Many functions inside CMS made simple will not operate properly without this ability. Continuing is not possible.';
+$lang['test_create_dir_and_file'] = 'Checking if the httpd process can create a file inside of a directory it created.';
+$lang['cms_site'] = 'CMS Site';
 $lang['or_greater'] = 'Ou superior';
 $lang['sitename'] = 'Nome do Site';
 $lang['warning_safe_mode'] = '<strong><em>WARNING:</em></strong> PHP Safe mode is enabled.  This will cause difficulty with files uploaded via the web browser interface, including images, theme and module XML packages.  You are advised to contact your site administrator to see about disabling safe mode.';
@@ -7,8 +10,8 @@ $lang['results'] = 'Resultados';
 $lang['untested'] = 'N&atilde;o Testado';
 $lang['owner'] = 'Permiss&atilde;o';
 $lang['permissions'] = 'Permiss&otilde;es';
-$lang['off'] = 'Off';
-$lang['on'] = 'On';
+$lang['off'] = 'Off ';
+$lang['on'] = 'On ';
 $lang['permission_information'] = 'Informa&ccedil;&atilde;o Permiss&atilde;o ';
 $lang['server_os'] = 'Sistema Operativo do Servidor';
 $lang['server_api'] = 'API do Servidor';
@@ -99,11 +102,11 @@ $lang['version'] = 'Vers&atilde;o';
 $lang['install_title'] = 'CMS Made Simple Instala&ccedil;&atilde;o (passo %s)';
 $lang['install_system'] = 'Instala&ccedil;&atilde;o do Sistema';
 $lang['install_thanks'] = 'Obrigado por instalar o CMS Made Simple';
-$lang['install_please_read'] = 'Por Favor leia <a href=&quot;http://wiki.cmsmadesimple.org/index.php/User_Handbook/Installation/Troubleshooting&quot;>Problemas na Instala&ccedil;&atilde;o</a> na p&aacute;gina em  CMS Made Simple Documenta&ccedil;&atilde;o Wiki.';
+$lang['install_please_read'] = 'Por Favor leia  <a href="http://wiki.cmsmadesimple.org/index.php/User_Handbook/Installation/Troubleshooting">Problemas na Instala&ccedil;&atilde;o</a> na p&aacute;gina em  CMS Made Simple Documenta&ccedil;&atilde;o Wiki. ';
 $lang['install_checking'] = 'Verifica&ccedil;&atilde;o das permiss&otilde;es e configura&ccedil;&otilde;es do PHP';
 $lang['install_test'] = 'Teste';
 $lang['install_result'] = 'Resultados';
-$lang['install_required_settings'] = 'Required settings';
+$lang['install_required_settings'] = 'Configura&ccedil;&otilde;es Obrigat&oacute;rias';
 $lang['install_recommended_settings'] = 'Configura&ccedil;&otilde;es Recomendadas';
 $lang['install_you_have'] = 'Actuais';
 $lang['install_legend'] = 'Legenda';
@@ -225,7 +228,7 @@ $lang['install_admin_install_modules'] = 'Installing modules...';
 $lang['install_admin_index_search'] = 'Index Search...';
 $lang['install_admin_clear_cache'] = 'Clearing site cache (if any)...';
 $lang['install_admin_emailing'] = 'E-mailing admin account information...';
-$lang['install_admin_congratulations'] = 'Congratulations, you are all setup - here is your <a href=&quot;%s&quot;>CMS site</a>';
+$lang['install_admin_congratulations'] = 'Congratulations, you are all setup - here is your <a href="%s">CMS site</a>';
 $lang['could_not_connect_db'] = 'Could not connect to the database. Verify that username and password are correct, and that the user has access to the given database.';
 $lang['cannot_write_config'] = 'Error: Cannot write to %s.';
 $lang['install_additional_modules'] = 'Install additional modules';
@@ -237,8 +240,8 @@ username: %s
 password: %s
 
 Log into the site admin here: %s';
-$lang['utma'] = '156861353.1100698504968474900.1215720965.1215860434.1215871284.9';
-$lang['utmz'] = '156861353.1215720965.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)';
+$lang['utma'] = '156861353.143892324303345000.1216502125.1216572124.1216576935.4';
+$lang['utmz'] = '156861353.1216502125.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)';
 $lang['utmc'] = '156861353';
 $lang['utmb'] = '156861353';
 ?>

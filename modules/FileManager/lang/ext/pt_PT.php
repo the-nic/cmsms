@@ -22,6 +22,9 @@ $lang['actions'] = 'Ac&ccedil;&otilde;es';
 $lang['delete'] = 'Eliminar';
 $lang['notwritable'] = 'Sem permiss&otilde;es de escrita ';
 $lang['filetoobig'] = '&eacute; demasiado pesado. Tranfer&ecirc;ncia cancelada.';
+$lang['unknown'] = 'Desconhecido';
+$lang['writable'] = 'Grav&aacute;vel';
+$lang['writeprotected'] = 'Escrita protegida';
 $lang['bytes'] = 'Bytes';
 $lang['kb'] = 'Kb';
 $lang['mb'] = 'Mb';
@@ -48,7 +51,6 @@ $lang['confirmselected'] = 'Tem a Certeza?';
 $lang['confirmdeleteselected'] = 'Tem a certeza que os arquivos selecionados devem ser eliminados?';
 $lang['deleteselectedcancelled'] = 'A Elimina&ccedil;&atilde;o dos arquivos selecionados cancelada';
 $lang['recursetext'] = 'Recurso em subpastas (ainda n&atilde;o implementado)';
-$lang['recursenotice'] = 'Queira notar o seguinte, por agora apenas as permiss&otilde;es para o direct&oacute;rio seleccionado ser&aacute; alterado.';
 $lang['nofilesselected'] = 'N&atilde;o foi selecionado nenhum arquivo';
 $lang['moveselected'] = 'Mover os arquivos selecionados';
 $lang['copyselected'] = 'Copiar os arquivos selecionados';
@@ -70,11 +72,14 @@ $lang['setpermissions'] = 'Definir permiss&otilde;es';
 $lang['permissionstyle'] = 'Estilo das permiss&otilde;es';
 $lang['rwxstyle'] = 'rwx estilo';
 $lang['755style'] = '755 estilo';
+$lang['quickmode'] = 'R&aacute;pido chmod (ex. 777)';
 $lang['chmod'] = 'Mofificar permiss&otilde;es';
 $lang['chmodselected'] = 'Modificar permiss&otilde;es nos arquivos seleccionados';
 $lang['chmodsuccess'] = 'Arquivo obteve &ecirc;xito nas novas permiss&otilde;es';
 $lang['chmodfailure'] = 'Altera&ccedil;&atilde;o das permiss&otilde;es do arquivo falhado';
 $lang['chmodcancelled'] = 'Altera&ccedil;&atilde;o das permiss&otilde;es cancelada';
+$lang['dirchmodfailmulti'] = 'Mudar permiss&otilde;es com o diret&oacute;rio falhado, alguns dos conte&uacute;dos podem ter adquirido novas permiss&otilde;es, no entanto.';
+$lang['dirchmodsuccessmulti'] = 'Altera&ccedil;&atilde;o das permiss&otilde;es sobre o conte&uacute;do do diret&oacute;rio foi bem-sucedida';
 $lang['dirchmodsuccess'] = 'As novas permiss&otilde;es foram atribu&iacute;das com &ecirc;xito';
 $lang['dirchmodfailure'] = 'A modifica&ccedil;&atilde;o das permiss&otilde;es falharam';
 $lang['dirnotemptyconfirm'] = 'Esta pasta n&atilde;o est&aacute; vazia. Deseja realmente apag&aacute;-la e todo o seu conte&uacute;do, incluindo sub-pastas?<br/><br/>';
@@ -109,8 +114,6 @@ $lang['nothinguploaded'] = 'Nada foi carregado';
 $lang['unsupportedarchive'] = 'Formato do arquivo n&atilde;o suportado';
 $lang['uploadmethod'] = 'M&eacute;todo de carregamento';
 $lang['uploaderstandard'] = 'Pad&atilde;o html input-method (permite descompactar)';
-$lang['uploaderpostlet'] = 'Postlet, Java-based, permite multiplos file-selection';
-$lang['uploaderswf'] = 'Flash-uploader';
 $lang['enableadvanced'] = 'Activar o modo avan&ccedil;ado?';
 $lang['advancedhelp'] = 'Permite-lhe aceder a todos os arquivos, e n&atilde;o apenas a:  /uploads/';
 $lang['showhiddenfileshelp'] = 'S&oacute; &eacute; eficaz com o modo avan&ccedil;ado ON';
@@ -123,60 +126,8 @@ $lang['help'] = '		<h3>What does this do?</h3>
 		<p>Select it from the content-menu from in the admin. </p>
 <h3>Tradu&ccedil;&atilde;o Portuguesa</h3>
 		<p>Nuno costa <nuno.mfcosta@sapo.pt></p>';
-$lang['changelog'] = '<ul>
-		  <li><b>Version 0.3.1</b></li>
-		  <li>Added some security with javaapplet upload</li>
-		  <li><b>Version 0.3.0</b></li>
-		  <li>Released with CMSMS 1.3</li>
-		  <li><b>Version 0.3.0b2</b></li>
-		  <li>Fixed icon-size bug never showing 32px versions</li>
-		  <li>Implemented chmod on dirs. No recursion yet, though</li>
-		  <li>Fixed bug allowing all users to access advanced functions</li>
-		  <li>Tuned layout of filemanager</li>
-		  <li>Added thumbnailsupport</li>
-		  <li><b>Version 0.3.0b1</b></li>
-		  <li>Added renaming of dirs and files</li>
-		  <li>Added chmod-functionality</li>
-		  <li>Added copying/moving files within the uploads-dir</li>
-		  <li>Improved the showing of file-sizes</li>
-		  <li>Cosmetic fixes</li>
-		  <li><b>Version 0.2.3</b></li>
-		  <li>Fixed some reference problems regarding array_pop-function</li>
-		  <li>General code cleanup</li>
-		  <li><b>Version 0.2.2</b></li>
-      <li>Changes hardcoded paths to admin and uploads to honor settings in config.php</li>
-                        <li>A few cosmetic fixes</li>
-		  
-			<li><b>Version 0.2.1</b></li>
-                        <li>Changed to use cms_move_uploaded_file.</li>
-                        <li>Now Require CMS 1.2.1</li>
-
-			<li><b>Version 0.2.0</b></li>
-			<li>Everything touched and rewritten for inclusion in version 1.2 of CMSms</li>
-			<li>Checked for noticed</li>
-			<li>Postlet upload fixed and communication from it switched to session-vars</li>
-
-		  <li><b>Version 0.1.4</b></li>
-		  <li>Fixed cancelling recursive deletion of dirs</li>
-		  <li>Fixed some usage of short tags</li>
-
-		  <li><b>Version 0.1.3</b></li>
-		  <li>Fixed cancelling recursive deletion of dirs</li>
-		  <li>Added Java-applet multifile upload method</li>
-		  <li>Implemented deletion of multiple files</li>
-		  <li>Fixed select all checkbox</li>
-
-		  <li><b>Version 0.1.2</b></li>
-		  <li>Added recursive deletion of dirs</li>
-
-		  <li><b>Version 0.1.1</b></li>
-		  <li>Added support for multiple uploads, and support for unpacking tar.gz-files</li>
-		  <li>Rewrote to use more of the module-api-functions</li>
-		  <li><b>Version 0.1.0</b></li>
-		  <li>First version which work properly and equals the builtin filemanager which is intends to render obsolete</li>
-		</ul>';
-$lang['utma'] = '156861353.1033465494970091800.1213181757.1213312493.1213341466.14';
-$lang['utmz'] = '156861353.1213312493.13.8.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php/topic,17638.msg110857.html';
-$lang['utmb'] = '156861353.6.10.1213341466';
+$lang['utma'] = '156861353.143892324303345000.1216502125.1216505409.1216572124.3';
+$lang['utmz'] = '156861353.1216502125.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)';
+$lang['utmb'] = '156861353';
 $lang['utmc'] = '156861353';
 ?>

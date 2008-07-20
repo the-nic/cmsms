@@ -21,6 +21,7 @@
 $CMS_ADMIN_PAGE=1;
 
 require_once("../include.php");
+@set_time_limit(9999); // this may not work on all hosts
 
 $userid = get_userid();
 $access = check_permission($userid, "Modify Site Preferences");
@@ -47,17 +48,20 @@ function check_checksum_data(&$report)
 {
   if( (!isset($_FILES['cksumdat'])) || empty($_FILES['cksumdat']['name']) )
     {
-      return lang('error_nofileuploaded');
+        $report = lang('error_nofileuploaded');
+	return false;
     }
   else if( $_FILES['cksumdat']['error'] > 0 )
     {
-      return lang('error_uploadproblem');
+        $report = lang('error_uploadproblem');
+	return false;
     }
   
   $fh = fopen($_FILES['cksumdat']['tmp_name'],'r');
   if( !$fh )
     {
-      return lang('error_uploadproblem');
+        $report = lang('error_uploadproblem');
+	return false;
     }
   
   global $gCms;
@@ -95,6 +99,8 @@ function check_checksum_data(&$report)
 	  $filenotfound[] = $file;
 	  continue;
 	}
+
+      if( is_dir( $fn ) ) continue;
 
       if( !is_readable( $fn ) )
 	{
@@ -156,7 +162,6 @@ function check_checksum_data(&$report)
 
 function generate_checksum_file(&$report)
 {
-  @set_time_limit(9999); // this may not work on all hosts
   global $gCms;
   $config =& $gCms->GetConfig();
   $output = '';
@@ -164,6 +169,12 @@ function generate_checksum_file(&$report)
   $excludes = array('^\.svn' , '^CVS$' , '^\#.*\#$' , '~$', '\.bak$', '^uploads$', 
                     '^tmp$', '^captchas$' );
   $tmp = get_recursive_file_list( $config['root_path'], $excludes);
+  if( count($tmp) <= 1 )
+  {
+    $report = lang('error_retrieving_file_list');
+    return false;
+  }
+  
   foreach( $tmp as $file )
     {
       if( is_dir($file) ) continue;
@@ -182,7 +193,7 @@ function generate_checksum_file(&$report)
   header('Content-Type: text/plain');
   header("Content-Disposition: attachment; filename=\"checksum.dat\"" );
   header('Content-Transfer-Encoding: binary');
-  header('Content-Length: ' . count($output));
+  header('Content-Length: ' . strlen($output));
   echo $output;
   exit();
 }
@@ -204,16 +215,20 @@ if( isset($_GET['action']) )
       {
       case 'upload':
 	$res = check_checksum_data($report);
+	if( $res === true )
+	  {
+	    $smarty->assign('message',lang('checksum_passed'));
+	  }
 	break;
       case 'download':
-	generate_checksum_file($report);
+	$res = generate_checksum_file($report);
 	break;
       }
   }
 
 if( !$res )
   {
-    $smarty->assign('message',$report);
+    $smarty->assign('error',$report);
   }
 // Display the output
 echo $smarty->fetch('checksum.tpl');

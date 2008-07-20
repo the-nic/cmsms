@@ -798,7 +798,7 @@ a.pageback  {
    color: #384654;
    }
 
-p.pageback  {
+.pageback  {
    margin: 10px;
    }
 
@@ -856,7 +856,8 @@ p.pageinputwysiwyg  {
 	font-weight: bold;	/*background: #D6E4C5;*/
    }
 
-p.pageshowrows  {
+.pageshowrows  {
+   width:50%;
    color: #384654;
    text-align: right;
    float: right;

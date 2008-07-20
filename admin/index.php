@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: index.php 4864 2008-07-17 17:40:19Z calguy1000 $
+#$Id: index.php 4879 2008-07-20 16:39:53Z calguy1000 $
 
 $CMS_ADMIN_PAGE=1;
 $CMS_TOP_MENU='main';
@@ -132,7 +132,9 @@ if ($current_version < $CMS_SCHEMA_VERSION)
 }
 
 # Display a warning about mail settings.
-if( get_site_preference('mail_is_set',0) == 0 )
+if( isset($gCms->modules['CMSMailer']) && 
+    isset($gCms->modules['CMSMailer']['object']) &&
+    get_site_preference('mail_is_set',0) == 0 )
   {
     echo '<div class="pageerrorcontainer"><div class="pageoverflow"><p class="pageerror">'.lang('warning_mail_settings').'</p></div></div>';
   }

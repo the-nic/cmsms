@@ -1,4 +1,7 @@
 <?php
+$lang['admin']['error_retrieving_file_list'] = 'Erreur lors de la r&eacute;cup&eacute;ration Liste des fichiers';
+$lang['admin']['files_checksum_failed'] = 'Impossible de faire le contr&ocirc;le (checksums)';
+$lang['admin']['failure'] = 'D&eacute;faut';
 $lang['admin']['help_function_process_pagedata'] = '<h3>Que fait cette Balise ?</h3>
 <p>This plugin will process the data in the &quot;pagedata&quot; block of content pages through smarty.  It allows you to specify page specific data to smarty without changing the template for each page.</p>
 <h3>Comment l&#039;utiliser ?</h3>
@@ -1656,8 +1659,8 @@ $lang['admin']['unknown'] = 'Inconnu';
 $lang['admin']['download'] = 'T&eacute;l&eacute;charger';
 $lang['admin']['frontendwysiwygtouse'] = 'Wysiwyg de la partie publique&nbsp;';
 $lang['admin']['all_groups'] = 'Tous les groupes';
-$lang['admin']['utma'] = '156861353.1886654442.1216494057.1216494057.1216494057.1';
+$lang['admin']['utma'] = '156861353.1500824961.1216573294.1216573294.1216573294.1';
 $lang['admin']['utmc'] = '156861353';
-$lang['admin']['utmz'] = '156861353.1216494057.1.1.utmccn=(direct)|utmcsr=(direct)|utmcmd=(none)';
+$lang['admin']['utmz'] = '156861353.1216573294.1.1.utmccn=(direct)|utmcsr=(direct)|utmcmd=(none)';
 $lang['admin']['utmb'] = '156861353';
 ?>
