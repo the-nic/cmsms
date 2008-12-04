@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: version.php 5293 2008-12-03 17:00:13Z calguy1000 $
+#$Id: version.php 5308 2008-12-04 15:09:47Z calguy1000 $
 
 $CMS_VERSION = "1.5.1";
 $CMS_VERSION_NAME = "San Juan";

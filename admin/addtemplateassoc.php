@@ -16,7 +16,7 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: addtemplateassoc.php 5201 2008-10-31 00:40:19Z silmarillion $
+#$Id: addtemplateassoc.php 5307 2008-12-04 15:06:26Z calguy1000 $
 
 /**
  * The goal of this page is to create a CSS association. So firts, what is a css
@@ -115,7 +115,7 @@ if (isset($_POST["template_id"]) && isset($_POST["id"]) && isset($_POST["type"])
 		}
 
 		# get the next access_order
-		$query = "SELECT max(assoc_order)+1 FROM '.cms_db_prefix().'css_assoc where assoc_to_id = ?";
+		$query = "SELECT max(assoc_order)+1 FROM ".cms_db_prefix()."css_assoc where assoc_to_id = ?";
 		$nextord = $db->GetOne($query,array($template_id));
 		if( !$nextord ) $nextord = 1;
 
@@ -161,7 +161,6 @@ else
 #******************************************************************************
 # end of treatment, we redirect
 #******************************************************************************
-
 if ($doadd)
 {
 	redirect("templatecss.php".$urlext."&id=$id&type=$type");
