@@ -104,6 +104,12 @@ Added a warning message to the top of the admin display.
 <li>Version 1.3 May, 2009.<br/>
 Added dependency checking.
 </li>
+<li>Version 1.3.3 March, 2010.<br/>
+<ul>
+  <li>PHP 5.x improvements (specifically remove warnings for PHP 5.3)
+  <li>Minor bug fixes.</li>
+</ul>
+</li>
 </ul>';
 $lang['help'] = '<h3>What Does This Do?</h3>
 <p>A client for the ModuleRepository, this module allows previewing, and installing modules from remote sites without the need for ftping, or unzipping archives.  Module XML files are downloaded using SOAP, integrity verified, and then expanded automatically.</p>

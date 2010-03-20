@@ -73,7 +73,7 @@ class ModuleManager extends CMSModule
    ---------------------------------------------------------*/
   function GetVersion()
   {
-    return '1.3.2';
+    return '1.3.3';
   }
 
 
