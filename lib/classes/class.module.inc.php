@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA	02111-1307	USA
 #
-#$Id: class.module.inc.php 6240 2010-04-19 23:19:41Z calguy1000 $
+#$Id: class.module.inc.php 6271 2010-05-01 17:38:44Z calguy1000 $
 
 /**
  * Base module class.
@@ -577,7 +577,7 @@ class CMSModule
 				$smarty =& $gCms->GetSmarty();
 
 				$res = include($filename);
-				if( !is_string($res) ) $res = FALSE;
+				if( $res == 1 || $res == '' ) return FALSE;
 				return $res;
 			}
 		}
@@ -612,7 +612,12 @@ class CMSModule
 		  $smarty =& $gCms->GetSmarty();
 		  
 		  $res = include($filename);
-		  if( !is_string($res) ) $res = FALSE;
+		  if( $res == '1' || $res == '') return FALSE;
+		  if( is_string($res)) 
+		    {
+		      $modops = $gCms->GetModuleOperations();
+		      $modops->SetError($res);
+		    }
 		  return $res;
 		}
 		else
@@ -661,7 +666,9 @@ class CMSModule
 				$smarty =& $gCms->GetSmarty();
 
 				$res = include($filename);
-				if( !is_string($res) ) return FALSE;
+				if( $res == '1' || $res == '' ) return TRUE;
+				$modops = $gCms->GetModuleOperations();
+				$modops->SetError($res);
 				return $res;
 			}
 		}
