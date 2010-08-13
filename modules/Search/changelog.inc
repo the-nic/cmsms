@@ -57,9 +57,4 @@
     <li>Minor bug fixes.</li>
   </ul>
 </li>
-<li>1.6.6 - July 2010 (calguy1000)
-  <ul>
-    <li>Minor bug fixes.</li>
-  </ul>
-</li>
 </ul>

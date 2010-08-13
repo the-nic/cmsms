@@ -1,5 +1,4 @@
 <?php
-$lang['use_or'] = 'Find results that match ANY word';
 $lang['param_detailpage'] = 'Used only for matching results from modules, this parameter allows specifying a different detail page for the results.  This is useful if, for example, you always display your detail views in a page with a different template.  <em>(<strong>Note:</strong> modules have the ability to override this parameter.)</em>';
 $lang['prompt_resultpage'] = 'Page for individual module results <em>(Note modules may optionally override this)</em>';
 $lang['search_method'] = 'Pretty Urls Compatibility via Method POST, default value is always GET, to make this work just put {search search_method="post"} ';

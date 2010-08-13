@@ -146,11 +146,8 @@ if ($params['searchinput'] != '')
 	    $query .= ' AND i.module_name IN ('.implode(',',$modules).')';
 	  }
 	$query .= " GROUP BY i.module_name, i.content_id, i.extra_attr";
-	if( !isset($params['use_or']) || $params['use_or'] == 0 )
-	  {
-	    //This makes it an AND query
-	    $query .= " HAVING count(*) >= $nb_words";
-	  }
+	//This makes it an AND query
+	$query .= " HAVING count(*) = ".$nb_words;
 	$query .= " ORDER BY nb DESC, total_weight DESC";
 
 	$result =& $db->Execute($query);
@@ -386,7 +383,6 @@ else
 	$smarty->assign('timetook', 0);
 }
 
-$smarty->assign('use_or_text',$this->Lang('use_or'));
 $smarty->assign('searchresultsfor', $this->Lang('searchresultsfor'));
 $smarty->assign('noresultsfound', $this->Lang('noresultsfound'));
 $smarty->assign('timetaken', $this->Lang('timetaken'));

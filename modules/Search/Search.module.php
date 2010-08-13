@@ -72,12 +72,12 @@ class Search extends CMSModule
 
   function GetVersion()
   {
-    return '1.6.6';
+    return '1.6.5';
   }
 
   function MinimumCMSVersion()
   {
-    return '1.8.1';
+    return '1.8-beta1';
   }
 
   function GetAdminDescription()
@@ -126,24 +126,18 @@ class Search extends CMSModule
     $this->SetParameterType('pageid',CLEAN_INT);
     $this->CreateParameter('count','null',$this->Lang('param_count'));
     $this->SetParameterType('count',CLEAN_INT);
-
-    $this->SetParameterType('use_or',CLEAN_INT);
-
+    
     $this->CreateParameter('search_method','get',$this->Lang('search_method'));
     $this->SetParameterType('search_method',CLEAN_STRING);
 }
 
   function GetSearchHtmlTemplate()
   {
-    return '
-{$startform}
-<label for="{$search_actionid}searchinput">{$searchprompt}:&nbsp;</label><input type="text" class="search-input" id="{$search_actionid}searchinput" name="{$search_actionid}searchinput" size="20" maxlength="50" value="{$searchtext}" {$hogan}/>
-{*
-<br/>
-<input type="checkbox" name="{$search_actionid}use_or" value="1"/>
-*}
-<input class="search-button" name="submit" value="{$submittext}" type="submit" />
+    return '{$startform}
+
+    <label for="{$search_actionid}searchinput">{$searchprompt}:&nbsp;</label><input type="text" class="search-input" id="{$search_actionid}searchinput" name="{$search_actionid}searchinput" size="20" maxlength="50" value="{$searchtext}" {$hogan}/><input class="search-button" name="submit" value="{$submittext}" type="submit" />
 {if isset($hidden)}{$hidden}{/if}
+
 {$endform}';
   }
 	
