@@ -230,6 +230,7 @@ Insert Smarty {literal} around selection|{literal}|{/literal}");
 
     //if ($frontend) echo "hi";
     //$basepath = $gCms->config["root_url"].'/modules/TinyMCE/tinymce/jscripts/tiny_mce/';
+    $output = '';
     //$output = "<!-- TinyMCE Configuration -->";
 
     if ($this->wysiwygactive) {
