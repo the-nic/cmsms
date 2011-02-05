@@ -72,7 +72,7 @@ class Search extends CMSModule
 
   function GetVersion()
   {
-    return '1.6.9';
+    return '1.6.10';
   }
 
   function MinimumCMSVersion()

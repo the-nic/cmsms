@@ -44,7 +44,14 @@ function search_StemPhrase(&$module,$phrase)
   $words = $module->RemoveStopWordsFromArray($words);
   
   // strip off anything 3 chars or less
-  $words = array_filter($words,function($a){ return strlen($a) >= 3 && !is_numeric($a); });
+  if( !function_exists('__search_stemphrase_filter') )
+    {
+      function __search_stemphrase_filter($a)
+      {
+	return strlen($a) >= 3 && !is_numeric($a);
+      }
+    }
+  $words = array_filter($words, '__search_stemphrase_filter');
 
   $stemmer = new PorterStemmer();
   
