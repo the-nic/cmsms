@@ -36,7 +36,7 @@ class Printing extends CMSModule {
 	}
 
 	function GetVersion() {
-		return '1.1.3';
+		return '1.1.2';
 	}
 
 	function MinimumCMSVersion() {
@@ -166,10 +166,10 @@ class Printing extends CMSModule {
 	
 	function ResetLinkTemplate() {
 	  $fn = dirname(__FILE__).DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.'linktemplate.tpl';
-	  if( file_exists( $fn ) ) {
-	    $template = @file_get_contents($fn);
-	    $this->SetLinkTemplate($template);      
-	  }
+    if( file_exists( $fn ) ) {
+      $template = @file_get_contents($fn);
+      $this->SetLinkTemplate($template);      
+    }
 	}
 	
 

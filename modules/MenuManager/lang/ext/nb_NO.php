@@ -4,7 +4,7 @@ $lang['help_nocache'] = 'Sl&aring; av all mellomlagring for dette kallet til men
 $lang['cachable'] = 'Kan mellomlagres';
 $lang['help_childrenof'] = 'Dette valget vil gj&oslash;re at menyen kun viser enheter som er etterkommere av den valgte sideID eller alias. F.eks. s&aring; vil: <code>{menu childrenof=$page_alias}</code> kun vise barn av den gjeldende siden.';
 $lang['usage'] = 'Benyttes slik';
-$lang['help_loadprops'] = 'Benytt denne parameter om du IKKE benytter avanserte egenskaper i din menybehandlermal. Denne parameter vil SL&Aring; AV lasting av alle innholdsegenskaper for hver node (som extra1, image, thumbnail, osv.). Dette vil dramatisk minske antall sp&oslash;rringer krevd for &aring; bygge en meny og minsker ogs&aring; minnekravet, men dette vil fjerne muligheten for bygging av mye mer avanserte menyer';
+$lang['help_loadprops'] = 'Benytt denne parameter om du IKKE benytter avanserte egenskaper i din menybehandlermal. Denne parameter vil SL&Aring; AV lasting av alle innholddsegenskaper for hver node (som extra1, image, thumbnail, osv.). Dette vil dramatisk minske antall sp&oslash;rringer krevd for &aring; bygge en meny og minsker ogs&aring; minnekravet, men dette vil fjerne muligheten for bygging av mye mer avanserte menyer';
 $lang['readonly'] = 'skrivebeskyttet';
 $lang['error_templatename'] = 'Du kan ikke oppgi ett malnavn som ender p&aring; .tpl';
 $lang['this_is_default'] = 'Standard menymal';
@@ -36,7 +36,7 @@ $lang['edittemplate'] = 'Rediger mal';
 $lang['filename'] = 'Filnavn';
 $lang['filetemplates'] = 'Fil maler';
 $lang['help_includeprefix'] = 'Inkluder kun de punktene hvor sidealias starter med den spesifiserte forstavelsen. Denne parameteren kan ikke kombineres med excludeprefix (utelat-prefiks) parameteren.';
-$lang['help_excludeprefix'] = 'Utelat alle punkter (og deres underpunkter) hvor side alias inneholder den spesifiserte forstavelsen. Denne parameter m&aring; ikke benyttes sammen med includeprefix (inkluder-prefiks) parameteren.';
+$lang['help_excludeprefix'] = 'Utelat alle punkter (og deres underpunkter) hvor sidealias inneholder den spesifiserte forstavelsen. Denne parameter m&aring; ikke benyttes sammen med includeprefix (inkluder-prefiks) parameteren.';
 $lang['help_collapse'] = 'Sl&aring; p&aring; (sett til 1) for &aring; f&aring; menyen til &aring; skjule artikler som ikke er relatert til den valgte siden.';
 $lang['help_items'] = 'Bruk denne verdien for &aring; velge en liste av sider som denne menyen skal vise.  Verdien skal v&aelig;re en liste over side-alias separert med komma.';
 $lang['help_number_of_levels'] = 'Denne innstillingen vil bare tillate menyen &aring; vise et visst antall av niv&aring;er ned.';
@@ -52,7 +52,7 @@ $lang['help'] = '	<h3>Hva gj&oslash;r denne?</h3>
 	<p>Bare sett inn taggen i din mal/side som: <code>{menu}</code>.  Parameterne den godtar listes nedenfor.</p>
 	<h3>Hvorfor bry seg om maler?</h3>
 	<p>Menu Manager bruker maler for visningslogikk.  Den kommer med tre standard maler med navn cssmenu.tpl, minimal_menu.tpl og simple_navigation.tpl. I basis s&aring; lager de alle en enkel usortert liste med sider, ved &aring; bruke forskjellige classes og ID&#039;er for styling med CSS.</p>
-	<p>V&aelig;r oppmerksom p&aring; at du styler utseendet p&aring; menyene med CSS. Stilsett er ikke inkludert med Menu Manager, men m&aring; hektes p&aring; sidemalen separat. For &aring; f&aring; cssmenu.tpl malen til &aring; virke med IE m&aring; du ogs&aring; sette inn en link til JavaScript&#039;et i hode-seksjonen p&aring; sidens mal, noe som er n&oslash;dvendig for &aring; f&aring; hover effekten til &aring; virke i IE.</p>
+	<p>V&aelig;r oppmerksom p&aring; at du styler utssendet p&aring; menyene med CSS. Stilsett er ikke inkludert med Menu Manager, men m&aring; hektes p&aring; sidemalen separat. For &aring; f&aring; cssmenu.tpl malen til &aring; virke med IE m&aring; du ogs&aring; sette inn en link til JavaScript&#039;et i hode-seksjonen p&aring; sidens mal, noe som er n&oslash;dvendig for &aring; f&aring; hover effekten til &aring; virke i IE.</p>
 	<p>Om du vil lage en spesialisert versjon av en mal, kan du lett importere inn i databasen og deretter redigere den direkte i CMSMS admin.  For &aring; gj&oslash;re dette:
 		<ol>
 			<li>Klikk p&aring; Meny Behandler admin.</li>
@@ -90,7 +90,7 @@ $lang['help'] = '	<h3>Hva gj&oslash;r denne?</h3>
 		</ul>
 	</p>
 <p> Denne modulen har funksjoner for &aring; mellomlagre sine utdata inn i statiske filer for &aring; redusere krav til minne og sql sp&oslash;rringer, og for &aring; forbedre frontend-ytelsen. Dette gir alle fordelene med statiske menyer uten det tunge involvert n&aring;r du oppretter eller redigerer sider. </p>
-        <p> Hver menymal kan v&aelig;re merket som &quot;Kan mellomlagres&quot;. N&aring;r en mellomlagret menymal brukes p&aring; en innholdside som kan mellomlagres, vil mellomlagrede menyvisinger som er tilgjengelig for denne siden vil bli brukt. Den ikke mellomlagres parameteren p&aring; menytaggen kan brukes til helt &aring; deaktivere hurtigbufring. </p>
+        <p> Hver menymal kan v&aelig;re merket som &quot;Kan mellomlagres&quot;. N&aring;r en mellomlagret menymal brukes p&aring; en innholdsside som kan mellomlagres, vil mellomlagrede menyvisninger som er tilgjengelig for denne siden vil bli brukt. Den ikke mellomlagres parameteren p&aring; menytaggen kan brukes til helt &aring; deaktivere hurtigbufring. </p>
         <p>Alle mellomlagrede menyfiler slettes n&aring;r et innholdselement er lagt til, redigert eller slettet ... og ogs&aring; n&aring;r en menymal blir lagt til/ redigert eller slettet. </p>';
 $lang['importtemplate'] = 'Importer mal til databasen';
 $lang['menumanager'] = 'Meny behandler';
@@ -100,9 +100,9 @@ $lang['notemplatefiles'] = 'Ingen fil maler i %s';
 $lang['notemplatename'] = 'Ingen malnavn oppgitt.';
 $lang['templatecontent'] = 'Mal innhold';
 $lang['templatenameexists'] = 'En mal med dette navnet eksisterer allerede';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
-$lang['qca'] = '1210971690-27308073-81952832';
+$lang['utma'] = '156861353.4516254727077762000.1214829895.1291365970.1291375132.278';
+$lang['utmz'] = '156861353.1290182173.274.25.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
+$lang['qca'] = '1214401694-66536492-18746566';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
+$lang['utmb'] = '156861353.1.10.1291375132';
 ?>

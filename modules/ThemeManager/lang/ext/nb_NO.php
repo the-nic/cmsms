@@ -33,14 +33,14 @@ $lang['upgraded'] = 'Modul oppgradert til versjon %s.';
 $lang['moddescription'] = 'En modul for &aring; tillate import og eksport av innholds tema (maler og stilsett)';
 $lang['import_succeeded'] = 'Temaet ble vellykket importert';
 $lang['help'] = '<h3>Hva gj&oslash;r denne modulen?</h3>
-<p>Denne modulen gj&oslash;r deg i stand til &aring; importere og eksportere sidemaler og deres vedlagte stilark som  &quot;temaer&quot;.  P&aring; denne m&aring;ten kan du dele utseende og oppf&oslash;rsel med andre cms brukere.</p
+<p>Denne modulen gj&oslash;r deg i stand til &aring; importere og eksportere sidemaler og deres vedlagte stilark som  &quot;temaer&quot;.  P&aring; denne m&aring;ten kan du dele useende og oppf&oslash;rsel med andre cms brukere.</p
 
-<h3>Hvordan bruker jeg den?</h3>
-<p>Denne modulen har ingen framside brukergrensesnitt, bare et admin brukergrensesnitt.  Det tillater deg &aring; velge en eksisterende (aktiv) mal, og klikke &quot;Eksport&quot;.  En XML fil inneholdende malen og dets vedlagte stilark blir laget og lastet ned til deg.</p>
+<h3>Hvoran bruker jeg den?</h3>
+<p>Denne modulen har ingen framside brukergrensesnitt, bare et admin brukergrensesnitt.  Det tillater deg &aring; velge en eksisterende (aktiv) mal, og klikke &quot;Eksport&quot;.  En XML fil inneholdende malen og dets vedlagte stilark blir laget og nedlastet til deg.</p>
 
 <h3>Tillatelser</h3>
-<p>Modellen for tillatelser er strenge for Temabehandler for &aring; sikre database integritet.  Tillatelsen &quot;Manage Themes&quot; kreves for &aring; kunne eksportere temaer, og disse tre tillatelsene  (&quot;Add Stylesheets&quot;, &quot;Add StyleSheet Assocations&quot;, og &quot;Add Templates&quot;) kreves for &aring; kunne importere et tema.</p>
-<p>Du kan ogs&aring; laste opp en tema-fil (i xml format) og f&aring; de inkluderte maler og stilark automatisk importert inn til din SMSMS installasjon.</p>
+<p>Modellen for tillatelser er strenge for Temabehandler for &aring; sikre database integritet.  Tillatelsen &quot;Manage Themes&quot; kreves for &aring; kunne eksportere temaer, og disse tre tillatelsene  (&quot;Add Stylesheets&quot;, &quot;Add StyleSheet Assocations&quot;, og &quot;Add Templates&quot;) kreves for &aring; kunne importere et  tema.</p>
+<p>Du kan ogs&aring; laste opp en tema fil (xml format) og f&aring; de innkluderte maler og stilark automatisk importert inn til din cmsms installasjon.</p>
 
 <h3>Support</h3>
 <p>This module does not include commercial support. However, there are a number of resources available to help you with it:</p>
@@ -57,9 +57,9 @@ of the license for the full disclaimer.</p>
 <p>Copyright &copy; 2005, Robert Campbell <a href="mailto:calguy1000@hotmail.com"><calguy1000@hotmail.com></a>. All Rights Are Reserved.</p>
 <p>This module has been released under the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU Public License</a>. You must agree to this license before using the module.</p>
 ';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
+$lang['utmz'] = '156861353.1288991067.3364.78.utmccn=(referral)|utmcsr=cmsmadesimple.org|utmcct=/about-link/special-fans-listing/|utmcmd=referral';
+$lang['utma'] = '156861353.179052623084110100.1210423577.1290337505.1290347334.3406';
 $lang['qca'] = '1210971690-27308073-81952832';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
+$lang['utmb'] = '156861353.2.10.1290347334';
 ?>

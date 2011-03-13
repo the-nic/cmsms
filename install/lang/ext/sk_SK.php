@@ -190,7 +190,7 @@ $lang['unknown'] = 'Nezn&aacute;my';
 $lang['user'] = 'Už&iacute;vateľ';
 $lang['userdefinedtags'] = 'Použivateľsk&eacute; t&aacute;gy (UDT)';
 $lang['usermanagement'] = 'Spr&aacute;va použ&iacute;vateľov';
-$lang['username'] = 'Už&iacute;vateľsk&eacute; meno';
+$lang['username'] = 'Už&iacute;vateľks&eacute; meno';
 $lang['usernameincorrect'] = 'Už&iacute;vateľsk&eacute; meno alebo heslo nie s&uacute; spr&aacute;vne';
 $lang['version'] = 'Verzia';
 $lang['install_title'] = 'In&scaron;tal&aacute;cia syst&eacute;mu CMS Made Simple (step %s)';
@@ -331,7 +331,7 @@ $lang['install_admin_install_modules'] = 'In&scaron;talujem moduly...';
 $lang['install_admin_index_search'] = 'Indexujem pre vyhľad&aacute;vac&iacute; modul...';
 $lang['install_admin_clear_cache'] = 'Premaz&aacute;vam ke&scaron; str&aacute;nok (ak existuje)...';
 $lang['install_admin_emailing'] = 'Odosielam inform&aacute;cie o novom konte e-mailom...';
-$lang['install_admin_congratulations'] = 'Gratulujeme, in&scaron;tal&aacute;cia prebehla v poriadku - na tomto mieste n&aacute;jdete';
+$lang['install_admin_congratulations'] = 'Gratulujeme, v&scaron;etko se nain&scaron;talovan=e - tu je va&scaron;e';
 $lang['could_not_connect_db'] = 'Nepodarilo sa pripojiť k datab&aacute;zi. Skontrolujte pros&iacute;m pr&iacute;stupov&eacute; meno a heslo do datab&aacute;zy, a jeho opr&aacute;vnenia.';
 $lang['cannot_write_config'] = 'Chyba: Nem&ocirc;žem zapisovať do %s.';
 $lang['email_accountinfo_subject'] = 'Inform&aacute;cie o vytvorenom pr&iacute;stupe pre CMS Made Simple';
@@ -342,9 +342,9 @@ už&iacute;vateľsk&eacute; meno: %s
 heslo: %s
 
 Prihl&aacute;ste sa pre administr&aacute;ciu str&aacute;nky: %s';
-$lang['qca'] = 'P0-1907880641-1299582843050';
-$lang['utma'] = '156861353.736973811.1299582844.1299582844.1299763937.2';
-$lang['utmz'] = '156861353.1299763937.2.2.utmccn=(referral)|utmcsr=dev.cmsmadesimple.org|utmcct=/|utmcmd=referral';
+$lang['utma'] = '156861353.1064856217.1281704360.1298295362.1298881088.23';
+$lang['utmz'] = '156861353.1298881088.23.25.utmccn=(referral)|utmcsr=forum.cmsmadesimple.org|utmcct=/index.php|utmcmd=referral';
+$lang['qca'] = 'P0-799401210-1281704360909';
 $lang['utmb'] = '156861353';
 $lang['utmc'] = '156861353';
 ?>

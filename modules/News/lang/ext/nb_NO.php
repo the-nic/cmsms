@@ -37,7 +37,7 @@ $lang['error_movefile'] = 'Kunne ikke opprette fil: %s';
 $lang['error_mkdir'] = 'Kunne ikke opprette katalog: %s';
 $lang['expiry_interval'] = 'Antall dager (standard) f&oslash;r en artikkel skal utl&oslash;pe (om utl&oslash;p er valgt)';
 $lang['removed'] = 'Fjernet';
-$lang['msg_contenttype_removed'] = 'Nyhet-innholdtypen har blitt fjernet. Vennligst plasser {news} tagger med passende parametere i din mal eller inne i sideinnholdet for &aring; gjenskape denne funksjonaliteten.';
+$lang['msg_contenttype_removed'] = 'Nyhet-innholdstypen har blitt fjernet. Vennligst plasser {news} tagger med passende parametere i din mal eller inne i sideinnholdet for &aring; gjenskape denne funksjonaliteten.';
 $lang['delete_selected'] = 'Slett de valgte artiklene';
 $lang['areyousure_deletemultiple'] = 'Er du sikker p&aring; du vil slette alle de valgte nyhetsartiklene?\nDette kan ikke angres!';
 $lang['error_templatenamexists'] = 'En mal med det navnet eksisterer allerede';
@@ -106,7 +106,7 @@ $lang['draft'] = 'Kladd';
 $lang['expired'] = 'Utl&oslash;pt';
 $lang['author'] = 'Forfatter';
 $lang['sysdefaults'] = 'Tilbakestill til standard';
-$lang['restoretodefaultsmsg'] = 'Denne kommandoen vil tilbakestille mal-innholdet til deres system standard. &Oslash;nsker du virkelig &aring; fortsette?';
+$lang['restoretodefaultsmsg'] = 'Denne kommandoen vil tilbakestille malinnholdet til deres system standard. &Oslash;nsker du virkelig &aring; fortsette?';
 $lang['addarticle'] = 'Legg til nyhetsartikkel';
 $lang['articleadded'] = 'Artikkelen ble lagt til';
 $lang['articleupdated'] = 'Artikkelen ble oppdatert.';
@@ -197,7 +197,7 @@ $lang['eventhelp-NewsArticleEdited'] = '<p>Sendt n&aring;r en artikkel er redige
 <li>&quot;category_id&quot; - Id for kategorien for denne artikkelen</li>
 <li>&quot;title&quot; - Artikkeltittel</li>
 <li>&quot;content&quot; - Artikkel innhold</li>
-<li>&quot;summary&quot; - Artikkel sammendrag</li>
+<li>&quot;summary&quot; - Artikkel sammedrag</li>
 <li>&quot;status&quot; - Artikkel status (&quot;draft&quot; eller &quot;publish&quot;)</li>
 <li>&quot;start_time&quot; - Dato artikkelen skal begynne &aring; vises</li>
 <li>&quot;end_time&quot; - Dato artikkelen ikke skal vises lengre</li>
@@ -225,7 +225,7 @@ $lang['eventhelp-NewsCategoryEdited'] = '<p>Sendt n&aring;r en kategori er redig
 <ul>
 <li>&quot;category_id&quot; - Id for nyhetskategorien</li>
 <li>&quot;name&quot; - Navn p&aring; nyhetskategorien</li>
-<li>&quot;origname&quot; - Det originale navnet p&aring; nyhetskategorien</li>
+<li>&quot;origname&quot; - Det orginale navnet p&aring; nyhetskategorien</li>
 </ul>
 ';
 $lang['eventdesc-NewsCategoryDeleted'] = 'Sendt n&aring;r en kategori er slettet.';
@@ -240,7 +240,7 @@ $lang['help_articleid'] = 'Denne parameter er kun gyldig i detaljvisning. Den ti
 $lang['helpnumber'] = 'Maksimalt antall elementer som skal vises (per side) (ingen verdi vil medf&oslash;re at alle elementer vises). Denne er synonym for pagelimit parameteren.';
 $lang['helpstart'] = 'Start med artikkel n-- dersom ingen parameter er gitt vil visningen starte fra f&oslash;rste artikkel.';
 $lang['helpcategory'] = 'Benyttet i sammendragsvisning for kun &aring; vise elementer fra den spesifiserte kategorien. <b>Bruk * etter navnet for &aring; vise underelementer.</b>  Flere kategorier kan bli brukt dersom disse er separert med komma. Om ingen verdi oppgis vil det resultere i at alle kategorier vises. Denne parameter virker ogs&aring; p&aring; frontend submit handlingen, men st&oslash;tter kun et kategori navn.';
-$lang['helpmoretext'] = 'Tekst som skal vises p&aring; slutten av nyhetssaken dersom innlegget er lengre enn sammendrags lengden. Standard verdi er &quot;Mer&quot;';
+$lang['helpmoretext'] = 'Tekst som skal vises p&aring; slutten av nyhetssaken dersom innlegget er lengre enn sammendragslengden. Standard verdi er &quot;Mer&quot;';
 $lang['helpsummarytemplate'] = 'Bruk en separat mal for &aring; vise artikkelsammendrag. Denne malen m&aring; eksistere og m&aring; v&aelig;re synlig i Sammendrag malfanen i Nyheter administrasjonen, men den trenger ikke &aring; v&aelig;re standard. Om denne parameter ikke er satt, vil gjeldende standardmal benyttes.';
 $lang['helpformtemplate'] = 'Bruk en database mal for &aring; vise artikkel innsending skjemaet. Denne malen m&aring; eksistere og m&aring; v&aelig;re synlig i Skjema malfanen i Nyheter administrasjonen, men den trenger ikke &aring; v&aelig;re standard. Om denne parameter ikke er satt, vil gjeldende standardmal benyttes.';
 $lang['helpbrowsecattemplate'] = 'Benytt en database-mal for &aring; vise kategoris&oslash;ket. Denne malen m&aring; eksistere og m&aring; v&aelig;re synlig i S&oslash;k-Kategori malfanen i Nyhetsadministrasjonen, men den trenger ikke &aring; v&aelig;re satt som standard. Om denne parameter ikke er satt, vil gjeldende standardmal benyttes.';
@@ -258,7 +258,7 @@ $lang['helpaction'] = 'Overstyrer standard handlingen. Mulige verdier er:
 <li>&quot;browsecat&quot; - for &aring; vise en s&oslash;kbar kategoriliste.</li>
 </ul>';
 $lang['help'] = '<h3>Viktige merknader</h3>
-<p>Versjon 2.9 av News og h&oslash;yere har fjernet formatpostdate medlemmet fra malene og har ogs&aring; fjernet dateformat parameteren. Du b&oslash;r benytte  cms_date_format  (slik det er vist i standard malene) for &aring; formatere datoer. Og du b&oslash;r benytte entry->postdate i stedet for entry->formatpostdate i dine maler. <br />Tips: For &aring; f&aring; korrekt norsk &aelig; og &oslash; p&aring; ukedag s&aring; kan det hende du ogs&aring; m&aring; tilf&oslash;ye  |htmlentities  bak  cms_date_format  som dette: {$entry->postdate|cms_date_format:&quot;%A %e. %B %Y&quot;|htmlentities}</p>
+<p>Versjon 2.9 av News og h&oslash;yere har fjernet formatpostdate medlemmet fra malene og har ogs&aring; fjernet dateformat parameteren. Du b&oslash;r benytte  cms_date_format  (slik det er vist i standard malene) for &aring; formatere datoer. Og du b&oslash;r benytte entry->postdate i stedet for entry->formatpostdate i dine maler. <br />Tips: For &aring; f&aring; norsk &aelig; og &oslash; p&aring; ukedag s&aring; kan det hende du ogs&aring; m&aring; tilf&oslash;ye  |htmlentities  bak  cms_date_format  som dette: {$entry->postdate|cms_date_format:&quot;%A %e. %B %Y&quot;|htmlentities}</p>
 
 <h3>Hva gj&oslash;r denne modulen?</h3>
 <p>News er en modul for visning av nyhetsartikler p&aring; din side. Den ligner en blogg, men har flere muligheter!.  
@@ -291,9 +291,9 @@ Herfra kan du legge til, redigere eller slette nyheter for kategorien.</p>
 </ul>
 
 <p>Dersom du f&oslash;lger disse trinnene skulle det l&oslash;se problemet med at dine nyhetsmaler ikke blir funnet og tilsvarende smarty feil, n&aring;r du oppgraderer til en versjon av CMS som har News 2.3 eller h&oslash;yere.</p>';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
+$lang['utmz'] = '156861353.1288991067.3364.78.utmccn=(referral)|utmcsr=cmsmadesimple.org|utmcct=/about-link/special-fans-listing/|utmcmd=referral';
+$lang['utma'] = '156861353.179052623084110100.1210423577.1290337505.1290347334.3406';
 $lang['qca'] = '1210971690-27308073-81952832';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
+$lang['utmb'] = '156861353.2.10.1290347334';
 ?>

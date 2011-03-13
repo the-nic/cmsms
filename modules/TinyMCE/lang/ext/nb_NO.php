@@ -78,10 +78,10 @@ $lang['datetimeformat_help'] = 'Klikk her for &aring; f&aring; hjelp om formatet
 $lang['extraconfigtext'] = 'Ekstra konfigurasjon';
 $lang['extraconfighelp2'] = '&Eacute;n uttalelse per linje, komma vil bli lagt til f&oslash;r og etter dette innholdet. Sjekk TinyMCE-wiki for instruksjoner.';
 $lang['customdropdowntext'] = 'Tilpasset nedtrekk';
-$lang['customdropdownhelp'] = 'Setter inn sm&aring; snutter som av kode/tekst som kan tilpasses ved &aring; velge fra en nedtrekksmeny. 
+$lang['customdropdownhelp'] = 'Setter inn sm&aring; tilpassbare snutter av kode/tekst ved &aring; velge fra en nedtrekksmeny. 
 Mulig bruk er lett tilgang til tagger osv. Menyen settes inn i verkt&oslash;ylinjen ved &aring; bruke &#039;customdropdown&#039;.';
 $lang['startenabledtext'] = 'P&aring;sl&aring;tt ved start';
-$lang['startenabledhelp'] = 'Ved &aring; fjerne avkrysningen vil Tiny-tekstredigereren starte opp i avsl&aring;tt modus. Benyttes sammen med veksle-knappen.';
+$lang['startenabledhelp'] = 'Ved &aring; fjerne avkrysningen for denne vil Tiny-redigereren starte opp i avsl&aring;tt modus. Benyttes sammen med veksle-knappen.';
 $lang['loadcmslinkertext'] = 'Last CMS-linker';
 $lang['loadcmslinkerhelp'] = 'Dette genererer javascript koden som trengs for &aring; tillate cmslinker &aring; bli lagt til verkt&oslash;ylinjen.';
 $lang['cmslinkerstyletext'] = 'CMS-linker lenkestil';
@@ -93,11 +93,11 @@ $lang['avoidlinkconversiontext'] = 'Unng&aring; lenke-konvertering';
 $lang['avoidlinkconversionhelp'] = 'Sl&aring;r den innebygde TinyMCE lenkekonverterer logikken av. Dette gj&oslash;r at {smarty}-bruk i lenker blir mulig.';
 $lang['relativeurlstext'] = 'Generer relative url&#039;er';
 $lang['forcecleanpastetext'] = 'Tving ren innliming';
-$lang['forcecleanpastehelp'] = 'Dette b&oslash;r v&aelig;re sl&aring;tt p&aring; for &aring; fjerne rare formateringskoder n&aring;r man limer inn fra f.eks. Word.';
+$lang['forcecleanpastehelp'] = 'Dette b&oslash;r v&aelig;re sl&aring;tt p&aring; for &aring; fjerne rare formatteringskoder n&aring;r man limer inn fra f.eks. Word.';
 $lang['bodycss_text'] = 'Body tagg stilsett/CSS';
 $lang['bodycss_help'] = 'Vil bli lagt til css body definisjonen. Hint: Background-color kan settes til hvit ved &aring; benytte &quot;background-color: white&quot;';
 $lang['includeonlyscreencss_text'] = 'Inkluder kun screen(skjerm) CSS';
-$lang['includeonlyscreencss_help'] = 'Ved &aring; velge dette tillater du at kun de tilknyttede stilark som har avkrysset screen-mediatype &aring; bli inkludert i de stilene TinyMCE h&aring;ndterer.';
+$lang['includeonlyscreencss_help'] = 'Ved &aring; velge dette tillater du at kun de tilknyttede stilark som har avkrysset screen-mediatype &aring; bli inkludert i de stilene TinyMCE n&aring;ndterer.';
 $lang['usestaticconfigtext'] = 'Benytt statisk config fil';
 $lang['usestaticconfighelp'] = 'Dette kan hjelpe med &aring; f&aring; din Tiny til &aring; fungere p&aring; systemer hvor vertsystemet legger til stoff som f.eks. statistikk til alle viste sider, som &oslash;delegger den dynamisk opprettede javascript config filen';
 $lang['usestaticconfigwarning'] = 'Advarsel! Du har sl&aring;tt p&aring; innstillingen for statisk config-fil men din /tmp/ katalog er ikke skrivbar. Dette vil forhindre modulen i &aring; lagre den statiske config-filen og vil mest sannsynlig rendere TinyMCE til ikke &aring; fungere.';
@@ -125,7 +125,7 @@ $lang['saveadvanced'] = 'Lagre avanserte innstillinger';
 $lang['advancedsaved'] = 'Avanserte innstillinger lagret';
 $lang['toolbarsaved'] = 'Verkt&oslash;ylinjen ble lagret';
 $lang['stylessaved'] = 'Stiler ble lagret';
-$lang['testareatext'] = '<p>Testomr&aring;de, nettstedets innhold vil ikke bli ber&oslash;rt n&aring;r du roter her...</p>';
+$lang['testareatext'] = '<p>Testomr&aring;de, intet innhold vill bli ber&oslash;rt n&aring;r du roter her...</p>';
 $lang['reset'] = 'Tilbakestill til standard';
 $lang['resetall'] = 'Tilbakestill alle innstillinger til standard';
 $lang['confirmreset'] = 'Er du virkelig sikker p&aring; at du vil tilbakestille disse funksjonene til deres standard?';
@@ -192,9 +192,9 @@ $lang['help'] = '	<h3>What does this do?</h3>
   As of version 2.7.0 the TinyMCE-module has the ability to allow other modules to register extensions for it. Could be a custom icon allowing you to insert
   content from some module, like Gallery etc. How to do this is pretty tech stuff, but if you are a module developer and interested in checking it out
   please look in the TinyMCE/docs-dir for further instructions.';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
+$lang['utmz'] = '156861353.1288991067.3364.78.utmccn=(referral)|utmcsr=cmsmadesimple.org|utmcct=/about-link/special-fans-listing/|utmcmd=referral';
+$lang['utma'] = '156861353.179052623084110100.1210423577.1290337505.1290347334.3406';
 $lang['qca'] = '1210971690-27308073-81952832';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
+$lang['utmb'] = '156861353.2.10.1290347334';
 ?>

@@ -29,7 +29,7 @@ $lang['cancel'] = 'Avbryt';
 $lang['info_mailer'] = 'Mail metode &aring; benytte (sendmail, smtp, mail).  Smtp er vanligvis mest &aring; stole p&aring;.';
 $lang['info_host'] = 'SMTP vertsnavn (kun gyldig for smtp mailer metoden)';
 $lang['info_port'] = 'SMTP portnummer (vanligvis 25) (kun gyldig for smtp mailer metoden)';
-$lang['info_from'] = 'Adresse brukt som avsender p&aring; alle e-poster.
+$lang['info_from'] = 'Adresse brukt som avsender p&aring; alle eposter.
 <br/><strong>Merk</strong>, denne e-postadressen m&aring; settes korrekt i for din vert ellers vil du f&aring;r problemer med &aring; sende epost.<br/>Om du ikke kjenner en korrekt verdi for denne innstillingen, b&oslash;r du kontakte din vert.';
 $lang['info_fromuser'] = 'Friendly navn brukt for &aring; sende alle emailer';
 $lang['info_sendmail'] = 'Full sti til din sendmail programfil (kun gyldig for sendmail mailer metoden)';
@@ -321,9 +321,9 @@ of the license for the full disclaimer.</p>
 <h3>Copyright and License</h3>
 <p>Copyright &amp;copy; 2005, Robert Campbell <a href=&#039;mailto:calguy1000@hotmail.com&#039;>&amp;lt;calguy1000@hotmail.com&amp;gt;</a>. All Rights Are Reserved.</p>
 <p>This module has been released under the <a href=&#039;http://www.gnu.org/licenses/licenses.html#GPL&#039;>GNU Public License</a>. You must agree to this license before using the module.</p>';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299925848.1299932589.3678';
+$lang['utmz'] = '156861353.1272675501.2656.57.utmcsr=dev.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/project/files/6';
+$lang['utma'] = '156861353.179052623084110100.1210423577.1272720219.1272726637.2660';
 $lang['qca'] = '1210971690-27308073-81952832';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353.1.10.1299932589';
+$lang['utmb'] = '156861353.1.10.1272726637';
 ?>

@@ -1,6 +1,6 @@
 <?php
 $lang['friendlyname'] = 'Utskriftvennlige Sider';
-$lang['description'] = 'Denne modulen gj&oslash;r at en lett kan tilby utskriftvennlige sider til CMSMS. 
+$lang['description'] = 'Denne modulen er en lett tilpassbar m&aring;te &aring; tilby utskriftvennlige sider til CMSMS. 
 Eller alternativt s&aring; kan veldig enkle PDF-filer med sidens hovedinnhold lages p&aring; direkten.';
 $lang['postinstall'] = 'Modulen ble vellykket installert';
 $lang['confirmuninstall'] = 'Er du sikker p&aring; at modulen skal avinnstalleres?';
@@ -8,6 +8,8 @@ $lang['postuninstall'] = 'Modul er avinstallert.';
 $lang['linktemplate'] = 'Linkmal';
 $lang['printtemplate'] = 'Utskriftsmal';
 $lang['pdftemplate'] = 'PDFmal';
+$lang['pdfengine'] = 'PDF motor';
+$lang['internal'] = 'Intern motor (tcpdf)';
 $lang['templatesaved'] = 'Malen ble lagret';
 $lang['templatereset'] = 'Malen ble tilbakestilt til standard innhold';
 $lang['confirmresettemplate'] = 'Er du sikker p&aring; at du vil sette denne malen tilbake til standard?';
@@ -73,9 +75,8 @@ eller bare
 </pre>
 ved &aring; benytte print-plugin.
 <br/>';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
-$lang['qca'] = '1210971690-27308073-81952832';
+$lang['utmz'] = '156861353.1241475651.1265.31.utmcsr=albinisme.helminikon.no|utmccn=(referral)|utmcmd=referral|utmcct=/index.php/extensions';
+$lang['utma'] = '156861353.179052623084110100.1210423577.1241634417.1241639377.1274';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
+$lang['utmb'] = '156861353.1.10.1241639377';
 ?>

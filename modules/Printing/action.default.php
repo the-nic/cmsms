@@ -91,6 +91,9 @@ $this->smarty->assign("class", $class);
 
 if ($onlyurl) {
   echo $href; 
+} else {
+  if ($this->GetTemplate("linktemplate")=="") $this->ResetLinkTemplate();
+  echo $this->ProcessTemplateFromDatabase("linktemplate");
 }
-
+//phpinfo();
 ?>

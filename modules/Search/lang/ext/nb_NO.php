@@ -12,8 +12,8 @@ $lang['clear'] = 'T&oslash;m';
 $lang['statistics'] = 'Statistikk';
 $lang['param_action'] = 'Spesifiser modusen for bruk av modulen. Gyldige verdier er &#039;default&#039;, og &#039;keywords&#039;. Keywords handling kan benyttes for &aring; generere en kommaseparert liste med ord egnet til bruk i en keywords metatagg.';
 $lang['param_count'] = 'Benyttet med keywords handlingen vil denne parameteren begrense utdata til et visst antall ord';
-$lang['param_pageid'] = 'Denne parameter kan benyttes til &aring; spesifisere en annen pageid &aring; returnere resultatene til';
-$lang['param_inline'] = 'Om satt til sann, vil resultatet fra s&oslash;keskjemaet erstatte det originale innholdet av &#039;s&oslash;k&#039;-taggen i den opprinnelige innholdblokken. Benytt denne parameteren om din mal har flere innholdblokker og du ikke vil at resultatet skal erstatte standard innholdsblokk.';
+$lang['param_pageid'] = 'Denne parameter kan benyttes til &aring; spesifisere en annen pageid &aring; returnere resultatene fra - kun gyldig ved benyttelse av keywords handlingen';
+$lang['param_inline'] = 'Om satt til sann, vil resultatet fra s&oslash;keskjemaet erstatte det originale innholdet av &#039;s&oslash;k&#039;-taggen i den opprinnelige innholdsblokken. Benytt denne parameteren om din mal har flere innholdsblokker og du ikke vil at resultatet skal erstatte standard innholdsblokk.';
 $lang['param_passthru'] = 'Send bestemte parametere ned til spesifiserte moduler. Formatet for hver av disse parameterne er: &quot;passtru_MODULENAME_PARAMNAME=&#039;value&#039;&quot; f.eks.: passthru_News_detailpage=&#039;newsdetails&#039;&quot;';
 $lang['param_modules'] = 'Begrens s&oslash;keresultater til verdier indeksert fra den spesifiserte (komma separerte) listen med moduler';
 $lang['searchsubmit'] = 'Utf&oslash;r';
@@ -83,13 +83,13 @@ $lang['eventhelp-SearchAllItemsDeleted'] = '<p>Sendt n&aring;r et s&oslash;k sta
 $lang['help'] = '	<h3>Hva gj&oslash;r denne?</h3>
 	<p>S&oslash;k er en modul for &aring; s&oslash;ke i &#039;core&#039; innhold og bestemte registrerte moduler.  Du skriver inn et ord eller to og den gir deg passende, relevante resultater.</p>
 	<h3>Hvordan bruker jeg den?</h3>
-<p>Den enkleste m&aring;ten er &aring; bruke den med {search} innpaknings-taggen (pakker modulen i en tagg, for &aring; forenkle syntaksen). Dette vil sette modulen inn i din mal eller side hvor du &oslash;nsker, og vise s&oslash;ke skjemaet.  Koden vil se ut som dette: <code>{search}</code></p>
+<p>Den enkleste m&aring;ten er &aring; bruke den med {search} innpaknings taggen (pakker modulen i en tagg, for &aring; forenkle syntaksen). Dette vil sette modulen inn i din mal eller side hvor du &oslash;nsker, og vise s&oslash;ke skjemaet.  Koden vil se ut som dette: <code>{search}</code></p>
 <h4>Hvordan unng&aring;r jeg at noe innhold blir indeksert</h4>
-<p>S&oslash;k modulen vill ikke s&oslash;ke i inaktive sider. Men i tilfelle, n&aring;r du f.eks. benytter CustomContent modulen, eller andre smarty logikker for &aring; vise forskjellig innhold til ulike grupper med brukere, kan det vare anbefalt &aring; hindre hele siden fra &aring; bli indeksert selv om den er live.  For &aring; gj&oslash;re dette  - inkluder f&oslash;lgende tagg hvor som helst p&aring; siden <em>&amp;lt;!-- pageAttribute: NotSearchable --&amp;gt; (&amp;lt; = tegnet mindre enn, &amp;gt; = tegnet st&oslash;rre enn) </em> N&aring;r s&oslash;kemodulen ser denne taggen p&aring; siden vil den ikke indeksere noe innhold fra den siden.</p>
-<p>Taggen <em>&amp;lt;!-- pageAttribute: NotSearchable --&amp;gt;</em> kan ogs&aring; plasseres i malen.  Om dette gj&oslash;res vil ingen av sidene som er tilknyttet denne malen bli indeksert.  Disse sidene vil bli reindeksert om taggen fjernes.</p>';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
+<p>S&oslash;k modulen vill ikke s&oslash;ke i inaktive sider. Men i tilfelle, n&aring;r du benytter CustomContent modulen, eller andre smarty logikker for &aring; vise forskjellig innhold til ulike grupper med brukere, kan det vare anbefalt &aring; hindre hele siden fra &aring; bli indeksert selv om den er live.  For &aring; gj&oslash;re dette  - inkluder f&oslash;lgende tagg hvor som helst p&aring; siden <em>&amp;lt;!-- pageAttribute: NotSearchable --&amp;gt; (&amp;lt; = tegnet mindre enn, &amp;gt; = tegnet st&oslash;rre enn) </em> N&aring;r s&oslash;kemodulen ser denne taggen p&aring; siden vil den ikke indeksere noe innhold fra den siden.</p>
+<p>Taggen <em>&amp;lt;!-- pageAttribute: NotSearchable --&amp;gt;</em> kan ogs&aring; plasseres i malen.  Om dette gj&oslash;res, ingen av sidene som er tilknyttet denne malen vil bli indeksert.  Disse sidene vil bli reindeksert om taggen fjernes.</p>';
+$lang['utmz'] = '156861353.1279922282.3039.70.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php';
+$lang['utma'] = '156861353.179052623084110100.1210423577.1280440939.1280442901.3072';
 $lang['qca'] = '1210971690-27308073-81952832';
+$lang['utmb'] = '156861353.2.10.1280442901';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
 ?>

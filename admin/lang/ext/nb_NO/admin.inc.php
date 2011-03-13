@@ -6,16 +6,16 @@ $lang['admin']['allow_browser_cache'] = 'Tillat nettleser &aring; mellomlagre si
 $lang['admin']['server_cache_settings'] = 'Server mellomlagringsinnstillinger ';
 $lang['admin']['browser_cache_settings'] = 'Nettleser mellomlagringsinnstillinger ';
 $lang['admin']['help_function_browser_lang'] = '<h3>Hva gj&oslash;r denne?</h3>
-  <p>Denne plugin oppdager og spytter ut det spr&aring;ket som brukerens nettleser aksepterer, og kryssrefererer det med en liste med tillatte spr&aring;k for &aring; avgj&oslash;re en spr&aring;kverdi for sesjonen.</p>
+  <p>Denn plugin oppdager og spytter ut det spr&aring;ket som brukerens nettleser aksepterer, og kryssrefererer det med en liste med tillatte spr&aring;k for &aring; avgj&oslash;re en spr&aring;kverdi for sesjonen.</p>
 <h3>Hvordan bruker jeg denne?</h3>
-<p>Sett inn taggen tidlig i din sidemal <em>(den kan st&aring; overfor <head> seksjonen om du &oslash;nsker dette)</em> og sett inn i taggen navnet p&aring; standardspr&aring;ket, og de aksepterte spr&aring;kene (kun to bokstavs spr&aring;knavn er godtatt), deretter gj&oslash;r du noe med resultatet.  F.eks.:</p>
+<p>Sett inn taggen tidlig i din sidemal <em>(den kan st&aring; overfor <head> seksjonen om du &oslash;nsker dette)</em> og sett inn i taggen navnet p&aring; standard spr&aring;ket, og de aksepterte spr&aring;kene (kun to bokstavs spr&aring;knavn er godtatt), deretter gj&oslash;r du noe medresultatet.  F.eks.:</p>
 <pre><code>{browser_lang accept=de,fr,en,es default=en assign=tmp}{session_put var=lang val=$tmp}</code></pre>
 <p><em>({session_put} er en annen plugin som kommer fra CGSimpleSmarty modulen)</em></p>
 <h3>Hvilke parametere tar denne?</h3>
 <ul>
 <li><strong>accepted <em>(required)</em></strong><br/> - En kommaseparert liste med to-stavelse spr&aring;knavn som er aksepterte.</li>
 <li>default<br/>- <em>(optional)</em> Et standard spr&aring;k &aring; vise om ingen aksepterte spr&aring;k var st&oslash;ttet av nettleseren.  en  - er benyttet om ingen annen verdi er oppgitt.</li>
-<li>assign<br/>- <em>(optional)</em> Navnet p&aring; smarty-variabelen &aring; tilegne resultatet til. Om dette ikke er oppgitt vil resultatet av denne funksjonen blir returnert.</li>
+<li>assign<br/>- <em>(optional)</em> NAvnet p&aring; smartyvariabelen &aring; tilegne resultatet til. Om dette ikke er oppgitt vil resultatet av denne funksjonen blir returnert.</li>
 </ul>';
 $lang['admin']['info_target'] = 'Denne opsjonen kan benyttes av Menu Manager for &aring; indikere n&aring;r og hvordan nye rammer eller vinduer skal &aring;pnes. Noen menybehandlermaler vil muligens ignorerere denne opsjonen.';
 $lang['admin']['close'] = 'Lukk';
@@ -27,13 +27,13 @@ $lang['admin']['content_autocreate_flaturls'] = 'Automatisk opprettede URL&#039;
 $lang['admin']['content_autocreate_urls'] = 'Opprett automatisk side-URL&#039;er';
 $lang['admin']['content_mandatory_urls'] = 'Side URLer er p&aring;krevd';
 $lang['admin']['content_imagefield_path'] = 'Sti for bildefeltet';
-$lang['admin']['info_content_imagefield_path'] = 'I forhold til banene for bildeopplasting, angi et katalognavn som inneholder banene som inneholder filer for bildefeltet';
+$lang['admin']['info_content_imagefield_path'] = 'I forhold til bildeopplastingsbanen, angi et katalognavn som inneholder banene som inneholder filer for bildefeltet';
 $lang['admin']['content_thumbnailfield_path'] = 'Sti for miniatyrbildefeltet';
-$lang['admin']['info_content_thumbnailfield_path'] = 'I forhold til banene for bildeopplasting, angi et katalognavn som inneholder banene som inneholder filer for bildefeltet. Vanligvis vil dette v&aelig;re det samme som stien ovenfor.';
+$lang['admin']['info_content_thumbnailfield_path'] = 'I forhold til bildeopplastingsbanen, angi et katalognavn som inneholder banene som inneholder filer for bildefeltet. Vanligvis vil dette v&aelig;re det samme som stien ovenfor.';
 $lang['admin']['contentimage_path'] = 'Sti for {content_image}-taggen';
-$lang['admin']['info_contentimage_path'] = 'I forhold til banene for opplasting, angi et katalognavn som inneholder banene som inneholder filer for  {content_image}-taggen. Denne verdien brukes som standard for dir parameteren';
+$lang['admin']['info_contentimage_path'] = 'I forhold til opplastingsbanen, angi et katalognavn som inneholder banene som inneholder filer for  {content_image}-taggen. Denne verdien brukes som standard for dir parameteren';
 $lang['admin']['editcontent_settings'] = 'Innholdsredigerings innstillinger';
-$lang['admin']['help_page_url'] = 'Angi en alternativ URL (relativt til roten p&aring; ditt nettsted) som kan brukes for &aring; identifisere denne siden. i.e: sti/til/minside Sideurlen er kun nyttig n&aring;r vakre urler er p&aring;sl&aring;tt.';
+$lang['admin']['help_page_url'] = 'Angi en alternativ URL (relativt til roten p&aring; ditt nettsted) som kan brukes for &aring; identifisere denne siden. i.e: sti/til/minside';
 $lang['admin']['help_page_alias'] = 'Aliaset brukes som et alternativ til side id for &aring; unikt identifisere en side. Det m&aring; v&aelig;re unikt p&aring; tvers av alle sidene. Aliaset brukes ogs&aring; til &aring; hjelpe &aring; bygge nettadressen til siden';
 $lang['admin']['help_page_searchable'] = 'Denne innstillingen angir om innholdet p&aring; denne siden skal indekseres av s&oslash;kemotoren';
 $lang['admin']['help_page_cachable'] = 'Ytelsen kan &oslash;kes ved &aring; sette s&aring; mange sider som mulig til &aring; mellomlagres(cachable). Men dette kan ikke brukes p&aring; sider der innholdet kan endres per foresp&oslash;rsel';
@@ -67,8 +67,8 @@ $lang['admin']['templatecopied'] = 'Mal kopiert';
 $lang['admin']['ecommerce_desc'] = 'Moduler for &aring; tilf&oslash;re ehandel egenskaper';
 $lang['admin']['ecommerce'] = 'E-Commerce ';
 $lang['admin']['help_function_content_module'] = '<h3>Hva gj&oslash;r denne?</h3>
-<p>Denne innholdsblokktypen tillater samhandling med forskjellige moduler for &aring; opprette forskjellige innholdsblokk typer.</p>
-<p>Noen moduler kan definere innholdsblokktyper for bruk i modulmaler. F.eks.: FrontEndUsers modulen kan definere en gruppeliste-innholdsblokk type. Denne vil da indikere hvordan du kan benytte content_module taggen for &aring; benytte den blokktypen inne i dine maler.</p>
+<p>Denne innholdsblokktypen tillater samhandling med forskjellige moduler for &aring; opprette forskkjellige innholdsblokk typer.</p>
+<p>Noen moduler kan definere innholdsblokktyper for bruk i modulemaler. F.eks.: FrontEndUsers modulen kan definere en gruppeliste-innholdsblokk type. Denne vil da indikere hvordan du kan benytte content_module taggen for &aring; benytte den blokktypen inne i dine maler.</p>
 <p><strong>Merk:</strong> Denne blokktypen m&aring; bare benyttes med kompatible moduler. Du m&aring; ikke benytte denne p&aring; noen annen m&aring;te enn slik det er instruert i tilleggsmodulene.</p>';
 $lang['admin']['error_parsing_content_blocks'] = 'Det oppstod en feil ved tolkning av innholdsblokker (mulig det er to eller flere like navn p&aring; blokker)';
 $lang['admin']['error_no_default_content_block'] = 'Ingen standard innholdsblokk (content) ble oppdaget i denne malen. Vennligst pass p&aring; at du har en {content}-tagg i sidemalen.';
@@ -85,14 +85,14 @@ $lang['admin']['help_function_cms_stylesheet'] = '	<h3>Hva gj&oslash;r denne?</h
   <li><em>(valgfri)</em>media - Om navn er definert, vil denne tillate deg &aring; sette en annen media-type for det stilarket.</li>
   <li><em>(valgfri)</em>templateid - Om templateid er definert s&aring; vil dette hente stilark som er koblet til den malen i stedet for den n&aring;v&aelig;rende.</li>
   </ul>
-  <h3>Smarty prosessering</h3>
-  <p>N&aring;r stilarkfiler genereres vil systemet sende stilarkene som hentes fra databasen gjennom smarty. Smarty atskillerne har blitt endret fra CMSMS standard { og } til [[ og ]] henholdsvis for &aring; lette overgangen i stilarkene. Dette tillater &aring; lage smarty variabler som f.eks.: [[assign var=&#039;red&#039; value=&#039;#900&#039;]] p&aring; toppen av stilarket, og s&aring; benytte disse variablene senere i stilarket, f.eks.:</p>
+  <h3>Smarty Processering</h3>
+  <p>N&aring;r stilarkfiler genereres vil systemet sende stilarkene som hentes fra datababsen gjennom smarty. Smarty adskillerne har blitt endret fra CMSMS standard { og } til [[ og ]] henholdsvis for &aring; lette overgangen i stilarkene. Dette tillater &aring; lage smarty variabler som f.eks.: [[assign var=&#039;red&#039; value=&#039;#900&#039;]] p&aring; toppen av stilarket, og s&aring; benytte disse variablene senere i stilarket, f.eks.:</p>
 <pre>
 <code>
 h3 .error { color: [[$red]]; }<br/>
 </code>
 </pre>
-<p>Fordi de genererte filene blir mellomlagret i tmp/cache katalogen i CMSMS installasjonen, s&aring; er stilarkenes(CSS) relative arbeidskatalog ikke i roten p&aring; nettstedet. Derfor b&oslash;r alle bilder, eller andre tagger som krever en url benytte [[root_url]] taggen for &aring; tvinge dette til &aring; bli en absolutt url. F.eks.:</p>
+<p>Fordi de genererte filene blir mellomlagret i tmp/cache katalogen i CMSMS installasjonen, s&aring; er stilarks(CSS) relative arbeidskatalog ikke i roten p&aring; nettstedet. Derfor b&oslash;r alle bilder, eller andre tagger som krever en url benytte [[root_url]] taggen for &aring; tvinge dette til &aring; bli en absolutt url. F.eks.:</p>
 <pre>
 <code>
 h3 .error { background: url([[root_url]]/uploads/images/error_background.gif); }<br/>
@@ -124,7 +124,7 @@ $lang['admin']['thumbnail_width'] = 'Miniatyrbilde Bredde';
 $lang['admin']['thumbnail_height'] = 'Miniatyrbilde H&oslash;yde';
 $lang['admin']['E_STRICT'] = 'Er E_STRICT deaktivert i error_reporting';
 $lang['admin']['test_estrict_failed'] = 'E_STRICT er aktivert i error_reporting';
-$lang['admin']['info_estrict_failed'] = 'Noen biblioteker som CMS Made Simple benytter fungerer ikke godt med E-STRICT. Vennligst deaktivere denne f&oslash;r du fortsetter';
+$lang['admin']['info_estrict_failed'] = 'Noen biblioteker som CMS Made Simple benytter fungerer ikke godt med E-STRICT. Vennligst deaktiver denne f&oslash;r du fortsetter';
 $lang['admin']['E_DEPRECATED'] = 'Er E_DEPRECATED deaktivert i error_reporting';
 $lang['admin']['test_edeprecated_failed'] = 'E_DEPRECATED er aktivert';
 $lang['admin']['info_edeprecated_failed'] = 'Om E_DEPRECATED er aktivert i din feilrapportering s&aring; vil brukere se mange feilmeldinger som kan ha effekt p&aring; visningen og funksjonaliteten';
@@ -190,17 +190,17 @@ $lang['admin']['image'] = 'Bilde';
 $lang['admin']['thumbnail'] = 'Miniatyrbilde ';
 $lang['admin']['searchable'] = 'Denne siden er s&oslash;kbar';
 $lang['admin']['help_function_content_image'] = '<h3>Hva gj&oslash;r denne?</h3>
-<p>Dette programtillegget tillater maldesignere &aring; be brukerne om &aring; velge en bildefil n&aring;r de redigerer innhold p&aring; en side. Den oppf&oslash;rer seg tilsvarende content programtillegget for ekstra innholdblokker.</p>
+<p>Dette programtillegget tillater maldesignere &aring; be brukerne om &aring; velge en bildefil n&aring;r de redigerer innhold p&aring; en side. Den oppf&oslash;rer seg tilsvarende content programtillegget for ekstra innholdsblokker.</p>
 <h3>Hvordan bruker jeg denne?</h3>
 <p>Bare sett taggen inn i din sidemal som dette <code>{content_image block=&#039;image1&#039;}</code>.</p>
 <h3>Hvilke parametere tar denne?</h3>
 <ul>
-  <li><em><strong>(p&aring;krevd)</strong></em> block - Navnet p&aring; denne ekstra innholdblokken.
+  <li><em><strong>(p&aring;krevd)</strong></em> block - Navnet p&aring; denne ekstra innholdsblokken.
   <p>Eksempel:</p>
   <pre>{content_image block=&#039;image1&#039;}</pre><br/>
   </li>
 
-  <li><em>(valgfri)</em> label - En etikett(label) eller sp&oslash;rsm&aring;l for denne innholdblokken p&aring; &#039;rediger innhold&#039;-siden. Om dette ikke er spesifisert, vil blokkens navn bli benyttet.</li>
+  <li><em>(valgfri)</em> label - En etikett(label) eller sp&oslash;rsm&aring;l for denne innholdsblokken p&aring; &#039;rediger innhold&#039;-siden. Om dette ikke er spesifisert, vil blokkens navn bli benyttet.</li>
  
   <li><em>(valgfri)</em> dir - Navnet p&aring; katalogen (relativ til uploads katalogen, for hvor bildefiler skal velges. Om dette ikke er spesifisert vil uploads katalogen bli benyttet.
   <p>Eksempel: benytt bilder fra uploads/image katalogen.</p>
@@ -305,7 +305,7 @@ $lang['admin']['start_upgrade_process'] = 'Start oppgraderingen';
 $lang['admin']['warning_upgrade'] = '<em><strong>Advarsel:</strong></em> CMSMS har behov for en oppgradering.';
 $lang['admin']['warning_upgrade_info1'] = 'Du kj&oslash;rer n&aring; database skjema versjon %s. og du trenger &aring; oppgradere til versjon %s';
 $lang['admin']['warning_upgrade_info2'] = 'Vennligst klikk p&aring; f&oslash;lgende lenke: %s.';
-$lang['admin']['warning_mail_settings'] = 'Dine e-postinnstillinger har ikke blitt konfigurert enn&aring;. Dette kan medf&oslash;re at ditt nettsted ikke kan sende epost. Du b&oslash;r g&aring; til <a href="%s">Utvidelser >> CMSMailer</a> og konfigurere e-postinnstillingene med n&oslash;dvendig informasjon. Du b&oslash;r ha f&aring;tt dette fra din nettstedstilbyder.';
+$lang['admin']['warning_mail_settings'] = 'Dine epostinnstillinger har ikke blitt konfigurert enn&aring;. Dette kan medf&oslash;re at ditt nettsted ikke kan sende epost. Du b&oslash;r g&aring; til <a href="%s">Utvidelser >> CMSMailer</a> og konfigurere epostinnstillingene med n&oslash;dvendig informasjon. Du b&oslash;r ha f&aring;tt dette fra din nettstedstilbyder.';
 $lang['admin']['view_page'] = 'Vis denne siden i et nytt vindu';
 $lang['admin']['off'] = 'Av';
 $lang['admin']['on'] = 'P&aring;';
@@ -561,7 +561,7 @@ $lang['admin']['login_info_title'] = 'Informasjon';
 $lang['admin']['login_info'] = 'For at administrasjonskonsollet skal fungere godt b&oslash;r du p&aring;se -';
 $lang['admin']['login_info_params'] = '<ol> 
   <li>At cookies er tillatt i din nettleser</li> 
-  <li>At Javaskript er tillatt i din nettleser </li> 
+  <li>At Javascript er tillatt i din nettleser </li> 
   <li>At popup vinduer tillates for f&oslash;lgende adresse:</li> 
 </ol>';
 $lang['admin']['help_function_news'] = '	<h3>What does this do?</h3>
@@ -638,13 +638,13 @@ $lang['admin']['help_function_google_search'] = '	<h3>What does this do?</h3>
 	</ul>
 	</p>';
 $lang['admin']['help_function_global_content'] = '	<h3>Hva gj&oslash;r denne?</h3>
-	<p>Setter inn en Global innholdblokk(global content block) i din mal eller side.</p>
+	<p>Setter inn en Global innholdsblokk(global content block) i din mal eller side.</p>
 	<h3>Hvordan bruker jeg denne?</h3>
 	<p>Bare sett inn taggen i din mal/side som dette: <code>{global_content name=&#039;myblob&#039;}</code>, hvor navnet(name) er navnet p&aring; blokken n&aring;r den ble laget.</p>
 	<h3>Hvilke parametere tar denne?</h3>
 	<ul>
-		<li>name - Navnet p&aring; den Globale innholdblokken)global content block) som skal vises.</li>
-          <li><em>(optional)</em> assign - Navnet p&aring; smartyvariabelen som den globale innholdblokken skal tilegnes til.</li>
+		<li>name - Navnet p&aring; den Globale innholdsblokken)global content block) som skal vises.</li>
+          <li><em>(optional)</em> assign - Navnet p&aring; smartyvariabelen som den globale innholdsblokken skal tilegnes til.</li>
 	</ul>';
 $lang['admin']['help_function_get_template_vars'] = '	<h3>What does this do?</h3>
 	<p>Dumps all the known smarty variables into your page</p>
@@ -698,7 +698,7 @@ $lang['admin']['help_function_created_date'] = '        <h3>What does this do?</
         </ul>';
 $lang['admin']['help_function_content'] = '	<h3>Hva gj&oslash;r denne?</h3>
 	<p>Dette er her innholdet for sidene dine vil bli vist. Den settes inn i malen og endres basert p&aring; n&aring;v&aelig;rende side som vises.</p>
-	<h3>Hvordan bruker jeg denne?</h3>
+	<h3>Hvordan bruke rjeg denne?</h3>
 	<p>Bare sett inn taggen i din mal som dette: <code>{content}</code>.</p>
 	<p><strong>Standard blokken <code>{content}</code> er p&aring;krevd for at systemet skal fungere optimalt. (dvs. uten block-parameteren)</strong> For &aring; gi blokken en spesifikk etikett, benytt label-parameteren. Ekstra blokker kan legges til ved &aring; benytte block-parameteren.</p>
 	<h3>Hvilke parametere tar denne?</h3>
@@ -710,7 +710,7 @@ $lang['admin']['help_function_content'] = '	<h3>Hva gj&oslash;r denne?</h3>
 		<li><em>(optional)</em> wysiwyg (=&#039;true&#039;/&#039;false&#039;) - Om satt til &#039;false&#039;, vil en wysiwyg aldri bli brukt for redigering av denne blokken. Om satt &#039;true&#039; s&aring; vil den v&aelig;re p&aring; som vanlig. Kun gyldig n&aring;r block parameteren er brukt.</li>
 		<li><em>(optional)</em> oneline (=&#039;true&#039;/&#039;false&#039;) - Om satt til &#039;true&#039;, vil kun en redigeringslinje bli vist n&aring;r du redigerer denne blokken. Om &#039;false&#039;, vil det v&aelig;re som normalt. Kun gyldig n&aring;r block parameteren er brukt.</li>
 <li><em>(optional)</em> size - Kun gyldig n&aring;r oneline parameteren er benyttet. Denne valgfrie parameter tillater deg &aring; spesifisere st&oslash;rrelse p&aring; redigeringsfeltet. Standard verdien er 50.</li>
-		<li><em>(optional)</em> default - Tillater deg &aring; spesifisere standard innhold for denne innholdblokken (gjelder kun ekstra innholdblokker).</li>
+		<li><em>(optional)</em> default - Tillater deg &aring; spesifisere standard innhold for denne innholdsblokken (gjelder kun ekstra innholdsblokker).</li>
 		<li><em>(optional) </em>label - Tillater &aring; spesifisere en etikett for visning p&aring; rediger innhold siden.</li>
 		<li><em>(optional)</em> assign - Tilegner(Assigns) innholdet til en smarty parameter, som du s&aring; kan benytte i andre omr&aring;der p&aring; siden, eller benytte for &aring; teste om innhold eksisterer i den eller ikke.
 <p>Eksempel p&aring; &aring; sende side innhold til en Brukerdefinert tagg(User Defined Tag/UDT) som en parameter:</p>
@@ -724,7 +724,7 @@ $lang['admin']['help_function_contact_form'] = '  <h2>NOTE: This plugin is depre
   <h3>This plugin has been removed as of CMS made simple version 1.5</h3>
   <p>You can use the module FormBuilder instead.</p>';
 $lang['admin']['help_function_cms_versionname'] = '	<h3>Hva gj&oslash;r denne?</h3>
-	<p>Denne taggen blir benyttet for &aring; sette inn gjeldende versjonsnavn for CMSMS inn i din mal elelr side. Den viser ikke noe annet enn versjonnavnet.</p>
+	<p>Denne taggen blir benyttet for &aring; sette inn gjeldende versjonsnavn for CMSMS inn i din mal elelr side. Den viser ikke noe annet enn versjonsnavnet.</p>
 	<h3>Hvordan benytter jeg denne?</h3>
 	<p>Dett er kun en enkel tagg plugin. Du kan sette den inn i din mal elelr side som dette: <code>{cms_versionname}</code>
 	<h3>Hvilke parametere tar denne?</h3>
@@ -1068,7 +1068,7 @@ $lang['admin']['errorupdatingpages'] = 'Feil ved oppdatering av sider';
 $lang['admin']['errorupdatingtemplate'] = 'Feil ved oppdatering av mal';
 $lang['admin']['errorupdatinguser'] = 'Feil ved oppdatering av bruker';
 $lang['admin']['errorupdatingusertag'] = 'Feil ved oppdatering av brukertagg';
-$lang['admin']['erroruserinuse'] = 'Denne brukeren eier fremdeles innholdsider. Vennligst flytt eierrettighetene til en annen bruker f&oslash;r sletting.';
+$lang['admin']['erroruserinuse'] = 'Denne brukeren eier fremdeles innholdssider. Vennligst flytt eierrettighetene til en annen bruker f&oslash;r sletting.';
 $lang['admin']['eventhandlers'] = 'Hendelser';
 $lang['admin']['eventhandler'] = 'Hendelses behandlere';
 $lang['admin']['editeventhandler'] = 'Rediger Hendelsesbehandleren(Event Handler)';
@@ -1273,7 +1273,7 @@ $lang['admin']['groupassignmentdescription'] = 'Her kan du legge brukere til gru
 $lang['admin']['groupperms'] = 'Grupperettigheter';
 $lang['admin']['grouppermsdescription'] = 'Sett rettigheter og tilgangsniv&aring;er for grupper.';
 $lang['admin']['pagesdescription'] = 'Funksjoner for &aring; legge til, redigere og slette innhold.';
-$lang['admin']['htmlblobdescription'] = 'Globale innholdblokker(GCB) er blingser med innhold som du kan plassere p&aring; dine sider eller i maler.';
+$lang['admin']['htmlblobdescription'] = 'Globale innholdsblokker(GCB) er blingser med innhold som du kan plassere p&aring; dine sider eller i maler.';
 $lang['admin']['templates'] = 'Maler';
 $lang['admin']['templatesdescription'] = 'Dette er hvor vi legger til og endrer maler. Malene definerer hvordan sidene dine presenteres.';
 $lang['admin']['stylesheets'] = 'Stilsett';
@@ -1283,7 +1283,7 @@ $lang['admin']['imagemanagerdescription'] = 'Last opp, rediger og slett bilder.'
 $lang['admin']['moduledescription'] = 'Moduler brukes til &aring; legge til ekstra funksjonalitet i CMS Made Simple';
 $lang['admin']['tagdescription'] = 'Systemtagger er sm&aring; programfunksjoner som kan settes inn i ditt innhold og/eller mal.';
 $lang['admin']['usertagdescription'] = 'Brukerdefinerte tagger (UDT) er programfunksjoner som man kan opprette og redigere selv for &aring; utf&oslash;re spesifikke oppgaver rett fra nettleseren.';
-$lang['admin']['installdirwarning'] = '<em><strong>Advarsel:</strong></em> mappen med installasjonsfiler eksisterer fremdeles. V&aelig;r vennlig &aring; slett denne helt.';
+$lang['admin']['installdirwarning'] = '<em><strong>Advarsel:</strong></em> mappen med installasjonssfiler eksisterer fremdeles. V&aelig;r vennlig &aring; slett denne helt.';
 $lang['admin']['subitems'] = 'Underartikler';
 $lang['admin']['extensionsdescription'] = 'Moduler, tagger, og annen kode for ekstra funksjonalitet.';
 $lang['admin']['usersgroupsdescription'] = 'Bruker- og grupperelaterte funksjoner.';
@@ -1635,7 +1635,7 @@ $lang['admin']['event_help_contentdeletepost'] = '<p>Sendt etter innhold ble sle
 <ul>
 <li>&#039;content&#039; - Referanse til det ber&oslash;rte innholdsobjektet.</li>
 </ul>';
-$lang['admin']['event_help_contentstylesheet'] = '<p>Sendt f&oslash;r et stilsett blir sendt til nettleseren.</p>
+$lang['admin']['event_help_contentstylesheet'] = '<p>Sendt f&oslash;r et stilsett blir sendt til nettlseseren.</p>
 <h4>Parametere</h4>
 <ul>
 <li>&#039;content&#039; - Referanse til det ber&oslash;rte stilsettobjektet.</li>
@@ -1673,7 +1673,7 @@ $lang['admin']['file_url'] = 'Lenke til fil (i stedet for URL)';
 $lang['admin']['no_file_url'] = 'Ingen (Benytt URL&#039;en ovenfor)';
 $lang['admin']['defaultparentpage'] = 'Standard foreldre side';
 $lang['admin']['error_udt_name_whitespace'] = 'Feil: Brukerdefinerte Tagger(UDT) kan ikke ha mellomrom i navnet.';
-$lang['admin']['warning_safe_mode'] = '<strong><em>ADVARSEL:</em></strong> PHP Safe mode er sl&aring;tt p&aring;.  Dette medf&oslash;rer problemer med filer som lastes opp via nettlesergrensesnittet, inkludert bilder, tema og modul XML-pakker.  Du r&aring;des til &aring; kontakte din nettstedadministrator for &aring; h&oslash;re om safe mode kan sl&aring;s av.';
+$lang['admin']['warning_safe_mode'] = '<strong><em>ADVARSEL:</em></strong> PHP Safe mode er sl&aring;tt p&aring;.  Dette medf&oslash;rer problemer med filer som lastes opp via nettlesergrensesnittet, inkludert bilder, tema og modul XML-pakker.  Du r&aring;des til &aring; kontakte din nettstedsadministrator for &aring; h&oslash;re om safe mode kan sl&aring;s av.';
 $lang['admin']['test'] = 'Test ';
 $lang['admin']['results'] = 'Resultater';
 $lang['admin']['untested'] = 'Ikke testet';
@@ -1697,8 +1697,9 @@ $lang['admin']['lostpwemail'] = 'Du mottar denne e-posten fordi en foresp&oslash
 % s
 
 Hvis du mener dette er feil eller du angrer, kan du trygt overse denne e-postmeldingen, og ingenting vil bli endret.';
-$lang['admin']['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['admin']['utma'] = '156861353.179052623084110100.1210423577.1299925848.1299932589.3678';
+$lang['admin']['utmz'] = '156861353.1292071197.3458.79.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php/topic,49989.0/topicseen.html';
+$lang['admin']['utma'] = '156861353.179052623084110100.1210423577.1295649999.1295715489.3513';
 $lang['admin']['qca'] = '1210971690-27308073-81952832';
+$lang['admin']['utmb'] = '156861353.1.10.1295715489';
 $lang['admin']['utmc'] = '156861353';
 ?>

@@ -1,11 +1,5 @@
 <?php
-$lang['admin']['info_browser_cache_expiry'] = 'Angiv tiden (i minutter) sombrowseren skal cache sider i. Hvis du skriver 0 vil denne funktion v&aelig;re deaktiveret.';
-$lang['admin']['browser_cache_expiry'] = 'Antal minutter som browseren skal cache en side i: <em>(minutter)</em>';
-$lang['admin']['info_browser_cache'] = 'Denne indstilling g&aelig;lder kun for sider der skal caches, og betyder at browseren tillades at cache en side i et givet tidsrum. Hvis funktionen er aktiveret, kan det betyde at bes&oslash;gende p&aring; din hjemmeside ikke ser &aelig;ndringer p&aring; en side med det samme.';
-$lang['admin']['allow_browser_cache'] = 'Tillad en browser at cache sider';
-$lang['admin']['server_cache_settings'] = 'Server cache indstillinger';
-$lang['admin']['browser_cache_settings'] = 'Browser cache indstillinger';
-$lang['admin']['help_function_browser_lang'] = '<h3>Hvad g&oslash;r dette?</h3>
+$lang['admin']['help_function_browser_lang'] = '<h3>What does this do?</h3>
   <p>This plugin detects and outputs the language that the users browser accepts, and cross references it with a list of allowed languages to determine a language value for the session.</p>
 <h3>How do I use it?</h3>
 <p>Insert the tag early into your page template <em>(it can go above the <head> section if you want)</em> and provide it the name of the default language, and the accepted languages (only two character language names are accepted), then do something with the result.  i.e:</p>
@@ -21,6 +15,7 @@ $lang['admin']['info_target'] = 'This option may used by the Menu Manager to ind
 $lang['admin']['close'] = 'Luk';
 $lang['admin']['revert'] = 'Nulstil alle &aelig;ndringer';
 $lang['admin']['autoclearcache2'] = 'Fjern cache filer der er &aelig;ldre en det angivne antal dage';
+$lang['admin']['nothingtodo'] = 'Intet der skal g&oslash;res';
 $lang['admin']['root'] = 'Roden';
 $lang['admin']['info_content_autocreate_flaturls'] = 'Hvis dette er sl&aring;et til, vil alle urls blive oprettet som en kopi af side alias&#039;et (men ikke synkroniseret til side alias&#039;et)';
 $lang['admin']['content_autocreate_flaturls'] = 'Automatisk generede url&#039;s er &quot;flade&quot;';
@@ -621,6 +616,17 @@ $lang['admin']['help_function_image'] = '  <h3>What does this do?</h3>
   </ul>';
 $lang['admin']['help_function_html_blob'] = '	<h3>What does this do?</h3>
 	<p>See the help for global_content for a description.</p>';
+$lang['admin']['help_function_googlepr'] = '	<h3>What does this do?</h3>
+	<p>Display&#039;s a number that represents your google pagerank.</p>
+	<h3>How do I use it?</h3>
+	<p>Just insert the tag into your template/page like: <code>{googlepr}</code><br>
+	<br>
+
+	<h3>What parameters does it take?</h3>
+	<ul>
+		<li><em>(optional)</em> domain - The website to display the pagerank for.</li>
+	</ul>
+	</p>';
 $lang['admin']['help_function_google_search'] = '	<h3>What does this do?</h3>
 	<p>Search&#039;s your website using Google&#039;s search engine.</p>
 	<h3>How do I use it?</h3>
@@ -890,23 +896,14 @@ $lang['admin']['execute'] = 'Eksekv&eacute;r';
 $lang['admin']['group'] = 'Gruppe';
 $lang['admin']['other'] = 'Andet';
 $lang['admin']['event_desc_moduleupgraded'] = 'Sendes efter at et modul er opgraderet';
-$lang['admin']['event_help_moduleupgraded'] = '<p>Sent after a module is upgraded.</p>';
 $lang['admin']['event_desc_moduleinstalled'] = 'Sendes efter at et modul er installeret';
-$lang['admin']['event_help_moduleinstalled'] = '<p>Sent after a module is installed.</p>';
 $lang['admin']['event_desc_moduleuninstalled'] = 'Sendes efter at et modul er fjernet';
-$lang['admin']['event_help_moduleuninstalled'] = '<p>Sent after a module is uninstalled.</p>';
 $lang['admin']['event_desc_edituserdefinedtagpost'] = 'Sendes efter at et bruger tag er opdateret';
-$lang['admin']['event_help_edituserdefinedtagpost'] = '<p>Sent after a user defined tag is updated.</p>';
 $lang['admin']['event_desc_edituserdefinedtagpre'] = 'Sendes f&oslash;r en brugerdefineret tag opdateres';
-$lang['admin']['event_help_edituserdefinedtagpre'] = '<p>Sent prior to a user defined tag update.</p>';
 $lang['admin']['event_desc_deleteuserdefinedtagpre'] = 'Sendes f&oslash;r en brugerdefineret tag slettes';
-$lang['admin']['event_help_deleteuserdefinedtagpre'] = '<p>Sent prior to deleting a user defined tag.</p>';
 $lang['admin']['event_desc_deleteuserdefinedtagpost'] = 'Sendes efter at et bruger tag er fjernet';
-$lang['admin']['event_help_deleteuserdefinedtagpost'] = '<p>Sent after a user defined tag is deleted.</p>';
 $lang['admin']['event_desc_adduserdefinedtagpost'] = 'Sendes efter at et bruger tag er indsat';
-$lang['admin']['event_help_adduserdefinedtagpre'] = '<p>Sent after a user defined tag is inserted.</p>';
 $lang['admin']['event_desc_adduserdefinedtagpre'] = 'Sendes f&oslash;r en brugerdefineret tag inds&aelig;ttes';
-$lang['admin']['event_help_adduserdefinedtagpost'] = '<p>Sent prior to a user defined tag insert.</p>';
 $lang['admin']['global_umask'] = 'Fil Oprettelses Maske (umask)';
 $lang['admin']['errorcantcreatefile'] = 'Kunne ikke oprette filen (problem med fil-tilladelser?)';
 $lang['admin']['errormoduleversionincompatible'] = 'Modulet er ikke kompatibelt med denne version af CMS';
@@ -1059,7 +1056,6 @@ $lang['admin']['errorupdatinguser'] = 'Fejl under opdatering af bruger';
 $lang['admin']['errorupdatingusertag'] = 'Fejl under opdatering af brugerdefineret tag';
 $lang['admin']['erroruserinuse'] = 'Denne bruger har stadig ansvaret for nogle sider. Giv ansvaret til en anden bruger f&oslash;r du sletter.';
 $lang['admin']['eventhandlers'] = 'H&aelig;ndelses H&aring;ndtering';
-$lang['admin']['eventhandler'] = 'Event Handlers';
 $lang['admin']['editeventhandler'] = 'Ret h&aelig;ndelses-handler';
 $lang['admin']['eventhandlerdescription'] = 'Associ&eacute;r bruger-tags med h&aelig;ndelser';
 $lang['admin']['export'] = 'Eksport&eacute;r';
@@ -1281,7 +1277,6 @@ $lang['admin']['admindescription'] = 'Side Administration funktioner.';
 $lang['admin']['contentdescription'] = 'Her tilf&oslash;jer og redigerer vi indhold.';
 $lang['admin']['enablecustom404'] = 'Tillad brugerdefineret &quot;404&quot;-besked';
 $lang['admin']['enablesitedown'] = 'Sl&aring; &quot;Siden er nede&quot;-besked til';
-$lang['admin']['enablewysiwyg'] = 'Enable WYSIWYG on Site Down Message';
 $lang['admin']['bookmarks'] = 'Bogm&aelig;rker';
 $lang['admin']['user_created'] = 'Bruger oprettet';
 $lang['admin']['forums'] = 'Forum';
@@ -1732,9 +1727,9 @@ $lang['admin']['lostpwemail'] = 'Du modtager denne email fordi der er anmodet om
 %s
 
 Hvis du ikke kender noget til denne anmodning eller den er sendt ved en fejl, s&aring; ignor&eacute;r venligst denne email og intet vil blive &aelig;ndret.';
-$lang['admin']['utma'] = '156861353.868490754.1298370706.1299501521.1299526853.9';
-$lang['admin']['utmz'] = '156861353.1299501521.8.3.utmcsr=twitter.com|utmccn=(referral)|utmcmd=referral|utmcct=/Bovelett';
-$lang['admin']['qca'] = 'P0-392249128-1298370706225';
+$lang['admin']['utma'] = '156861353.2039886585.1231713618.1288347746.1288628456.167';
+$lang['admin']['utmz'] = '156861353.1286879837.162.50.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php/board,64.0.html';
+$lang['admin']['qca'] = '1229601790-85243197-43260713';
+$lang['admin']['utmb'] = '156861353';
 $lang['admin']['utmc'] = '156861353';
-$lang['admin']['utmb'] = '156861353.1.10.1299526853';
 ?>

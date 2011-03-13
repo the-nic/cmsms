@@ -1,8 +1,3 @@
-Version 1.9.4.1 
------------------------------
-Module Manager
-  - Minor fix to syntax error in the admin panel for module manager.
-
 Version 1.9.4 - Faanui
 -----------------------------
 Core - Bug Reports

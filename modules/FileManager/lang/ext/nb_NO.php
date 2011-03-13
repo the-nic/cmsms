@@ -24,7 +24,7 @@ $lang['delete'] = 'Slett';
 $lang['notwritable'] = 'Ikke skrivbar';
 $lang['afileistoobig'] = 'En fil er for stor. Opplasting avbrutt.';
 $lang['unknown'] = 'Ukjent';
-$lang['fileoutsideuploads'] = 'Du har IKKE tillatelse til &aring; modifisere filer utenfor uploads-katalogen! (Dette vil kreve at du har tildelt Advanced File Management tillatelsen)';
+$lang['fileoutsideuploads'] = 'Du har IKKE tillatelse til &aring; modifisere filer utenfor uploads katalogen! (Dette vil kreve at du har tildelt Advanced File Management tillatelsen)';
 $lang['writable'] = 'Skrivbar';
 $lang['writeprotected'] = 'Skrivebeskyttet';
 $lang['bytes'] = 'bytes ';
@@ -121,7 +121,7 @@ $lang['thousanddelimiter'] = 'tusen-skilletegn';
 $lang['none'] = 'Ingen';
 $lang['space'] = 'mellomrom';
 $lang['showthumbnails'] = 'Vis miniatyrbilder';
-$lang['showthumbnailshelp'] = '&Aring; sl&aring; p&aring; dette vil vise miniatyrbildene for bildefiler om disse eksisterer og vil skjule de faktiske miniatyrbildefilene. &Aring; sl&aring; av vil vise alle filer.';
+$lang['showthumbnailshelp'] = '&Aring; sl&aring; p&aring; dette vil vise miniatyrbildene for bilderfiler om disse eksisterer og vil skjule de faktiske miniatyrbildefilene. &Aring; sl&aring; av vil vise alle filer.';
 $lang['uploadfilesto'] = 'Laste opp filer til:';
 $lang['uploadview'] = 'Last opp filer';
 $lang['uploadboxes'] = 'Antall opplastingsbokser';
@@ -138,10 +138,10 @@ $lang['settingssaved'] = 'Innstillinger lagret';
 $lang['help'] = '		<h3>Hva gj&oslash;r denne?</h3>
 		<p>Denne modulen tilbyr filbehandlingsfunksjoner.</p>
 		<h3>Hvordan bruker jeg denne?</h3>
-		<p>Velg den fra innholdsmenyen i administrasjon.</p>';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
+		<p>Velg den fra innholdsmenyen i  administrasjon.</p>';
+$lang['utmz'] = '156861353.1292071197.3458.79.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php/topic,49989.0/topicseen.html';
+$lang['utma'] = '156861353.179052623084110100.1210423577.1295649999.1295715489.3513';
 $lang['qca'] = '1210971690-27308073-81952832';
+$lang['utmb'] = '156861353.1.10.1295715489';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
 ?>

@@ -16,9 +16,9 @@
 #along with this program; if not, write to the Free Software
 #Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-#$Id: version.php 6948 2011-03-13 17:53:07Z calguy1000 $
+#$Id: version.php 6900 2011-02-20 01:10:48Z calguy1000 $
 
-$CMS_VERSION = "1.9.4.1";
+$CMS_VERSION = "1.9.4";
 $CMS_VERSION_NAME = "Faanui";
 $CMS_SCHEMA_VERSION = "34";
 

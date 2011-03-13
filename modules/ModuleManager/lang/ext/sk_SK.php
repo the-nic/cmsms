@@ -47,7 +47,7 @@ $lang['error_nofilename'] = 'N&aacute;zov s&uacute;boru nezn&aacute;my';
 $lang['error_unsatisfiable_dependency'] = 'Nen&aacute;jden&eacute; vyžadovan&eacute; moduly &quot;%s&quot; (verzia %s alebo vy&scaron;&scaron;ia) v repozit&aacute;ri. Priamo vyžaduje %s; čo m&ocirc;že znamenať probl&eacute;my s touto verziou v repozit&aacute;ri. Pros&iacute;m kontaktujte v&yacute;voj&aacute;ra modulu.';
 $lang['error_checksum'] = 'Chyba kontroln&eacute;ho s&uacute;čtu.  Vznik&aacute; v&auml;č&scaron;inou chybn&yacute;m nahrat&iacute;m s&uacute;boru do repozit&aacute;ra, alebo probl&eacute;mom pri sťahovan&iacute; na v&aacute;&scaron; server.';
 $lang['cantdownload'] = 'Nie je možn&eacute; stiahovať';
-$lang['download'] = 'Stiahn&uacute;ť a nain&scaron;talovať';
+$lang['download'] = 'Stiahn&uacute;ť a nian&scaron;talovať';
 $lang['error_moduleinstallfailed'] = 'In&scaron;tal&aacute;cia modulu ne&uacute;spe&scaron;n&aacute;';
 $lang['error_connectnomodules'] = 'Aj keď pripojenie k repozit&aacute;ru prebehlo &uacute;spe&scaron;ne, vypad&aacute; to tak, že repozit&aacute;r  aktu&aacute;lne nezobrazuje žiadne data.';
 $lang['submit'] = 'Odoslať';
@@ -134,9 +134,9 @@ $lang['help'] = '<h3>What Does This Do?</h3>
 <h3>Copyright and License</h3>
 <p>Copyright &copy; 2006, calguy1000 <a href="mailto:calguy1000@hotmail.com"><calguy1000@hotmail.com></a>. All Rights Are Reserved.</p>
 <p>This module has been released under the <a href="http://www.gnu.org/licenses/licenses.html#GPL">GNU Public License</a>. You must agree to this license before using the module.</p>';
-$lang['qca'] = 'P0-1907880641-1299582843050';
-$lang['utma'] = '156861353.736973811.1299582844.1299582844.1299763937.2';
-$lang['utmz'] = '156861353.1299763937.2.2.utmccn=(referral)|utmcsr=dev.cmsmadesimple.org|utmcct=/|utmcmd=referral';
-$lang['utmb'] = '156861353';
 $lang['utmc'] = '156861353';
+$lang['qca'] = 'P0-1608926040-1271144175783';
+$lang['utma'] = '156861353.786385904.1271157997.1297167781.1297170856.166';
+$lang['utmz'] = '156861353.1297170856.166.151.utmccn=(referral)|utmcsr=dev.cmsmadesimple.org|utmcct=/|utmcmd=referral';
+$lang['utmb'] = '156861353.1.10.1297170856';
 ?>

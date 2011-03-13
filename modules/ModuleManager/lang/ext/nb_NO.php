@@ -36,7 +36,7 @@ $lang['incompatible'] = 'Ikke kompatibel';
 $lang['prompt_settings'] = 'Innstillinger';
 $lang['prompt_otheroptions'] = 'Andre opsjoner';
 $lang['reset'] = 'Nullstill';
-$lang['error_permissions'] = '<strong><em>ADVARSEL:</em></strong> Ikke tilstrekkelige katalogrettigheter for &aring; installere moduler. Du kan ogs&aring; erfare problemer med PHP Safe mode. Vennligst sjekk at safe mode ikke er p&aring;sl&aring;tt og at filsystem rettighetene er tilstrekkelige.';
+$lang['error_permissions'] = '<strong><em>ADVARSEL:</em></strong> Ikke tilstrekkelige katalog rettigheter for &aring; installere moduler. Du kan ogs&aring; erfare problemer med PHP Safe mode. Vennligst sjekk at safe mode ikke er p&aring;sl&aring;tt og at filsystem rettighetene er tilstrekkelige.';
 $lang['error_minimumrepository'] = 'Lager-versjonen er ikke kompatibel med denne modulbehandleren';
 $lang['prompt_reseturl'] = 'Sett URL til forh&aring;ndssatt standard';
 $lang['prompt_resetcache'] = 'Nullstill lokalt mellomlager for Lager data';
@@ -45,7 +45,7 @@ $lang['text_dl_chunksize'] = 'Maksimum mengde data &aring; laste ned fra servere
 $lang['error_nofilesize'] = 'Ingen filst&oslash;rrelses parameter oppgitt';
 $lang['error_nofilename'] = 'Ingen filnavn parameter oppgitt';
 $lang['error_unsatisfiable_dependency'] = 'Kan ikke finne den p&aring;krevde modulen &quot;%s&quot; (versjon %s eller senere) i biblioteket. Denne er direkte p&aring;krevd av %s; dette kan indikere at det er et problem med denne versjonen av modulen i biblioteket. Vennligst kontakt denne modulens opphavsmann.  Avbryter.';
-$lang['error_checksum'] = 'Sjekksum feil.  Dette indikerer sannsynligvis en korrupt til, enten n&aring;r den ble lastet opp til lagringsplassen, eller et problem med overf&oslash;ring ned til din maskin.';
+$lang['error_checksum'] = 'Sjekksum feil.  Dette indikerer sansynligvis en korrupt til, enten n&aring;r den ble lastet opp til lagringsplassen, eller et problem med overf&oslash;ring ned til din maskin.';
 $lang['cantdownload'] = 'Kan ikke laste ned';
 $lang['download'] = 'Last ned og Installer';
 $lang['error_moduleinstallfailed'] = 'Modul installasjonen feilet';
@@ -141,18 +141,18 @@ Added dependency checking.
 </li>
 </ul>';
 $lang['help'] = '<h3>Hva gj&oslash;r denne?</h3>
-<p> En klient for ModuleRepository, gir denne modulen forh&aring;ndsvisning, og installere moduler fra eksterne nettsteder uten behov for &aring; benytte ftp eller utpakiing av arkiver. Modul XML-filer lastes ned ved hjelp av SOAP, integritet bekreftet, og deretter pakkes ut automatisk. </p>
+<p> En klient for ModuleRepository, gir denne modulen forh&aring;ndsvisning, og installere moduler fra eksterne nettsteder uten behov for ft eller unzipping av arkiver. Modul XML-filer lastes ned ved hjelp av SOAP, integritet bekreftet, og deretter pakkes ut automatisk. </p>
 <h3> Hvordan bruker jeg denne </h3>
-<p> For &aring; kunne bruke denne modulen, trenger du &#039;Endre moduler&#039; tillatelse, og du vil ogs&aring; trenge komplett og fullstendig webadresse til en &#039;Modul Repository&#039; installasjon. Du kan spesifisere denne url i &quot;Utvidelser&quot; -> &quot;Modulbehandler&quot; -> &quot;Innstillinger&quot;-siden. </p> <br/>
-<p> Du kan finne grensesnittet for denne modulen under menyen &#039;Utvidelser&#039;. N&aring;r du velger denne modulen, &#039;Modul Repository&#039; installasjonen vil automatisk bli spurt for en liste over tilgjengelige xml-moduler. Denne listen vil bli kryssrefereres med listen over installerte moduler, og en sammendragside vises. Herfra kan du vise beskrivende informasjon, hjelp, og om informasjon for en modul uten &aring; fysisk installere den. Du kan ogs&aring; velge &aring; oppgradere eller installere moduler. </p>
+<p> For &aring; kunne bruke denne modulen, trenger du &#039;Endre moduler&#039; tillatelse, og du vil ogs&aring; trenge komplett og fullstendig webadresse til en &#039;Modul Repository&#039; installasjon. Du kan spesifisere denne url i &quot;Utvidelser&quot; -> &quot;Module Manager&quot; -> &quot;Innstillinger&quot;-siden. </p> <br/>
+<p> Du kan finne grensesnittet for denne modulen under menyen &#039;Utvidelser&#039;. N&aring;r du velger denne modulen, &#039;Modul Repository&#039; installasjonen vil automatisk bli spurt for en liste over tilgjengelige xml moduler. Denne listen vil bli kryssrefereres med listen over installerte moduler, og en sammendragsside vises. Herfra kan du vise beskrivende informasjon, hjelp, og om informasjon for en modul uten &aring; fysisk installere den. Du kan ogs&aring; velge &aring; oppgradere eller installere moduler. </p>
 <h3>Support</h3>
 <p> Pr GPL, er denne programvaren leveres som det er. Les teksten av lisensen for full ansvarsfraskrivelse. </p>
 <h3>Opphavsrett og lisens</h3>
 <p> Copyright &copy; 2006, calguy1000 <a href="mailto:calguy1000@hotmail.com"> <calguy1000@hotmail.com> </a>. Alle rettigheter er reservert. </p>
 <p> Denne modulen har blitt utgitt under <a href="http://www.gnu.org/licenses/licenses.html#GPL"> GNU Public License </a>. Du m&aring; godta denne lisensavtalen f&oslash;r du bruker modulen. </p>';
-$lang['utmz'] = '156861353.1296948797.3555.80.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
-$lang['utma'] = '156861353.179052623084110100.1210423577.1299932589.1299935842.3679';
-$lang['qca'] = '1210971690-27308073-81952832';
+$lang['utma'] = '156861353.4516254727077762000.1214829895.1290588378.1291365970.277';
+$lang['utmz'] = '156861353.1290182173.274.25.utmcsr=feedburner|utmccn=Feed: cmsmadesimple/blog (CMS Made Simple)|utmcmd=feed';
+$lang['qca'] = '1214401694-66536492-18746566';
+$lang['utmb'] = '156861353.1.10.1291365970';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353';
 ?>

@@ -1,8 +1,7 @@
 <?php
-$lang['setup_flat_urls'] = 'Flat URLs are setup';
 $lang['install_timezone'] = 'Some servers running php 5.3 have not set the timezone correctly.  Please select the appropriate timezone from the list before.  If this is not necessary on your server you may select &quot;None&quot;, you can always change this setting later in the config.php.';
 $lang['timezone'] = 'Tidszone';
-$lang['none'] = 'Ingen';
+$lang['none'] = 'INgen';
 $lang['test_error_estrict'] = 'Testing error_reporting to ensure E_STRICT is disabled';
 $lang['test_estrict_failed'] = 'E_STRICT er sl&aring;et til';
 $lang['info_estrict_failed'] = 'Some libraries that CMSMS uses do not work well with E_STRICT.  Please disable this before continuing';
@@ -342,9 +341,9 @@ brugernavn: %s
 kodeord: %s
 
 Log ind i site administrationen her: %s';
-$lang['utma'] = '156861353.868490754.1298370706.1299501521.1299526853.9';
-$lang['utmz'] = '156861353.1299501521.8.3.utmcsr=twitter.com|utmccn=(referral)|utmcmd=referral|utmcct=/Bovelett';
-$lang['qca'] = 'P0-392249128-1298370706225';
+$lang['utma'] = '156861353.2039886585.1231713618.1288347746.1288628456.167';
+$lang['utmz'] = '156861353.1286879837.162.50.utmcsr=forum.cmsmadesimple.org|utmccn=(referral)|utmcmd=referral|utmcct=/index.php/board,64.0.html';
+$lang['qca'] = '1229601790-85243197-43260713';
+$lang['utmb'] = '156861353';
 $lang['utmc'] = '156861353';
-$lang['utmb'] = '156861353.1.10.1299526853';
 ?>
