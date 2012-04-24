@@ -1,6 +1,6 @@
 <?php // -*- mode:php; tab-width:4; indent-tabs-mode:t; c-basic-offset:4; -*-
 #CMS - CMS Made Simple
-#(c)2004-2010 by Ted Kulp (ted@cmsmadesimple.org)
+#(c)2004-2012 by Ted Kulp (ted@cmsmadesimple.org)
 #This project's homepage is: http://cmsmadesimple.org
 #
 #This program is free software; you can redistribute it and/or modify
@@ -29,7 +29,7 @@
  * @package CMS
  * @author Robert Campbell (calguy1000@cmsmadesimple.org)
  */
-class cms_config implements ArrayAccess
+final class cms_config implements ArrayAccess
 {
   const TYPE_STRING = 'STRING';
   const TYPE_INT = 'INT';
@@ -47,28 +47,25 @@ class cms_config implements ArrayAccess
   private function get_upload_size()
   {
     $maxFileSize = ini_get('upload_max_filesize');
-    if (!is_numeric($maxFileSize))
-      {
-	$l=strlen($maxFileSize);
-	$i=0;$ss='';$x=0;
-	while ($i < $l)
-	  {
-	    if (is_numeric($maxFileSize[$i]))
-	      {$ss .= $maxFileSize[$i];}
-	    else
-	      {
-		if (strtolower($maxFileSize[$i]) == 'm') $x=1000000;
-		if (strtolower($maxFileSize[$i]) == 'k') $x=1000;
-	      }
-	    $i ++;
-	  }
-	$maxFileSize=$ss;
-	if ($x >0) $maxFileSize = $ss * $x;
-      }
-    else
-      {
-	$maxFileSize = 1000000;
-      }
+    if (!is_numeric($maxFileSize)) {
+		$l=strlen($maxFileSize);
+		$i=0;$ss='';$x=0;
+		while ($i < $l) {
+			if (is_numeric($maxFileSize[$i])) {
+				{$ss .= $maxFileSize[$i];}
+			}
+			else {
+				if (strtolower($maxFileSize[$i]) == 'm') $x=1000000;
+				if (strtolower($maxFileSize[$i]) == 'k') $x=1000;
+			}
+			$i ++;
+		}
+		$maxFileSize=$ss;
+		if ($x >0) $maxFileSize = $ss * $x;
+	}
+    else {
+		$maxFileSize = 1000000;
+	}
     return $maxFileSize;
   }
 
@@ -110,6 +107,7 @@ class cms_config implements ArrayAccess
     $this->_types['wiki_url'] = self::TYPE_STRING;
     $this->_types['admin_url'] = self::TYPE_STRING;
     $this->_types['ignore_lazy_load'] = self::TYPE_BOOL;
+	$this->_types['use_session'] = self::TYPE_BOOL;
 
     $config = array();
     if (file_exists(CONFIG_FILE_LOCATION))
@@ -215,6 +213,7 @@ class cms_config implements ArrayAccess
 	  case 'persist_db_conn':
 		  return false;
 
+	  case 'use_session':
 	  case 'set_names':
 		  return true;
 

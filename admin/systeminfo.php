@@ -109,7 +109,6 @@ $tmp[0]['process_whole_template'] = testConfig('process_whole_template', 'proces
 $tmp[1]['debug'] = testConfig('debug', 'debug');
 $tmp[0]['output_compression'] = testConfig('output_compression', 'output_compression');
 
-$tmp[0]['max_upload_size'] = testConfig('max_upload_size', 'max_upload_size');
 $tmp[0]['url_rewriting'] = testConfig('url_rewriting', 'url_rewriting');
 $tmp[0]['page_extension'] = testConfig('page_extension', 'page_extension');
 $tmp[0]['query_var'] = testConfig('query_var', 'query_var');
@@ -130,6 +129,12 @@ $tmp[0]['locale'] = testConfig('locale', 'locale');
 $tmp[0]['default_encoding'] = testConfig('default_encoding', 'default_encoding');
 $tmp[0]['admin_encoding'] = testConfig('admin_encoding', 'admin_encoding');
 $tmp[0]['set_names'] = testConfig('set_names', 'set_names');
+if( !$config['use_session'] ) {
+  $tmp[0]['use_session'] = testDummy('use_session','false','yellow',lang('warn_session_disabled'));
+}
+else {
+  $tmp[0]['use_session'] = testDummy('use_session','true','green');
+}
 
 $smarty->assign('count_config_info', count($tmp[0]));
 $smarty->assign('config_info', $tmp);
@@ -144,7 +149,6 @@ $tmp = array(0=>array(), 1=>array());
 $safe_mode = ini_get('safe_mode');
 $session_save_path = ini_get('session.save_path');
 $open_basedir = ini_get('open_basedir');
-
 
 list($minimum, $recommended) = getTestValues('php_version');
 $tmp[0]['phpversion'] = testVersionRange(0, 'phpversion', phpversion(), '', $minimum, $recommended, false);
@@ -224,6 +228,37 @@ ini_set('log_errors_max_len', $_log_errors_max_len);
 $result = (ini_get('log_errors_max_len') == $_log_errors_max_len);
 $tmp[1]['check_ini_set'] = testBoolean(0, 'check_ini_set', $result, lang('check_ini_set_off'), false, false, 'ini_set_disabled');
 
+$hascurl = 0;
+$curlgood = 0;
+$curl_version = '';
+$min_curlversion = '7.19.7';
+if( in_array('curl',get_loaded_extensions()) ) {
+  $hascurl = 1;
+  if( function_exists('curl_version') ) {
+    $t = curl_version();
+    if( isset($t['version']) ) {
+      $curl_version = $t['version'];
+      if( version_compare($t['version'],$min_curlversion) >= 0 ) {
+	$curlgood = 1;
+      }
+    }
+  }
+}
+if( !$hascurl ) {
+  $tmp[1]['curl'] = testDummy('curl',lang('off'),'yellow','','curl_not_available','');
+}
+else {
+  $tmp[1]['curl'] = testDummy('curl',lang('on'),'green');
+  if( $curlgood ) {
+    $tmp[1]['curlversion'] = testDummy('curlversion',
+				       lang('curl_versionstr',$curl_version,$min_curlversion),
+				       'green');
+  }
+  else {
+    $tmp[1]['curlversion'] = testDummy('curlversion',lang('test_curlversion'),'yellow',
+				       lang('curl_versionstr',$curl_version,$min_curlversion));
+  }
+}
 $smarty->assign('count_php_information', count($tmp[0]));
 $smarty->assign('php_information', $tmp);
 
@@ -240,13 +275,6 @@ $tmp[1]['server_os'] = testDummy('', PHP_OS . ' ' . php_uname('r') .' '. lang('o
 
 switch($config['dbms']) //workaroud: ServerInfo() is unsupported in adodblite
 {
-	case 'postgres7': 
-	  $tmp[0]['server_db_type'] = testDummy('', 'PostgreSQL ('.$config['dbms'].')', '');
-	  $v = pg_version();
-	  $_server_db = (isset($v['server_version'])) ? $v['server_version'] : $v['client'];
-	  list($minimum, $recommended) = getTestValues('pgsql_version');
-	  $tmp[0]['server_db_version'] = testVersionRange(0, 'server_db_version', $_server_db, '', $minimum, $recommended, false);
-	  break;
         case 'mysqli':	
 	case 'mysql':
 	  $v = $db->GetOne('SELECT version()');

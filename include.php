@@ -19,35 +19,19 @@
 #$Id$
 
 $dirname = dirname(__FILE__);
-
 define('CMS_DEFAULT_VERSIONCHECK_URL','http://www.cmsmadesimple.org/latest_version.php');
 define('CMS_SECURE_PARAM_NAME','_sx_');
 define('CMS_USER_KEY','_userkey_');
 
-$session_key = substr(md5($dirname), 0, 8);
 if( !isset($CMS_INSTALL_PAGE) )
   {
-    @session_name('CMSSESSID' . $session_key);
     @ini_set('url_rewriter.tags', '');
     @ini_set('session.use_trans_sid', 0);
   }
 
-#Setup session with different id and start it
-if( isset($CMS_ADMIN_PAGE) || isset($CMS_INSTALL_PAGE) )
-  {
-    // admin pages can't be cached... period, at all.. never.
-    @session_cache_limiter('private');
-  }
-else
-  {
-    @session_cache_limiter('public');
-  }
-
-if(!@session_id()) session_start();
-
 
 /**
- * This file is included in every page.  It does all seutp functions including
+ * This file is included in every page.  It does all setup functions including
  * importing additional functions/classes, setting up sessions and nls, and
  * construction of various important variables like $gCms.
  *
@@ -73,6 +57,32 @@ require_once($dirname.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'misc.functi
 require_once($dirname.DIRECTORY_SEPARATOR.'lib'.DIRECTORY_SEPARATOR.'module.functions.php');
 require_once($dirname.DIRECTORY_SEPARATOR.'version.php');
 debug_buffer('done loading required files');
+
+# Create the global
+$gCms = cmsms();
+
+#Grab the current configuration
+$config = $gCms->GetConfig();
+
+#Setup session with different id and start it
+$setup_session = FALSE;
+if( isset($CMS_ADMIN_PAGE) || isset($CMS_INSTALL_PAGE) )
+  {
+    // admin pages can't be cached... period, at all.. never.
+    @session_cache_limiter('private');
+    $setup_session = TRUE;
+  }
+else
+  {
+    @session_cache_limiter('public');
+  }
+
+$session_key = substr(md5($dirname), 0, 8);
+cms_session::set_name('CMSSESSID'.$session_key);
+if(($setup_session || $config['use_session']) || @session_id()) 
+  {
+    cms_session::start();
+  }
 
 # sanitize $_GET
 array_walk_recursive($_GET, 'sanitize_get_var'); 
@@ -106,27 +116,19 @@ if( isset($CMS_ADMIN_PAGE) )
       header("Content-Type: $content_type; charset=$charset");
     }
 
-     if( !isset($_SESSION[CMS_USER_KEY]) )
-       {
-	 if( isset($_COOKIE[CMS_SECURE_PARAM_NAME]) )
-	   {
-	     $_SESSION[CMS_USER_KEY] = $_COOKIE[CMS_SECURE_PARAM_NAME];
-	   }
-	 else
-	   {
-	     // maybe change this algorithm.
-	     $key = substr(str_shuffle(md5($dirname.time().session_id())),-8);
-	     $_SESSION[CMS_USER_KEY] = $key;
-	     cms_cookies::set(CMS_SECURE_PARAM_NAME,$key);
-	   }
-       }
+    if( !cms_session::exists(CMS_USER_KEY) ) {
+      if( cms_cookies::exists(CMS_SECURE_PARAM_NAME) ) {
+	cms_session::set(CMS_USER_KEY,cms_cookies::get(CMS_SECURE_PARAM_NAME));
+      }
+      else {
+	// maybe change this algorithm.
+	$key = substr(str_shuffle(md5($dirname.time().session_id())),-8);
+	cms_session::set(CMS_USER_KEY,$key);
+	cms_cookies::set(CMS_SECURE_PARAM_NAME,$key);
+      }
+    }
   }
 
-
-# Create the global
-$gCms = cmsms();
-#Grab the current configuration
-$config = $gCms->GetConfig();
 
 #Set the timezone
 if( $config['timezone'] != '' )
@@ -143,13 +145,11 @@ if( isset($config['php_memory_limit']) && !empty($config['php_memory_limit'])  )
 #Add users if they exist in the session
 cmsms()->set_variable('user_id','');
 cmsms()->set_variable('username','');
-if (isset($_SESSION['cms_admin_user_id']))
-{
-  cmsms()->set_variable('user_id',$_SESSION['cms_admin_user_id']);
+if( cms_session::exists('cms_admin_user_id') ) {
+  cmsms()->set_variable('user_id',cms_session::get('cms_admin_user_id'));
 }
-if (isset($_SESSION['cms_admin_username']))
-{
-  cmsms()->set_variable('username',$_SESSION['cms_admin_username']);
+if( cms_session::exists('cms_admin_username') ) {
+  cmsms()->set_variable('username',cms_session::get('cms_admin_username'));
 }
 
 if ($config["debug"] == true)
@@ -197,7 +197,6 @@ if(get_magic_quotes_gpc())
     stripslashes_deep($_POST);
     stripslashes_deep($_REQUEST);
     stripslashes_deep($_COOKIE);
-    stripslashes_deep($_SESSION);
 }
 
 #Fix for IIS (and others) to make sure REQUEST_URI is filled in
@@ -208,13 +207,6 @@ if (!isset($_SERVER['REQUEST_URI']))
     {
         $_SERVER['REQUEST_URI'] .= '?'.$_SERVER['QUERY_STRING'];
     }
-}
-
-#Setup the object sent to modules
-cmsms()->set_variable('pluginnum',1);
-if (isset($page))
-{
-  cmsms()->set_variable('page',$page);
 }
 
 #Set a umask

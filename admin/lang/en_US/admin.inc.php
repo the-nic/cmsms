@@ -1,4 +1,10 @@
 <?php
+$lang['admin']['warn_session_disabled'] = 'Sessions have been disabled.  Functionality in some third party modules may be negatively effected';
+$lang['admin']['curlversion'] = 'Test curl version';
+$lang['admin']['curl'] = 'Test for the curl library';
+$lang['admin']['test_curl'] = 'Test for curl availability';
+$lang['admin']['test_curlversion'] = 'Test Curl Version';
+$lang['admin']['curl_versionstr'] = 'version %s, minimum recommended version is %s';
 $lang['admin']['lines_in_error'] = '%d lines with errors';
 $lang['admin']['no_files_scanned'] = 'No files were scanned during the verification process (maybe the file is invalid)';
 $lang['admin']['stylesheetnotfound'] = 'Stylesheet %d not found';
@@ -424,7 +430,7 @@ $lang['admin']['ignorenotificationsfrommodules'] = 'Ignore notifications from th
 $lang['admin']['admin_enablenotifications'] = 'Allow users to view notifications<br/><em>(notifications will be displayed on all admin pages)</em>';
 $lang['admin']['enablenotifications'] = 'Enable user notifications in the admin section';
 $lang['admin']['test_check_open_basedir_failed'] = 'Open basedir restrictions are in effect. You may have difficulty with some addon functionality with this restriction';
-$lang['admin']['config_writable'] = 'config.php writable. It is more safe if you change permission to read-only';
+$lang['admin']['config_writable'] = 'config.php writable. We recommand you change the permission of this file to read-only';
 $lang['admin']['caution'] = 'Caution';
 $lang['admin']['create_dir_and_file'] = 'Checking if the httpd process can create a file inside of a directory it created';
 $lang['admin']['os_session_save_path'] = 'No check because OS path';
