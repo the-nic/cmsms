@@ -3,10 +3,9 @@ if (!function_exists("cmsms")) exit;
 
 if (!$this->CheckPermission('Modify Files')) return;
 
-if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false))
-  {
-    $smarty->assign('is_ie',1);
-  }
+if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+  $smarty->assign('is_ie',1);
+}
 $smarty->assign('mod',$this);
 $smarty->assign('actionid',$id);
 $smarty->assign('formstart',$this->CreateFormStart($id,'upload',$returnid,'post','multipart/form-data'));
@@ -27,13 +26,11 @@ if( strlen($advancedmode) > 1 ) $advancedmode = 0;
   $smarty->assign('cwd',$cwd);
 
   $startdir = $config['uploads_path'];
-  if( $this->AdvancedAccessAllowed() && $advancedmode )
-    {
-      $startdir = $config['root_path'];
-    }
+  if( $this->AdvancedAccessAllowed() && $advancedmode ) {
+    $startdir = $config['root_path'];
+  }
 
   // now get a simple list of all of the directories we have 'write' access to.
-  $basedir = dirname($startdir);
   function get_dirs($startdir,$prefix = '/') {
     $res = array();
     if( !is_dir($startdir) ) {
@@ -61,13 +58,12 @@ if( strlen($advancedmode) > 1 ) $advancedmode = 0;
     return $res;
   }
 
-  $output = get_dirs($startdir,'/'.basename($startdir).'/');
-  $output['/'.basename($startdir)] = '/'.basename($startdir);
-  if( count($output) )
-    {
-      ksort($output);
-      $smarty->assign('dirlist',$output);
-    }
+  $output = get_dirs($startdir);
+  $output['/'] = '/';
+  if( count($output) ) {
+    ksort($output);
+    $smarty->assign('dirlist',$output);
+  }
 }
 
 
